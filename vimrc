@@ -65,5 +65,32 @@ nnoremap <leader>vrc :tabnew $MYVIMRC<CR>
 " handy (cred to amix https://github.com/amix/vimrc))
 nmap <leader>w :w!<cr>
 nmap <leader>x :x<cr>
+nmap <leader>q :q<cr>
+nmap <leader>rr :source ~/.vimrc<cr>
 
 filetype plugin indent on
+
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'bling/vim-bufferline'
+Plug 'pycqa/flake8'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+"Plug 'scrooloose/syntastic'
+"Plug 'junegunn/limelight.vim'
+"Plug 'valloric/youcompleteme'
+call plug#end()
+
+" draw vim-bufferline on statusbar
+let g:bufferline_echo = 0
+  autocmd VimEnter *
+    \ let &statusline='%{bufferline#refresh_status()}'
+      \ .bufferline#get_status_string()
+
+" Snippet Completion
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsUsePythonVersion = 3
