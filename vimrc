@@ -1,5 +1,5 @@
 " .vimrc
-" date: 22-Jan-2017
+" date: 4-Feb-2017
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -8,7 +8,6 @@ set nocompatible
 set number
 set encoding=utf-8
 set ruler
-set cursorline
 set showcmd
 set ignorecase
 set hlsearch
@@ -62,35 +61,37 @@ nnoremap <leader><space> :noh<CR>
 nnoremap <leader>\s :%s/\s\+$//<CR>
 "open vimrc for editing
 nnoremap <leader>vrc :tabnew $MYVIMRC<CR>
-" handy (cred to amix https://github.com/amix/vimrc))
+" handy (cred to amix https://github.com/amix/vimrc)
 nmap <leader>w :w!<cr>
 nmap <leader>x :x<cr>
 nmap <leader>q :q<cr>
+" reload config
 nmap <leader>rr :source ~/.vimrc<cr>
 
 filetype plugin indent on
+autocmd vimEnter,WinEnter,BufWinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+
 
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'bling/vim-bufferline'
-Plug 'pycqa/flake8'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-"Plug 'scrooloose/syntastic'
-"Plug 'junegunn/limelight.vim'
-"Plug 'valloric/youcompleteme'
+Plug 'itchyny/lightline.vim'
+Plug 'metakirby5/codi.vim'
+Plug 'w0rp/ale'
 call plug#end()
 
-" draw vim-bufferline on statusbar
-let g:bufferline_echo = 0
-  autocmd VimEnter *
-    \ let &statusline='%{bufferline#refresh_status()}'
-      \ .bufferline#get_status_string()
 
 " Snippet Completion
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsUsePythonVersion = 3
+
+" Lint mappings
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <plug>(ale_next_wrap)
+
