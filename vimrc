@@ -1,5 +1,5 @@
 " .vimrc
-" date: 4-Feb-2017
+" date: 9-Feb-2017
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -82,6 +82,7 @@ Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'metakirby5/codi.vim'
 Plug 'w0rp/ale'
+Plug 'shougo/neocomplete.vim'
 call plug#end()
 
 
@@ -95,3 +96,6 @@ let g:UltiSnipsUsePythonVersion = 3
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <plug>(ale_next_wrap)
 
+" Auto text completion(neocomplete)
+let g:neocomplete#enable_smart_case = 1
+inoremap <expr><C-l> neocomplete#complete_common_string()
