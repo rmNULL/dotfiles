@@ -39,9 +39,10 @@ Xft.hintstyle: hintslight
 Xft.autohint: 0
 
 ! PERL extensions
-URxvt.perl-ext-common: default,clipboard,keyboard-select,url-select
-URxvt.keysym.M-k: perl:keyboard-select:activate
-URxvt.keysym.M-s: perl:keyboard-select:search
+URxvt.perl-ext-common: default,url-select
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/xdg-open
 URxvt.url-select.underline: true
+URxvt.colorIT:      #87af5f
+URxvt.colorBD:      #d7d7d7
+URxvt.colorUL:      #87afd7
