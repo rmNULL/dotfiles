@@ -1,19 +1,19 @@
 " .vimrc
-" date: 14-Jul-2017
+" date: 24-Nov-2017
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
 " this must be first, because it changes other options as a side effect.
 set nocompatible
 set number
-" set ruler 
+" set ruler
 set showcmd
 " highlight search
 set hlsearch
 " go on highlighting as you type in (search) pattern
-set incsearch 
+set incsearch
 " don't wrap around search
-set nowrapscan 
+set nowrapscan
 set wildmenu
 
 
@@ -23,9 +23,10 @@ set wildmenu
 set lazyredraw " don't re-draw while executing macros. (use ^L to force re-draw)
 set autoread
 set undofile
-set undodir='~/.vim/tmp/'
+set undodir=$HOME/.vim/.undo/
 set nobackup
-set noswapfile
+" set backupdir=$HOME/vim/.bck
+set directory=$HOME/.vim/.swap
 set history=50		" keep 50 lines of command line history
 
 """
@@ -42,20 +43,7 @@ set matchtime=2
 set textwidth=79
 set tildeop
 " " allow h,l to wrap over lines
-" set whichwrap+=h,l 
-
-
-""
-" Visuals (a.k.a Fancy stuff)
-""
-set encoding=utf-8
-syntax on
-set t_Co=256
-" colorscheme seoul256
-colorscheme gruvbox
-set background=dark
-autocmd vimEnter,WinEnter,BufWinEnter * setlocal cursorline
-autocmd WinLeave * setlocal nocursorline
+" set whichwrap+=h,l
 
 
 """
@@ -80,7 +68,7 @@ vnoremap / /\v
 " Leadered Mappings
 let mapleader=','
 nnoremap ; :
-"get rid of all that annoying highlights after search
+"get rid of annoying highlights after search
 nnoremap <leader><space> :noh<CR>
 "strip trailing whitespaces
 nnoremap <leader>\s :%s/\s\+$//<CR>
@@ -99,24 +87,47 @@ nmap <leader>rr :source ~/.vimrc<cr>
 """
 " Plugin(s) managements
 """
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
 call plug#begin('~/.vim/plugged')
 Plug 'ervandew/screen'
-Plug 'guns/vim-clojure-static'
+Plug 'flazz/vim-colorschemes'
+Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
 " Plug 'junegunn/seoul256.vim'
 " Plug 'junegunn/vim-easy-align'
+Plug 'pangloss/vim-javascript'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+" Plug 'vim-scripts/taglist.vim'
 
 if version >= 8
 	Plug 'w0rp/ale'
 endif
 
 call plug#end()
+
+
+""
+" Visuals (a.k.a Fancy stuff)
+""
+set encoding=utf-8
+syntax on
+set t_Co=256
+" colorscheme seoul256
+colorscheme gruvbox
+set background=dark
+autocmd vimEnter,WinEnter,BufWinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+set title " window title
 
 
 " Snippet Completion
@@ -143,3 +154,5 @@ augroup rainbow_parens
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
