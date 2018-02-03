@@ -1,0 +1,12 @@
+! swap L{ALT, CTRL}
+remove    mod1 =     Alt_L
+remove control = Control_L
+
+keysym Control_L =     Alt_L
+keysym     Alt_L = Control_L
+
+add    mod1 =     Alt_L
+add control = Control_L
+
+! interchange Left-and-right mouse clicks
+pointer = 3 2 1

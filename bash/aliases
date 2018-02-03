@@ -1,5 +1,5 @@
 # enable color support of ls and other handy aliases
-alias ls='ls -G'
+alias ls='ls --color'
 alias ll='ls -AlF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -35,3 +35,8 @@ fi
 
 # tmp is where I scratch my itch
 alias tmp='pushd /tmp/'
+# alias srec='ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 /tmp/output.mp4'
+
+if command -v poly >/dev/null ; then
+	alias poly='rlwrap -pYellow poly'
+fi

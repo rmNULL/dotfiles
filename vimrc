@@ -1,5 +1,5 @@
 " .vimrc
-" date: 24-Nov-2017
+" date: 11-Jan-2018
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -75,11 +75,16 @@ nnoremap <leader>\s :%s/\s\+$//<CR>
 "open vimrc for editing
 nnoremap <leader>vrc :tabnew $MYVIMRC<CR>
 " handy (cred to amix https://github.com/amix/vimrc)
-nmap <leader>w :w!<cr>
+nmap <leader>w :w<cr>
 nmap <leader>x :x<cr>
 nmap <leader>q :q<cr>
+" <leader>qq for q! slows download <leader>q
+nmap <leader>fw :w!<cr>
+nmap <leader>fq :q!<cr>
+"
 " reload config
 nmap <leader>rr :source ~/.vimrc<cr>
+map <leader>tt :Tagbar<CR>
 " send visual selection to ScreenShell
 " vmap <leader>cc :'<,'>ScreenSend<CR>
 
@@ -99,15 +104,17 @@ Plug 'flazz/vim-colorschemes'
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
+" Plug 'jez/vim-better-sml'
 Plug 'junegunn/rainbow_parentheses.vim'
 " Plug 'junegunn/seoul256.vim'
 " Plug 'junegunn/vim-easy-align'
-Plug 'pangloss/vim-javascript'
+Plug 'majutsushi/tagbar'
+" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-" Plug 'vim-scripts/taglist.vim'
+" Plug 'vim-scripts/haskell.vim'
 
 if version >= 8
 	Plug 'w0rp/ale'
@@ -129,7 +136,6 @@ autocmd vimEnter,WinEnter,BufWinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 set title " window title
 
-
 " Snippet Completion
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
@@ -137,22 +143,22 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsUsePythonVersion = 3
 
 " Lint mappings
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)nmap <silent> <C-j> <plug>(ale_next_wrap)
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 let g:ale_linters = {
 \	'c':	['gcc'],
-\	'haskell': ['ghc'],
 \	'javascript': ['eslint'],
-\	'python': ['flake8'],
 \	'ruby': ['rubocop'],
 \}
+" only lint on file save
+let g:ale_lint_on_text_changed = 'never'
 
 " Rainbow parens for lisp dialects
 augroup rainbow_parens
 	autocmd!
-	autocmd! FileType clojure RainbowParentheses
+	autocmd! FileType clojure,sml RainbowParentheses
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
