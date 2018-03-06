@@ -71,7 +71,6 @@ do
 	fi
 
 	$cp -rT $src $dest --strip-trailing-slashes
-	echo
 done
 
 if $backup
