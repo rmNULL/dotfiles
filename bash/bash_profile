@@ -3,6 +3,10 @@ if command -v ruby > /dev/null ; then
 fi
 PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
 
+# if [[ -f ~/.xmodmaprc ]] ; then
+# 	xmodmap ~/.xmodmaprc
+# fi
+
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
 [[ -f ~/.bashrc ]] && source ~/.bashrc

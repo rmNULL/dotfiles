@@ -4,6 +4,11 @@ alias ll='ls -AlF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# if you need anything more than this better find an external tool
+alias c.='cd ../'
+alias c..='cd ../../'
+alias c...='cd ../../../'
+
 alias grep='grep --color=auto'
 alias egrep='grep -E'
 
@@ -19,6 +24,9 @@ fi
 alias +r='chmod +r'
 alias +w='chmod +w'
 alias +x='chmod +x'
+alias r-='chmod -r'
+alias w-='chmod -w'
+alias x-='chmod -x'
 
 alias mkdir='mkdir -p'
 command -v vim >/dev/null && alias vimrc='vim $HOME/.vimrc'

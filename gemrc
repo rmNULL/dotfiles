@@ -1,0 +1,1 @@
+gem: --env-shebang --minimal-deps --no-document --user-install 

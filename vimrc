@@ -1,5 +1,5 @@
 " .vimrc
-" date: 11-Jan-2018
+" date: 4-Mar-2018
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -45,24 +45,29 @@ set tildeop
 " " allow h,l to wrap over lines
 " set whichwrap+=h,l
 
-
 """
 " MAPPINGS
 """
 inoremap jk <Esc>
+xnoremap jk <Esc>
 inoremap <c-d> <Esc>ddi
-"handy while doing gui stuff
-noremap <Up> :!./%<CR><CR>
-noremap <Down> :!clear && ./%<CR>
-"disable arrow keys
-noremap <Left> <nop>
-noremap <Right> <nop>
+noremap <Up> :make<CR>
+" overwrite in filetype
+noremap <Down> <NOP>
+noremap <Left>  :bprev<CR>
+noremap <Right> :bnext<CR>
 autocmd filetype c,cpp inoremap { {<CR>}<Esc>O
 "highlighting and searching
 "sane regexp while searching
 nnoremap / /\v
 vnoremap / /\v
 
+" credits to Junegunn Choi
+" https://github.com/junegunn/dotfiles/blob/master/vimrc
+" Make Y behave like other capitals
+nnoremap Y y$
+" qq to record, Q to replay
+nnoremap Q @q
 
 "''
 " Leadered Mappings
@@ -75,10 +80,10 @@ nnoremap <leader>\s :%s/\s\+$//<CR>
 "open vimrc for editing
 nnoremap <leader>vrc :tabnew $MYVIMRC<CR>
 " handy (cred to amix https://github.com/amix/vimrc)
-nmap <leader>w :w<cr>
+nmap <leader>w :update<cr>
 nmap <leader>x :x<cr>
 nmap <leader>q :q<cr>
-" <leader>qq for q! slows download <leader>q
+" <leader>qq for q! slows down <leader>q
 nmap <leader>fw :w!<cr>
 nmap <leader>fq :q!<cr>
 "
@@ -99,6 +104,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'ajmwagar/vim-deus'
+Plug 'davidhalter/jedi-vim'
 Plug 'ervandew/screen'
 Plug 'flazz/vim-colorschemes'
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -106,9 +113,11 @@ Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 " Plug 'jez/vim-better-sml'
 Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-{fish,zsh}' }
 " Plug 'junegunn/seoul256.vim'
 " Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
+Plug 'maralla/completor.vim'
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
@@ -149,16 +158,17 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 let g:ale_linters = {
 \	'c':	['gcc'],
 \	'javascript': ['eslint'],
-\	'ruby': ['rubocop'],
+\	'python': ['flake8'],
+\	'ruby': ['ruby', 'rubocop'],
 \}
 " only lint on file save
 let g:ale_lint_on_text_changed = 'never'
 
-" Rainbow parens for lisp dialects
+" Rainbow parens for uber nesting
 augroup rainbow_parens
 	autocmd!
 	autocmd! FileType clojure,sml RainbowParentheses
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
+" autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
