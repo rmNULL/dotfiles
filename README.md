@@ -5,4 +5,6 @@ If anything has been left out, it's due to my negligence, please feel free to po
 
 ## Installation
 copy this into your shell.
-`git clone https://github.com/rmNULL/dotfiles.git && cd dotfiles; ./install.sh`
+
+`git clone https://github.com/rmNULL/dotfiles.git && cd dotfiles`
+`./install.sh`
