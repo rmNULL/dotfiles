@@ -55,6 +55,8 @@ then
 	bud=`mktemp -d -p $cwd dots-XXXX-bk`
 fi
 
+HOME="/tmp"
+
 for src in *.conf *rc bash/* config/* vim/*
 do
 	if [[ -d $src ]]
@@ -69,6 +71,8 @@ do
 		[[ ! -e $bk_dir ]] && $mkdir -p $bk_dir
 		$cp -rT $dest $bk_file)
 	fi
+
+	[[ ! -d `dirname $dest` ]] && $mkdir -p `dirname $dest`
 
 	$cp -rT $src $dest --strip-trailing-slashes
 done
