@@ -45,6 +45,6 @@ fi
 alias tmp='pushd /tmp/'
 # alias srec='ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 /tmp/output.mp4'
 
-if command -v poly >/dev/null ; then
+if (command -v poly && command -v rlwrap) >/dev/null  ; then
 	alias poly='rlwrap -pYellow poly'
 fi
