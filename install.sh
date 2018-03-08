@@ -55,8 +55,6 @@ then
 	bud=`mktemp -d -p $cwd dots-XXXX-bk`
 fi
 
-HOME="/tmp"
-
 for src in *.conf *rc bash/* config/* vim/*
 do
 	if [[ -d $src ]]
