@@ -4,23 +4,25 @@ alias ll='ls -AlF'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias grep='grep --color=auto'
+alias egrep='grep -E'
+
 # if you need anything more than this better find an external tool
 alias c.='cd ../'
 alias c..='cd ../../'
 alias c...='cd ../../../'
 
-alias grep='grep --color=auto'
-alias egrep='grep -E'
 
 # credits to yossman( William Woodruff )
-if command -v apt-get >/dev/null ; then
-	alias  sagu='sudo apt-get update'
-	alias  sagi='sudo apt-get install'
-	alias  sagr='sudo apt-get remove'
-	alias  sagp='sudo apt-get purge'
-	alias sagug='sudo apt-get update && sudo apt-get dist-upgrade'
-	alias sagar='sudo apt-get autoremove'
-fi
+# if command -v apt-get >/dev/null
+# then
+# 	alias  sagu='sudo apt-get update'
+# 	alias  sagi='sudo apt-get install'
+# 	alias  sagr='sudo apt-get remove'
+# 	alias  sagp='sudo apt-get purge'
+# 	alias sagug='sudo apt-get update && sudo apt-get dist-upgrade'
+# 	alias sagar='sudo apt-get autoremove'
+# fi
 alias +r='chmod +r'
 alias +w='chmod +w'
 alias +x='chmod +x'
@@ -29,22 +31,42 @@ alias w-='chmod -w'
 alias x-='chmod -x'
 
 alias mkdir='mkdir -p'
-command -v vim >/dev/null && alias vimrc='vim $HOME/.vimrc'
-if command -v ruby >/dev/null ; then
+if command -v ruby >/dev/null
+then
 	alias ruby='ruby -w'
 	alias   rb='ruby'
 
 	command -v bundle >/dev/null && alias bexec='bundle exec'
 fi
 
-if command -v git >/dev/null ; then
+if command -v git >/dev/null
+then
 	alias gi='git init'
 fi
 
 # tmp is where I scratch my itch
-alias tmp='pushd /tmp/'
+alias tmp="pushd ${TMPDIR:-/tmp}"
 # alias srec='ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 /tmp/output.mp4'
 
-if (command -v poly && command -v rlwrap) >/dev/null  ; then
+if (command -v poly && command -v rlwrap) >/dev/null
+then
 	alias poly='rlwrap -pYellow poly'
 fi
+
+
+if [[ "nvim" = $EDITOR ]]
+then
+	for ed in "vi" "vim" "nvi"
+	do
+		alias $ed='nvim'
+	done
+fi
+
+[[ -n $EDITOR ]] && {
+	for rc in "vimrc" "bashrc" "irbrc"
+	do
+		alias $rc="$EDITOR $HOME/.${rc}"
+	done
+}
+
+alias py=ipython
