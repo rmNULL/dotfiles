@@ -55,7 +55,7 @@ then
 	bud=`mktemp -d -p $cwd dots-XXXX-bk`
 fi
 
-for src in *.conf *rc bash/* config/* vim/*
+for src in *.conf *rc bash/* config/* vim/* gitconfig
 do
 	if [[ -d $src ]]
 	then dest="$HOME/.$src"

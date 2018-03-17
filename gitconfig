@@ -1,0 +1,10 @@
+[alias]
+	 a = add
+	 c = commit
+	 l = log
+	br = branch
+	co = checkout
+	st = status
+[user]
+	email = slackErEhth77@openmailbox.org
+	name = rmnull
