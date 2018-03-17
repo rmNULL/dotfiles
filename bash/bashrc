@@ -7,7 +7,7 @@
 # Test for an interactive shell.  There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
-if [[ $- != *i* ]] 
+if [[ $- != *i* ]]
 then
 	# Shell is non-interactive.  Be done now!
 	return
@@ -20,19 +20,15 @@ HISTCONTROL=erasedups:ignorespace
 HISTSIZE=2048
 HISTFILESIZE=4096
 
-if command -v nvim > /dev/null 
-then
-	export EDITOR=nvim
-fi
-
-if [ -f ~/.bash_aliases ]
+if [[ -f ~/.bash_aliases ]]
 then
     . ~/.bash_aliases
 fi
 
-if command -v tmux >/dev/null 
+if command -v tmux >/dev/null
 then
-	if tmux has-session >/dev/null 
+	# (tmux has-session >/dev/null && tmux attach) || tmux new
+	if tmux has-session >/dev/null
 	then
 		[[ -z $TMUX ]] && tmux attach -d
 	else
@@ -42,3 +38,9 @@ fi
 
 PS1="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m: \w\n∫ "
 
+if command -v nvim >/dev/null
+then
+	export EDITOR=nvim
+fi
+
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash

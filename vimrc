@@ -1,5 +1,5 @@
 " .vimrc
-" date: 4-Mar-2018
+" date: 17-Mar-2018
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -36,7 +36,7 @@ filetype plugin indent on
 " backspace over everything in insert mode, start allows for ^-w and ^-u
 set backspace=indent,eol,start
 set ignorecase " while searching
-set pastetoggle=<F3>
+set pastetoggle=<F7> " almost useless in neovim
 set showmatch
 " tenth of a second to showmatch(i.e highlight enclosing pairs)
 set matchtime=2
@@ -88,7 +88,7 @@ nmap <leader>fw :w!<cr>
 nmap <leader>fq :q!<cr>
 "
 " reload config
-nmap <leader>rr :source ~/.vimrc<cr>
+nmap <leader>rr :source $MYVIMRC<CR>
 map <leader>tt :Tagbar<CR>
 " send visual selection to ScreenShell
 " vmap <leader>cc :'<,'>ScreenSend<CR>
@@ -97,15 +97,14 @@ map <leader>tt :Tagbar<CR>
 """
 " Plugin(s) managements
 """
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'ajmwagar/vim-deus'
-Plug 'davidhalter/jedi-vim'
+" Plug 'ajmwagar/vim-deus'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'ervandew/screen'
 Plug 'flazz/vim-colorschemes'
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -116,12 +115,13 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-{fish,zsh}' }
 " Plug 'junegunn/seoul256.vim'
 " Plug 'junegunn/vim-easy-align'
+Plug 'MarcWeber/vim-addon-urweb'
 Plug 'majutsushi/tagbar'
 Plug 'maralla/completor.vim'
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 " Plug 'vim-scripts/haskell.vim'
 
