@@ -8,5 +8,5 @@ endif
 
 
 if has('nvim-0.2.1')
-	set inccommand=split
+	set inccommand=split " live search in split-mode
 end

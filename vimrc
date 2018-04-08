@@ -1,5 +1,5 @@
 " .vimrc
-" date: 17-Mar-2018
+" date: 8-Apr-2018
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -57,6 +57,7 @@ noremap <Down> <NOP>
 noremap <Left>  :bprev<CR>
 noremap <Right> :bnext<CR>
 autocmd filetype c,cpp inoremap { {<CR>}<Esc>O
+autocmd filetype c,cpp inoremap {{ {}<Esc>i
 "highlighting and searching
 "sane regexp while searching
 nnoremap / /\v
@@ -72,7 +73,7 @@ nnoremap Q @q
 "''
 " Leadered Mappings
 let mapleader=','
-nnoremap ; :
+" nnoremap ; : " wastes more time than save
 "get rid of annoying highlights after search
 nnoremap <leader><space> :noh<CR>
 "strip trailing whitespaces
@@ -115,7 +116,6 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-{fish,zsh}' }
 " Plug 'junegunn/seoul256.vim'
 " Plug 'junegunn/vim-easy-align'
-Plug 'MarcWeber/vim-addon-urweb'
 Plug 'majutsushi/tagbar'
 Plug 'maralla/completor.vim'
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -167,8 +167,7 @@ let g:ale_lint_on_text_changed = 'never'
 " Rainbow parens for uber nesting
 augroup rainbow_parens
 	autocmd!
-	autocmd! FileType clojure,sml RainbowParentheses
+	autocmd! FileType clojure,sml,scheme RainbowParentheses
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-" autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
