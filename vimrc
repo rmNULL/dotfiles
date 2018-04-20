@@ -1,5 +1,5 @@
 " .vimrc
-" date: 8-Apr-2018
+" date: 20-Apr-2018
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -27,7 +27,7 @@ set undodir=$HOME/.vim/.undo/
 set nobackup
 " set backupdir=$HOME/vim/.bck
 set directory=$HOME/.vim/.swap
-set history=50		" keep 50 lines of command line history
+set history=200		" #lines of command history
 
 """
 "Editing
@@ -104,7 +104,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-" Plug 'ajmwagar/vim-deus'
+Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'ervandew/screen'
 Plug 'flazz/vim-colorschemes'
@@ -112,18 +112,16 @@ Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 " Plug 'jez/vim-better-sml'
-Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-{fish,zsh}' }
+Plug 'junegunn/rainbow_parentheses.vim'
 " Plug 'junegunn/seoul256.vim'
 " Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'maralla/completor.vim'
-" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'sheerun/vim-polyglot'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-" Plug 'vim-scripts/haskell.vim'
 
 if version >= 8
 	Plug 'w0rp/ale'
@@ -138,8 +136,8 @@ call plug#end()
 set encoding=utf-8
 syntax on
 set t_Co=256
-" colorscheme seoul256
-colorscheme gruvbox
+" colorscheme " iceberg onedark gruvbox  
+colorscheme lucid
 set background=dark
 autocmd vimEnter,WinEnter,BufWinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
