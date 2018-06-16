@@ -104,6 +104,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'calebsmith/vim-lambdify'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'ervandew/screen'
@@ -122,7 +123,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-
 if version >= 8
 	Plug 'w0rp/ale'
 endif
@@ -139,8 +139,8 @@ set t_Co=256
 " colorscheme " iceberg onedark gruvbox  
 colorscheme lucid
 set background=dark
-autocmd vimEnter,WinEnter,BufWinEnter * setlocal cursorline
-autocmd WinLeave * setlocal nocursorline
+autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
+autocmd WinLeave,InsertEnter * setlocal nocursorline
 set title " window title
 
 " Snippet Completion
