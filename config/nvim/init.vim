@@ -1,4 +1,5 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
+set runtimepath^=~/.vim runtimepath+=~/.vim/after ",~/hover-code
+
 let &packpath = &runtimepath
 
 if !empty(glob('~/.vimrc'))

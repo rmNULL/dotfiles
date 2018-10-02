@@ -16,7 +16,6 @@ set incsearch
 set nowrapscan
 set wildmenu
 
-
 """
 " Rendering and Session
 """

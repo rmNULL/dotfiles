@@ -2,6 +2,7 @@
 alias ls='ls --color'
 alias ll='ls -AlF'
 alias la='ls -A'
+alias l1='ls -1'
 alias l='ls -CF'
 
 alias grep='grep --color=auto'
@@ -14,15 +15,15 @@ alias c...='cd ../../../'
 
 
 # credits to yossman( William Woodruff )
-# if command -v apt-get >/dev/null
-# then
-# 	alias  sagu='sudo apt-get update'
-# 	alias  sagi='sudo apt-get install'
-# 	alias  sagr='sudo apt-get remove'
-# 	alias  sagp='sudo apt-get purge'
-# 	alias sagug='sudo apt-get update && sudo apt-get dist-upgrade'
-# 	alias sagar='sudo apt-get autoremove'
-# fi
+if command -v apt-get >/dev/null
+then
+	alias  sagu='sudo apt-get update'
+	alias  sagi='sudo apt-get install'
+	alias  sagr='sudo apt-get remove'
+	alias  sagp='sudo apt-get purge'
+	alias sagug='sudo apt-get update && sudo apt-get dist-upgrade'
+	alias sagar='sudo apt-get autoremove'
+fi
 alias +r='chmod +r'
 alias +w='chmod +w'
 alias +x='chmod +x'
@@ -70,3 +71,4 @@ fi
 }
 
 alias py=ipython
+alias play='mpv --no-video'

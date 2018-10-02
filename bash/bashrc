@@ -17,8 +17,13 @@ fi
 HISTCONTROL=erasedups:ignorespace
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=2048
-HISTFILESIZE=4096
+HISTSIZE=4096
+HISTFILESIZE=8192
+
+if command -v nvim >/dev/null
+then
+	export EDITOR=nvim
+fi
 
 if [[ -f ~/.bash_aliases ]]
 then
@@ -27,7 +32,6 @@ fi
 
 if command -v tmux >/dev/null
 then
-	# (tmux has-session >/dev/null && tmux attach) || tmux new
 	if tmux has-session >/dev/null
 	then
 		[[ -z $TMUX ]] && tmux attach -d
@@ -36,11 +40,6 @@ then
 	fi
 fi
 
-PS1="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m: \w\n∫ "
-
-if command -v nvim >/dev/null
-then
-	export EDITOR=nvim
-fi
+PS1="\e[38;5;202;1m\u\e[0m @ \e[38;5;162m\h\e[0m: \w\n∫ "
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
