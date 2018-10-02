@@ -1,5 +1,6 @@
 require 'irb/completion'
-# require 'irbtools'
+require 'irbtools'
+require 'looksee'
 
 IRB.conf[:AUTO_INDENT] = true
 # I like the original "simple prompt" better but its hard to distinguish it from
