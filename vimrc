@@ -1,5 +1,5 @@
 " .vimrc
-" date: 20-Apr-2018
+" date: 27-Oct-2018
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -106,6 +106,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'calebsmith/vim-lambdify'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'eraserhd/parinfer-rust', {'do': 'cargo build --release'}
 Plug 'ervandew/screen'
 Plug 'flazz/vim-colorschemes'
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -121,7 +122,7 @@ Plug 'maralla/completor.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 if version >= 8
 	Plug 'w0rp/ale'
 endif
