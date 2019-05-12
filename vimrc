@@ -1,5 +1,5 @@
 " .vimrc
-" date: 27-Oct-2018
+" date: 4-Mar-2019
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -43,6 +43,7 @@ set textwidth=79
 set tildeop
 " " allow h,l to wrap over lines
 " set whichwrap+=h,l
+set hidden
 
 """
 " MAPPINGS
@@ -55,8 +56,9 @@ noremap <Up> :make<CR>
 noremap <Down> <NOP>
 noremap <Left>  :bprev<CR>
 noremap <Right> :bnext<CR>
-autocmd filetype c,cpp inoremap { {<CR>}<Esc>O
-autocmd filetype c,cpp inoremap {{ {}<Esc>i
+autocmd filetype c,javascript inoremap } {<CR>}<Esc>O
+autocmd filetype c,javascript inoremap { {}<Esc>i
+" autocmd filetype javascript set shiftwidth=4 expandtab tabstop=4
 "highlighting and searching
 "sane regexp while searching
 nnoremap / /\v
@@ -106,7 +108,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'calebsmith/vim-lambdify'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'eraserhd/parinfer-rust', {'do': 'cargo build --release'}
+" Plug 'eraserhd/parinfer-rust', {'do': 'cargo build --release'}
 Plug 'ervandew/screen'
 Plug 'flazz/vim-colorschemes'
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -119,10 +121,12 @@ Plug 'junegunn/rainbow_parentheses.vim'
 " Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'maralla/completor.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'sheerun/vim-polyglot'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 if version >= 8
 	Plug 'w0rp/ale'
 endif
@@ -136,7 +140,7 @@ call plug#end()
 set encoding=utf-8
 syntax on
 set t_Co=256
-" colorscheme " iceberg onedark gruvbox  
+" colorscheme " iceberg onedark gruvbox
 colorscheme lucid
 set background=dark
 autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
