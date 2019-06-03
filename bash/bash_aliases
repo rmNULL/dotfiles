@@ -70,5 +70,6 @@ fi
 	done
 }
 
-alias py=ipython
-alias play='mpv --no-video'
+command -v ipython 2>/dev/null >&2 && alias py=ipython
+command -v     mpv 2>/dev/null >&2 && alias play='mpv --no-video'
+command -v    tmux 2>/dev/null >&2 && alias tt='tmux attach' 

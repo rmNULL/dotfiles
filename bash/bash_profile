@@ -1,12 +1,44 @@
-if command -v ruby > /dev/null ; then
-	PATH+=":$(ruby -e 'puts Gem.user_dir')/bin"
-fi
-PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
 
-# if [[ -f ~/.xmodmaprc ]] ; then
-# 	xmodmap ~/.xmodmaprc
-# fi
+# taken from /etc/profile
+appendpath() {
+    case ":$PATH:" in
+        *:"$1":*)
+            ;;
+        *)
+            PATH="${PATH:+$PATH:}$1"
+    esac
+}
+
+prependpath() {
+    case ":$PATH:" in
+        *:"$1":*)
+            ;;
+        *)
+            PATH="$1${PATH:+:$PATH}"
+    esac
+}
+
+
+prependpath $HOME/.local/bin/
+prependpath $HOME/bin/
+prependpath $HOME/oz/bin
+
+if command -v ruby > /dev/null ; then
+	GEMS_DIR="$(ruby -e 'puts Gem.user_dir')"
+	appendpath $GEMS_DIR/bin
+fi
 
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
 [[ -f ~/.bashrc ]] && source ~/.bashrc
+
+export ANDROID_HOME=$HOME/Android/Sdk
+appendpath $ANDROID_HOME/emulator
+appendpath $ANDROID_HOME/tools
+appendpath $ANDROID_HOME/tools/bin
+appendpath $ANDROID_HOME/platform-tools
+
+
+export PATH
+unset prependpath
+unset appendpath
