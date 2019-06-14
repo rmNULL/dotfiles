@@ -1,36 +1,51 @@
+append_var() {
+    local var=$1
+    shift
 
-# taken from /etc/profile
-appendpath() {
-    case ":$PATH:" in
+    eval "local V=\$$var"
+
+    case ":$V:" in
         *:"$1":*)
             ;;
         *)
-            PATH="${PATH:+$PATH:}$1"
+          #         PATH="${PATH:+$PATH:}$1"
+          eval "$var="\${$var:+$V:}$1""
     esac
+}
+
+prepend_var() {
+    local var=$1
+    shift
+    eval "local V=\$$var"
+
+    case ":$V:" in
+        *:"$1":*)
+            ;;
+        *)
+          # PATH="$1${PATH:+:$PATH}"
+          eval "${var}="$1\${${var}:+:$V}""
+    esac
+
+}
+
+# modified from /etc/profile
+appendpath() {
+    append_var "PATH" $1
 }
 
 prependpath() {
-    case ":$PATH:" in
-        *:"$1":*)
-            ;;
-        *)
-            PATH="$1${PATH:+:$PATH}"
-    esac
+    prepend_var "PATH" $1
 }
 
 
-prependpath $HOME/.local/bin/
+appendpath $HOME/.local/bin/
 prependpath $HOME/bin/
-prependpath $HOME/oz/bin
+# set +x
 
 if command -v ruby > /dev/null ; then
 	GEMS_DIR="$(ruby -e 'puts Gem.user_dir')"
 	appendpath $GEMS_DIR/bin
 fi
-
-# This file is sourced by bash for login shells.  The following line
-# runs your .bashrc and is recommended by the bash info pages.
-[[ -f ~/.bashrc ]] && source ~/.bashrc
 
 export ANDROID_HOME=$HOME/Android/Sdk
 appendpath $ANDROID_HOME/emulator
@@ -38,7 +53,45 @@ appendpath $ANDROID_HOME/tools
 appendpath $ANDROID_HOME/tools/bin
 appendpath $ANDROID_HOME/platform-tools
 
+# original source: 
+#  http://sneakygcr.net/caged-python-how-to-set-up-a-scientific-python-stack-in-your-home-folder-without-going-insane.html
+#
+# Local Installs
+# ==============
+# This allows you to install programs into $HOME/local/someprogram
+# for example, when I install node locally I install it like this:
+#
+#    ./configure --prefix=$HOME/local/node-v0.8.4
+#    make
+#    make install
+#
+# To uninstall a program, just rm -rf $HOME/local/someprogram
+#
+if [ -d $HOME/local ]; then
+    for i in $HOME/local/* $HOME/local/`uname -m`/*; do
+        [ -d $i/bin ] && prependpath "${i}/bin"
+        [ -d $i/sbin ] && prependpath "${i}/sbin"
+        [ -d $i/include ] && prepend_var "CPATH" "${i}/include"
+        [ -d $i/lib ] && prepend_var "LD_LIBRARY_PATH" "${i}/lib"
+        [ -d $i/lib ] && prepend_var "LD_RUN_PATH" "${i}/lib"
+        # uncomment the following if you use macintosh
+        #  [ -d $i/lib ] && prependpath "DYLD_LIBRARY_PATH" "${i}/lib"
+        [ -d $i/lib/pkgconfig ] && prepend_var "PKG_CONFIG_PATH" "${i}/lib/pkgconfig"
+        [ -d $i/share/man ] && prepend_var "MANPATH" "${i}/share/man"
+    done
+
+    # strip trailing colons
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH%:}
+    export LD_RUN_PATH=${LD_RUN_PATH%:}
+    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
+fi
 
 export PATH
 unset prependpath
 unset appendpath
+unset append_var
+unset prepend_var
+
+# This file is sourced by bash for login shells.  The following line
+# runs your .bashrc and is recommended by the bash info pages.
+[[ -f ~/.bashrc ]] && source ~/.bashrc

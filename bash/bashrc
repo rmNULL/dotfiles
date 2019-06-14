@@ -52,4 +52,3 @@ if ! x_running; then
 fi
 
 [[ -f ~/.config/mpd/pid  ]]  || mpd
-
