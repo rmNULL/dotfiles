@@ -1,5 +1,5 @@
 " .vimrc
-" date: 4-Mar-2019
+" date: 21-Jul-2019
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -94,6 +94,9 @@ nmap <leader>rr :source $MYVIMRC<CR>
 map <leader>tt :Tagbar<CR>
 " send visual selection to ScreenShell
 " vmap <leader>cc :'<,'>ScreenSend<CR>
+"
+" faster file searching/loading within project
+map <leader>f :FZF<cr>
 
 
 """
