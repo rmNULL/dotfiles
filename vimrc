@@ -1,5 +1,5 @@
 " .vimrc
-" date: 21-Jul-2019
+" date: 26-Jul-2019
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -23,9 +23,9 @@ set lazyredraw " don't re-draw while executing macros. (use ^L to force re-draw)
 set autoread
 set undofile
 set undodir=$HOME/.vim/.undo/
-set nobackup
-" set backupdir=$HOME/vim/.bck
-set directory=$HOME/.vim/.swap
+" set nobackup
+set backupdir=$HOME/.vim/.bck//,/tmp/,.
+set directory=$HOME/.vim/.swap//,/tmp//,.
 set history=200		" #lines of command history
 
 """
