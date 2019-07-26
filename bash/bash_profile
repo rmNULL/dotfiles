@@ -37,15 +37,29 @@ prependpath() {
     prepend_var "PATH" $1
 }
 
+if [[ -f "${HOME}/.brew_caveats" ]]
+then
+	source "${HOME}/.brew_caveats"
+fi
 
-appendpath $HOME/.local/bin/
+
+if ! [[ -d $HOME/bin ]]
+then
+	mkdir $HOME/bin
+fi
+
 prependpath $HOME/bin/
+[[ -d $HOME/.cargo/ ]] && prependpath $HOME/.cargo/bin
+appendpath $HOME/.local/bin/
 # set +x
 
 if command -v ruby > /dev/null ; then
 	GEMS_DIR="$(ruby -e 'puts Gem.user_dir')"
 	appendpath $GEMS_DIR/bin
 fi
+
+prependpath "/usr/local/sbin"
+appendpath "/Applications/Postgres.app/Contents/Versions/latest/bin"
 
 export ANDROID_HOME=$HOME/Android/Sdk
 appendpath $ANDROID_HOME/emulator
@@ -86,6 +100,7 @@ if [ -d $HOME/local ]; then
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
 fi
 
+
 export PATH
 unset prependpath
 unset appendpath
@@ -95,3 +110,5 @@ unset prepend_var
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
 [[ -f ~/.bashrc ]] && source ~/.bashrc
+
+export LC_ALL=en_US.UTF-8
