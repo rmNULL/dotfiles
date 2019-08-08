@@ -48,6 +48,8 @@ gen_prompt() {
     PS1=" \e[31;1m\u\e[0m @ \e[33;1m\h\e[0m: \w\n∫ "
   fi
 
+  # kludge !!, as long as it works
+  PS1=$(sed 's/^\\e\[41;37;1m [0-9]\+ \\e\[0m//' <<<"$PS1")
   if [[ $ec != "0" ]] ; then
     PS1="\e[41;37;1m $ec \e[0m${PS1}"
   fi
