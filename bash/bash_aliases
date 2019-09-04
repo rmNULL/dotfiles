@@ -37,7 +37,10 @@ fi
 
 # tmp is where I scratch my itch
 alias tmp="pushd ${TMPDIR:-/tmp}"
-# alias srec='ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 /tmp/output.mp4'
+srec() {
+  out="${1:-/tmp/output.mp4}"
+  ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out"
+}
 
 if (command -v poly && command -v rlwrap) >/dev/null
 then

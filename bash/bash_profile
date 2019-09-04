@@ -42,15 +42,14 @@ then
 	source "${HOME}/.brew_caveats"
 fi
 
-
 if ! [[ -d $HOME/bin ]]
 then
 	mkdir $HOME/bin
 fi
 
+appendpath $HOME/.local/bin/
 prependpath $HOME/bin/
 [[ -d $HOME/.cargo/ ]] && prependpath $HOME/.cargo/bin
-appendpath $HOME/.local/bin/
 # set +x
 
 if command -v ruby > /dev/null ; then
@@ -88,6 +87,8 @@ if [ -d $HOME/local ]; then
         [ -d $i/include ] && prepend_var "CPATH" "${i}/include"
         [ -d $i/lib ] && prepend_var "LD_LIBRARY_PATH" "${i}/lib"
         [ -d $i/lib ] && prepend_var "LD_RUN_PATH" "${i}/lib"
+        [ -d $i/lib64 ] && prepend_var "LD_LIBRARY_PATH" "${i}/lib64"
+        [ -d $i/lib64 ] && prepend_var "LD_RUN_PATH" "${i}/lib64"
         # uncomment the following if you use macintosh
         #  [ -d $i/lib ] && prependpath "DYLD_LIBRARY_PATH" "${i}/lib"
         [ -d $i/lib/pkgconfig ] && prepend_var "PKG_CONFIG_PATH" "${i}/lib/pkgconfig"
@@ -100,7 +101,6 @@ if [ -d $HOME/local ]; then
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
 fi
 
-
 export PATH
 unset prependpath
 unset appendpath
@@ -111,4 +111,5 @@ unset prepend_var
 # runs your .bashrc and is recommended by the bash info pages.
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
+export PYTHONDONTWRITEBYTECODE=1
 export LC_ALL=en_US.UTF-8
