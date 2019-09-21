@@ -52,7 +52,7 @@ gen_prompt() {
     branch="$(git branch --show-current 2>/dev/null)"
   fi
 
-  ORG_PROMPT="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m: ${branch:+${branch} -- }\w\n∫ "
+  ORG_PROMPT="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m: \e[47m\e[30m${branch:+${branch}}\e[0m \w\n∫ "
 
   if [[ -z $PREV_ORG_PROMPT ]]
   then
@@ -101,4 +101,4 @@ if [[ -f ~/.config/mpd/pid  ]]; then
   fi
 else
   mpd
-fi
+fi > /dev/null 2>/dev/null
