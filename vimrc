@@ -1,5 +1,5 @@
 " .vimrc
-" date: 26-Jul-2019
+" date: 14-Oct-2019
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -23,10 +23,10 @@ set lazyredraw " don't re-draw while executing macros. (use ^L to force re-draw)
 set autoread
 set undofile
 set undodir=$HOME/.vim/.undo/
-" set nobackup
-set backupdir=$HOME/.vim/.bck//,/tmp/,.
-set directory=$HOME/.vim/.swap//,/tmp//,.
-set history=200		" #lines of command history
+set nobackup
+" set backupdir=$HOME/vim/.bck
+set directory=$HOME/.vim/.swap
+set history=200   " #lines of command history
 
 """
 "Editing
@@ -96,7 +96,7 @@ map <leader>tt :Tagbar<CR>
 " vmap <leader>cc :'<,'>ScreenSend<CR>
 "
 " faster file searching/loading within project
-map <leader>f :FZF<cr>
+map <leader>F :FZF<cr>
 
 
 """
@@ -104,34 +104,37 @@ map <leader>f :FZF<cr>
 """
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 call plug#begin('~/.vim/plugged')
+" Plug 'eraserhd/parinfer-rust', {'do': 'cargo build --release'}
+" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" Plug 'jez/vim-better-sml'
+" Plug 'junegunn/seoul256.vim'
+" Plug 'junegunn/vim-easy-align'
+Plug 'Chiel92/vim-autoformat'
+Plug 'SirVer/ultisnips'
 Plug 'calebsmith/vim-lambdify'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-" Plug 'eraserhd/parinfer-rust', {'do': 'cargo build --release'}
 Plug 'ervandew/screen'
 Plug 'flazz/vim-colorschemes'
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
-" Plug 'jez/vim-better-sml'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-{fish,zsh}' }
 Plug 'junegunn/rainbow_parentheses.vim'
-" Plug 'junegunn/seoul256.vim'
-" Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'maralla/completor.vim'
-Plug 'pangloss/vim-javascript'
+Plug 'mattn/emmet-vim'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx', 'html']}
+Plug 'psf/black'
 Plug 'sheerun/vim-polyglot'
-Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 if version >= 8
-	Plug 'w0rp/ale'
+  Plug 'w0rp/ale'
 endif
 
 call plug#end()
@@ -161,18 +164,31 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 let g:ale_linters = {
-\	'c':	['gcc'],
-\	'javascript': ['eslint'],
-\	'python': ['flake8'],
-\	'ruby': ['ruby', 'rubocop'],
-\}
+      \ 'c':  ['gcc'],
+      \ 'javascript': ['eslint'],
+      \ 'python': ['flake8'],
+      \ 'ruby': ['ruby', 'rubocop'],
+      \}
 " only lint on file save
 let g:ale_lint_on_text_changed = 'never'
 
 " Rainbow parens for uber nesting
 augroup rainbow_parens
-	autocmd!
-	autocmd! FileType clojure,sml,scheme RainbowParentheses
+  autocmd!
+  autocmd! FileType clojure,sml,scheme RainbowParentheses
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+let g:lightline = {
+      \ 'component_function': {
+      \   'filename': 'LightLineFilename'
+      \ }
+      \ }
+function! LightLineFilename()
+  return expand('%')
+endfunction
+
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+autocmd BufWritePre * execute ':Autoformat'
