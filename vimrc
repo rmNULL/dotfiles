@@ -1,5 +1,5 @@
 " .vimrc
-" date: 14-Oct-2019
+" date: 15-Mar-2020
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -44,6 +44,7 @@ set tildeop
 " " allow h,l to wrap over lines
 " set whichwrap+=h,l
 set hidden
+set noshowmode
 
 """
 " MAPPINGS
@@ -56,8 +57,8 @@ noremap <Up> :make<CR>
 noremap <Down> <NOP>
 noremap <Left>  :bprev<CR>
 noremap <Right> :bnext<CR>
-autocmd filetype c,javascript inoremap } {<CR>}<Esc>O
-autocmd filetype c,javascript inoremap { {}<Esc>i
+" autocmd filetype c,javascript inoremap } {<CR>}<Esc>O
+" autocmd filetype c,javascript inoremap { {}<Esc>i
 " autocmd filetype javascript set shiftwidth=4 expandtab tabstop=4
 "highlighting and searching
 "sane regexp while searching
@@ -88,6 +89,7 @@ nmap <leader>q :q<cr>
 " <leader>qq for q! slows down <leader>q
 nmap <leader>fw :w!<cr>
 nmap <leader>fq :q!<cr>
+
 "
 " reload config
 nmap <leader>rr :source $MYVIMRC<CR>
@@ -132,6 +134,7 @@ Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx', 'html']
 Plug 'psf/black'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 if version >= 8
   Plug 'w0rp/ale'
@@ -180,8 +183,13 @@ augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
       \ 'component_function': {
-      \   'filename': 'LightLineFilename'
+      \   'filename': 'LightLineFilename',
+      \   'gitbranch': 'FugitiveStatusline',
       \ }
       \ }
 function! LightLineFilename()
@@ -189,6 +197,54 @@ function! LightLineFilename()
 endfunction
 
 let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
+autocmd FileType html,css,php EmmetInstall
 
-autocmd BufWritePre * execute ':Autoformat'
+" autocmd BufWritePre * execute ':Autoformat'
+
+
+" source: https://vim.fandom.com/wiki/Improved_hex_editing
+nnoremap <C-H> :Hexmode<CR>
+inoremap <C-H> <Esc>:Hexmode<CR>
+vnoremap <C-H> :<C-U>Hexmode<CR>
+" ex command for toggling hex mode - define mapping if desired
+command -bar Hexmode call ToggleHex()
+
+" helper function to toggle hex mode
+function ToggleHex()
+  " hex mode should be considered a read-only operation
+  " save values for modified and read-only for restoration later,
+  " and clear the read-only flag for now
+  let l:modified=&mod
+  let l:oldreadonly=&readonly
+  let &readonly=0
+  let l:oldmodifiable=&modifiable
+  let &modifiable=1
+  if !exists("b:editHex") || !b:editHex
+    " save old options
+    let b:oldft=&ft
+    let b:oldbin=&bin
+    " set new options
+    setlocal binary " make sure it overrides any textwidth, etc.
+    silent :e " this will reload the file without trickeries
+    "(DOS line endings will be shown entirely )
+    let &ft="xxd"
+    " set status
+    let b:editHex=1
+    " switch to hex editor
+    %!xxd
+  else
+    " restore old options
+    let &ft=b:oldft
+    if !b:oldbin
+      setlocal nobinary
+    endif
+    " set status
+    let b:editHex=0
+    " return to normal editing
+    %!xxd -r
+  endif
+  " restore values for modified and read only state
+  let &mod=l:modified
+  let &readonly=l:oldreadonly
+  let &modifiable=l:oldmodifiable
+endfunction

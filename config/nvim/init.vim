@@ -1,4 +1,4 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after ",~/hover-code
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
 
 let &packpath = &runtimepath
 
@@ -13,3 +13,10 @@ endif
 if has('nvim-0.2.1')
 	set inccommand=split " live search in split-mode
 end
+
+
+let g:python3_host_prog = '/usr/bin/python3'
+
+"TODO: cleanup
+set tabstop=2 shiftwidth=2 expandtab
+

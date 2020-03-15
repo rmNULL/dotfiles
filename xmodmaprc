@@ -10,3 +10,24 @@ add control = Control_L
 
 ! interchange Left-and-right mouse clicks
 pointer = 3 2 1
+
+keycode 49 = asciitilde grave
+
+! swap (shift+) keys of num row, relaying on keycode is bad(portability issues)
+! generated using
+! > xmodmap -pk | tail -n +8 | head | awk ' { print "keycode", $1, "=", gensub("[()]", "", "g", $5) , gensub("[()]", "", "g", $3) }'
+
+keycode 10 = exclam 1
+keycode 11 = at 2
+keycode 12 = numbersign 3
+keycode 13 = dollar 4
+keycode 14 = percent 5
+keycode 15 = asciicircum 6
+keycode 16 = ampersand 7
+keycode 17 = asterisk 8
+keycode 18 = parenleft 9
+keycode 19 = parenright 0
+
+! --- make caps lock act as windows key
+clear lock
+! add Lock = Super_L
