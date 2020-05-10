@@ -1,0 +1,30 @@
+directory: ~/back-back/Music/
+library: ~/Music/beets_library.db
+import:
+  move: no
+
+plugins: fetchart lastgenre smartplaylist mpdstats random
+
+lastgenre:
+  count: 8
+  force: no
+  min_weight: 60
+
+smartplaylist:
+    relative_to: ~/back-back/Music
+    playlist_dir: ~/.config/mpd/playlists
+    playlists:
+      # - name: electronic.m3u
+      #   query: 'genre::electronic|electro|[Ii][Dd][Mm]'
+
+      # - name: synthpop.m3u
+      #   query: 'genre::[Ss]ynth-?[Pp]op'
+
+      - name: chips.m3u
+        query: 'genre:8-Bit'
+
+
+fetchart:
+  auto: yes
+  cautious: no
+  sources: wikipedia *
