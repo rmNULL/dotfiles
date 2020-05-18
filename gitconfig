@@ -20,3 +20,5 @@
   name = rmnull
 [credential]
   helper = cache
+[gpg]
+	program = gpg2
