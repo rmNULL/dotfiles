@@ -1,5 +1,5 @@
 " .vimrc
-" date: 15-Mar-2020
+" date: 10-May-2020
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -50,7 +50,7 @@ set noshowmode
 " MAPPINGS
 """
 inoremap jk <Esc>
-xnoremap jk <Esc>
+xnoremap tk <Esc>
 inoremap <c-d> <Esc>ddi
 noremap <Up> :make<CR>
 " overwrite in filetype
@@ -149,11 +149,29 @@ call plug#end()
 set encoding=utf-8
 syntax on
 set t_Co=256
-" colorscheme " iceberg onedark gruvbox
-colorscheme lucid
+
+let s:cs_dark_time=[18,8]
+
 set background=dark
-autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
-autocmd WinLeave,InsertEnter * setlocal nocursorline
+if (strftime('%H') >= s:cs_dark_time[0]) || (strftime('%H') < s:cs_dark_time[1])
+  colorscheme 256_noir
+else
+  " set background=dark " change to light when colorscheme changes
+  let g:oceanic_next_terminal_bold = 1
+  let g:oceanic_next_terminal_italic = 1
+  colorscheme OceanicNext
+end
+
+if g:colors_name == "256_noir"
+  set cursorline
+  highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=233 guifg=NONE guibg=#121212
+  autocmd InsertEnter * highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=234 guifg=NONE guibg=#1c1c1c
+  autocmd InsertLeave * highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=233 guifg=NONE guibg=#121212
+else
+  autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
+  autocmd WinLeave,InsertEnter * setlocal nocursorline
+end
+
 set title " window title
 
 " Snippet Completion
@@ -162,6 +180,7 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsUsePythonVersion = 3
 
+
 " Lint mappings
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -169,7 +188,7 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 let g:ale_linters = {
       \ 'c':  ['gcc'],
       \ 'javascript': ['eslint'],
-      \ 'python': ['flake8'],
+      \ 'python': ['flake8', 'black'],
       \ 'ruby': ['ruby', 'rubocop'],
       \}
 " only lint on file save
@@ -178,11 +197,12 @@ let g:ale_lint_on_text_changed = 'never'
 " Rainbow parens for uber nesting
 augroup rainbow_parens
   autocmd!
-  autocmd! FileType clojure,sml,scheme RainbowParentheses
+  autocmd! FileType clojure,sml,ruby,scheme RainbowParentheses
 augroup END
 
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['do', 'end']]
 let g:lightline = {
+      \ 'colorscheme': 'Tomorrow_Night',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -200,51 +220,3 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,php EmmetInstall
 
 " autocmd BufWritePre * execute ':Autoformat'
-
-
-" source: https://vim.fandom.com/wiki/Improved_hex_editing
-nnoremap <C-H> :Hexmode<CR>
-inoremap <C-H> <Esc>:Hexmode<CR>
-vnoremap <C-H> :<C-U>Hexmode<CR>
-" ex command for toggling hex mode - define mapping if desired
-command -bar Hexmode call ToggleHex()
-
-" helper function to toggle hex mode
-function ToggleHex()
-  " hex mode should be considered a read-only operation
-  " save values for modified and read-only for restoration later,
-  " and clear the read-only flag for now
-  let l:modified=&mod
-  let l:oldreadonly=&readonly
-  let &readonly=0
-  let l:oldmodifiable=&modifiable
-  let &modifiable=1
-  if !exists("b:editHex") || !b:editHex
-    " save old options
-    let b:oldft=&ft
-    let b:oldbin=&bin
-    " set new options
-    setlocal binary " make sure it overrides any textwidth, etc.
-    silent :e " this will reload the file without trickeries
-    "(DOS line endings will be shown entirely )
-    let &ft="xxd"
-    " set status
-    let b:editHex=1
-    " switch to hex editor
-    %!xxd
-  else
-    " restore old options
-    let &ft=b:oldft
-    if !b:oldbin
-      setlocal nobinary
-    endif
-    " set status
-    let b:editHex=0
-    " return to normal editing
-    %!xxd -r
-  endif
-  " restore values for modified and read only state
-  let &mod=l:modified
-  let &readonly=l:oldreadonly
-  let &modifiable=l:oldmodifiable
-endfunction
