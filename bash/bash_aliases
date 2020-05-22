@@ -48,6 +48,13 @@ srec() {
   ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
 }
 
+scap() {
+  out="${1:-scap.png}"
+  scrot -d 2 -s "${TMPDIR:-/tmp}/${out}"
+}
+
+
+
 if (command -v poly && command -v rlwrap) >/dev/null
 then
   alias poly='rlwrap -pYellow poly'
