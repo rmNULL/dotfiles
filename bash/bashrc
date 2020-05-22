@@ -154,5 +154,3 @@ then
 else
   PROMPT_COMMAND="gen_prompt;${PROMPT_COMMAND}"
 fi
-
-
