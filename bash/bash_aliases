@@ -8,6 +8,12 @@ alias l='ls -CF'
 alias grep='grep --color=auto'
 alias egrep='grep -E'
 
+alias ++='sudo xbps-install '
+alias +u='sudo xbps-install -Su'
+alias +-='sudo xbps-remove '
+alias '?'='xbps-query -Rs '
+alias '??'='xbps-query '
+
 # if you need anything more than this better find an external tool
 alias c.='cd ../'
 alias c..='cd ../../'
@@ -24,45 +30,88 @@ alias x-='chmod -x'
 alias mkdir='mkdir -p'
 if command -v ruby >/dev/null
 then
-	alias ruby='ruby -w'
-	alias   rb='ruby'
+  alias ruby='ruby -w'
+  alias   rb='ruby'
 
-	command -v bundle >/dev/null && alias bexec='bundle exec'
+  command -v bundle >/dev/null && alias bexec='bundle exec'
 fi
 
 if command -v git >/dev/null
 then
-	alias gi='git init'
+  alias g='git '
 fi
 
 # tmp is where I scratch my itch
 alias tmp="pushd ${TMPDIR:-/tmp}"
 srec() {
-  out="${1:-/tmp/output.mp4}"
-  ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out"
+  out="${1:-/tmp/srec_${RANDOM}.webm}"
+  ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
 }
+
+scap() {
+  out="${1:-scap.png}"
+  scrot -d 2 -s "${TMPDIR:-/tmp}/${out}"
+}
+
+
 
 if (command -v poly && command -v rlwrap) >/dev/null
 then
-	alias poly='rlwrap -pYellow poly'
+  alias poly='rlwrap -pYellow poly'
 fi
 
 
 # if [[ "nvim" = $EDITOR ]]
 # then
-# 	for ed in "vi" "vim" "nvi"
-# 	do
-# 		alias $ed='nvim'
-# 	done
+#   for ed in "vi" "vim" "nvi"
+#   do
+#     alias $ed='nvim'
+#   done
 # fi
 
 [[ -n $EDITOR ]] && {
-	for rc in "vimrc" "bashrc" "irbrc"
-	do
-		alias $rc="$EDITOR $HOME/.${rc}"
-	done
+  for rc in "vimrc" "bashrc" "irbrc"
+  do
+    alias $rc="$EDITOR $HOME/.${rc}"
+  done
 }
 
 command -v ipython 2>/dev/null >&2 && alias py=ipython
 command -v     mpv 2>/dev/null >&2 && alias play='mpv --no-video'
-command -v    tmux 2>/dev/null >&2 && alias tt='tmux attach' 
+command -v    tmux 2>/dev/null >&2 && alias tt='tmux attach'
+
+pt() {
+  pdftotext -layout -fixed 3 "$1" -
+}
+
+baking() {
+  if [[ $# -ne 2 ]]
+  then
+    echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
+    return
+  fi
+
+  pt "$2" | ruby "$1"
+}
+
+uh() {
+  rdir=$(realpath "$HOME/work/fenso")
+  if [[ $(realpath $PWD) != $rdir ]]; then
+    pushd $rdir
+  fi
+
+  # if [[ -z $VIRTUAL_ENV ]]; then
+  #   source .venv/bin/activate
+  # fi
+
+#   case $1 in
+#     s)
+#       python manage.py shell
+#       ;;
+#     S)
+  #       python manage.py runserver
+  #       ;;
+#     *)
+  #       ;;
+  #   esac
+}

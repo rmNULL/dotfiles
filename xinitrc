@@ -1,3 +1,6 @@
 xmodmap ~/.xmodmaprc
-feh --bg-scale "`shuf -e ~/Pictures/*.* | head -1`"
-exec spectrwm
+volctl &
+startxfce4
+# --with-ck-launch
+#feh --bg-scale "`shuf -e ~/Pictures/*.* | head -1`"
+#exec /home/rmnull/bin/stumpwm.ros

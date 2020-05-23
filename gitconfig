@@ -1,21 +1,26 @@
 [alias]
-	a = add -u
-	aa = add
-	b = pull
-	c = commit
-	d = diff
-	ds = diff --staged
-	f = fetch
-	l = log
-	p = push
-	br = branch
-	co = checkout
-	s = status -uno
-	st = status
+   a = add -u
+  aa = add
+   b = pull
+   c = commit
+  cp = clone
+   d = diff
+  ds = diff --staged
+   f = fetch
+   h = help
+   l = log
+  ol = log --pretty=oneline
+   p = push
+  br = branch
+  co = checkout
+   s = status -uno
+  st = status
 [user]
-	email = rmnull@users.noreply.github.com
-	name = rmnull
+  email = rmnull@users.noreply.github.com
+   name = rmnull
 [core]
-	excludesfile = /Users/rmnull/.gitignore_global
+  excludesfile = /Users/rmnull/.gitignore_global
 [credential]
-	helper = cache
+  helper = cache
+[gpg]
+  program = gpg2

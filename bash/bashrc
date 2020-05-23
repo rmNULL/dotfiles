@@ -9,9 +9,13 @@
 # outputting anything in those cases.
 if [[ $- != *i* ]]
 then
-	# Shell is non-interactive.  Be done now!
-	return
+  # Shell is non-interactive.  Be done now!
+  return
 fi
+
+# Don't execute commands when match fails 
+# shopt -s failglob
+
 
 # overwrite duplicate history
 HISTCONTROL=erasedups:ignorespace
@@ -22,27 +26,27 @@ HISTFILESIZE=12288
 
 if [[ -f ~/.bash_aliases ]]
 then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
 x_running() { xhost >/dev/null 2>&1 ;  }
 
 if command -v tmux >/dev/null
 then
-	if tmux has-session >/dev/null 2>&1
-	then
-		# attah only if its not attached
+  if tmux has-session >/dev/null 2>&1
+  then
+    # attah only if its not attached
     [[ -z $TMUX ]] && tmux attach -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'"
-	else
-		x_running && tmux new
-	fi
+  else
+    x_running && tmux new
+  fi
 fi
 
 PREV_ORG_PROMPT=""
-PROMPT_COMMAND=gen_prompt
 
 gen_prompt() {
   ec="$?"
+  history -a
 
   # kludge !!, as long as it works
   PS1=$(sed 's/^\\e\[41;37;1m [0-9]\+ \\e\[0m//' <<<"$PS1")
@@ -52,7 +56,15 @@ gen_prompt() {
     branch="$(git branch --show-current 2>/dev/null)"
   fi
 
-  ORG_PROMPT="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m: \e[47m\e[30m${branch:+${branch}}\e[0m \w\n∫ "
+
+  if [[ $USER != "rmnull" ]]
+  then
+    user_prefix="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m"
+  else
+    user_prefix=""
+  fi
+
+  ORG_PROMPT="${user_prefix}: \e[47m\e[30m${branch:+${branch}}\e[0m \e[38;5;227m\w\e[0m\n∫ "
 
   if [[ -z $PREV_ORG_PROMPT ]]
   then
@@ -85,20 +97,60 @@ gen_prompt() {
 
 if command -v nvim >/dev/null
 then
-	export EDITOR=nvim
+  export EDITOR=nvim
 fi
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
+FZF_CTRL_T_COMMAND='fd . -0'
+FZF_CTRL_T_OPTS='--read0'
+
+if command -v zoxide >/dev/null
+then
+  eval "$(zoxide init bash)"
+fi
 
 if ! x_running; then
-	startx
+  startx
 fi
+
+## doesn't overwrite if dir already exists
+mkdir -p /tmp/pids/
+mpdstats_pid_file="/tmp/pids/beet.mpdstats"
+if [[ -f $mpdstats_pid_file ]]
+then
+  pid=$(cat "$mpdstats_pid_file")
+  if ! ps aux | grep "${pid}.*beet mpdstats$" | grep -v grep >/dev/null
+  then
+    rm "$mpdstats_pid_file"
+  fi
+fi
+
+if ! [[ -f "$mpdstats_pid_file" ]]
+then
+  if beet mpdstats 2>/dev/null >&2 &
+  then
+    pid="$!"
+    echo -n "$pid" >"$mpdstats_pid_file"
+    disown $pid
+  else
+    echo "failed to start beet mpdstats"
+  fi
+fi
+
 
 if [[ -f ~/.config/mpd/pid  ]]; then
   pid=$(cat ~/.config/mpd/pid)
-  if ! ps aux | grep "${pid}.*mpd" | grep -v grep >/dev/null; then
+  if ! ps aux | grep "${pid}.*mpd$" | grep -v grep >/dev/null; then
     mpd
   fi
 else
   mpd
 fi > /dev/null 2>/dev/null
+
+
+if [[ -z "$PROMPT_COMMAND" ]]
+then
+  PROMPT_COMMAND=gen_prompt
+else
+  PROMPT_COMMAND="gen_prompt;${PROMPT_COMMAND}"
+fi

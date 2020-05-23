@@ -1,5 +1,5 @@
 " .vimrc
-" date: 14-Oct-2019
+" date: 10-May-2020
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -44,20 +44,21 @@ set tildeop
 " " allow h,l to wrap over lines
 " set whichwrap+=h,l
 set hidden
+set noshowmode
 
 """
 " MAPPINGS
 """
 inoremap jk <Esc>
-xnoremap jk <Esc>
+xnoremap tk <Esc>
 inoremap <c-d> <Esc>ddi
 noremap <Up> :make<CR>
 " overwrite in filetype
 noremap <Down> <NOP>
 noremap <Left>  :bprev<CR>
 noremap <Right> :bnext<CR>
-autocmd filetype c,javascript inoremap } {<CR>}<Esc>O
-autocmd filetype c,javascript inoremap { {}<Esc>i
+" autocmd filetype c,javascript inoremap } {<CR>}<Esc>O
+" autocmd filetype c,javascript inoremap { {}<Esc>i
 " autocmd filetype javascript set shiftwidth=4 expandtab tabstop=4
 "highlighting and searching
 "sane regexp while searching
@@ -88,6 +89,7 @@ nmap <leader>q :q<cr>
 " <leader>qq for q! slows down <leader>q
 nmap <leader>fw :w!<cr>
 nmap <leader>fq :q!<cr>
+
 "
 " reload config
 nmap <leader>rr :source $MYVIMRC<CR>
@@ -132,6 +134,7 @@ Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx', 'html']
 Plug 'psf/black'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 if version >= 8
   Plug 'w0rp/ale'
@@ -146,11 +149,29 @@ call plug#end()
 set encoding=utf-8
 syntax on
 set t_Co=256
-" colorscheme " iceberg onedark gruvbox
-colorscheme lucid
+
+let s:cs_dark_time=[18,8]
+
 set background=dark
-autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
-autocmd WinLeave,InsertEnter * setlocal nocursorline
+if (strftime('%H') >= s:cs_dark_time[0]) || (strftime('%H') < s:cs_dark_time[1])
+  colorscheme 256_noir
+else
+  " set background=dark " change to light when colorscheme changes
+  let g:oceanic_next_terminal_bold = 1
+  let g:oceanic_next_terminal_italic = 1
+  colorscheme OceanicNext
+end
+
+if g:colors_name == "256_noir"
+  set cursorline
+  highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=233 guifg=NONE guibg=#121212
+  autocmd InsertEnter * highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=234 guifg=NONE guibg=#1c1c1c
+  autocmd InsertLeave * highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=233 guifg=NONE guibg=#121212
+else
+  autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
+  autocmd WinLeave,InsertEnter * setlocal nocursorline
+end
+
 set title " window title
 
 " Snippet Completion
@@ -159,6 +180,7 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsUsePythonVersion = 3
 
+
 " Lint mappings
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -166,7 +188,7 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 let g:ale_linters = {
       \ 'c':  ['gcc'],
       \ 'javascript': ['eslint'],
-      \ 'python': ['flake8'],
+      \ 'python': ['flake8', 'black'],
       \ 'ruby': ['ruby', 'rubocop'],
       \}
 " only lint on file save
@@ -175,13 +197,19 @@ let g:ale_lint_on_text_changed = 'never'
 " Rainbow parens for uber nesting
 augroup rainbow_parens
   autocmd!
-  autocmd! FileType clojure,sml,scheme RainbowParentheses
+  autocmd! FileType clojure,sml,ruby,scheme RainbowParentheses
 augroup END
 
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['do', 'end']]
 let g:lightline = {
+      \ 'colorscheme': 'Tomorrow_Night',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
       \ 'component_function': {
-      \   'filename': 'LightLineFilename'
+      \   'filename': 'LightLineFilename',
+      \   'gitbranch': 'FugitiveStatusline',
       \ }
       \ }
 function! LightLineFilename()
@@ -189,6 +217,6 @@ function! LightLineFilename()
 endfunction
 
 let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
+autocmd FileType html,css,php EmmetInstall
 
-autocmd BufWritePre * execute ':Autoformat'
+" autocmd BufWritePre * execute ':Autoformat'
