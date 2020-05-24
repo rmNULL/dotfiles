@@ -1,5 +1,11 @@
 # enable color support of ls and other handy aliases
-alias ls='ls --color'
+if $OS_MAC
+then
+    alias ls="ls -G"
+else
+    alias ls='ls --color'
+fi
+
 alias ll='ls -AlF'
 alias la='ls -A'
 alias l1='ls -1'
@@ -8,13 +14,24 @@ alias l='ls -CF'
 alias grep='grep --color=auto'
 alias egrep='grep -E'
 
-alias ++='sudo xbps-install '
-alias +u='sudo xbps-install -Su'
-alias +-='sudo xbps-remove '
-alias '?'='xbps-query -Rs '
-alias '??'='xbps-query '
+if [[ -n $OS ]] && [[ $OS = *Linux* ]]
+then
+    alias ++='sudo xbps-install '
+    alias +u='sudo xbps-install -Su'
+    alias +-='sudo xbps-remove '
+    alias '?'='xbps-query -Rs '
+    alias '??'='xbps-query '
+fi
 
-# if you need anything more than this better find an external tool
+if $OS_MAC
+then
+    alias ++='brew install '
+    alias +u='brew upgrade '
+    alias +-='brew uninstall '
+    alias '?'='brew search '
+fi
+
+# if you need anything more than this better find an external tool(add a new line ;)
 alias c.='cd ../'
 alias c..='cd ../../'
 alias c...='cd ../../../'
@@ -38,7 +55,8 @@ fi
 
 if command -v git >/dev/null
 then
-  alias g='git '
+	alias gi='git init'
+	alias g='git'
 fi
 
 # tmp is where I scratch my itch
@@ -48,10 +66,13 @@ srec() {
   ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
 }
 
+if command -v scrot 2>/dev/null
+then
 scap() {
   out="${1:-scap.png}"
   scrot -d 2 -s "${TMPDIR:-/tmp}/${out}"
 }
+fi
 
 
 
