@@ -135,23 +135,23 @@ unset prepend_var
 export PYTHONDONTWRITEBYTECODE=1
 
 export HOMEBREW_DEVELOPER=1
-if [[ -n $OS ]] && [[ $OS = *Linux* ]]
-then
-	RUBY_DIR="/home/linuxbrew/.linuxbrew/opt/ruby@2.6"
-	export HOMEBREW_RUBY_PATH="${RUBY_DIR}/bin/ruby"
-
-	# HB_RUBY_LD_LIBRARY_PATH="${RUBY_DIR}/lib"
-	# HB_RUBY_RUN_PATH="${RUBY_DIR}/lib"
-	# HB_RUBY_CPATH="${RUBY_DIR}/include/ruby-2.6.0:${RUBY_DIR}/include/ruby-2.6.0/x86_64-linux"
-	# HB_RUBY_PKG_CONFIG_PATH="${RUBY_DIR}/lib/pkgconfig"
-
-	# export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${LD_LIBRARY_PATH:+:}${HB_RUBY_LD_LIBRARY_PATH}"
-	# export LD_RUN_PATH="${LD_RUN_PATH}${LD_RUN_PATH:+:}${HB_RUBY_RUN_PATH}"
-	# export CPATH="${CPATH}${CPATH:+:}${HB_RUBY_CPATH}"
-
-	# export LD_FLAGS="-L${RUBY_DIR}/lib"
-	# export CPP_FLAGS="-I${RUBY_DIR}/include"
-	# export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}${PKG_CONFIG_PATH:+:}${HB_RUBY_PKG_CONFIG_PATH}"
-fi
+# if [[ -n $OS ]] && [[ $OS = *Linux* ]]
+# then
+# 	RUBY_DIR="/home/linuxbrew/.linuxbrew/opt/ruby@2.6"
+# 	export HOMEBREW_RUBY_PATH="${RUBY_DIR}/bin/ruby"
+#
+# 	# HB_RUBY_LD_LIBRARY_PATH="${RUBY_DIR}/lib"
+# 	# HB_RUBY_RUN_PATH="${RUBY_DIR}/lib"
+# 	# HB_RUBY_CPATH="${RUBY_DIR}/include/ruby-2.6.0:${RUBY_DIR}/include/ruby-2.6.0/x86_64-linux"
+# 	# HB_RUBY_PKG_CONFIG_PATH="${RUBY_DIR}/lib/pkgconfig"
+#
+# 	# export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${LD_LIBRARY_PATH:+:}${HB_RUBY_LD_LIBRARY_PATH}"
+# 	# export LD_RUN_PATH="${LD_RUN_PATH}${LD_RUN_PATH:+:}${HB_RUBY_RUN_PATH}"
+# 	# export CPATH="${CPATH}${CPATH:+:}${HB_RUBY_CPATH}"
+#
+# 	# export LD_FLAGS="-L${RUBY_DIR}/lib"
+# 	# export CPP_FLAGS="-I${RUBY_DIR}/include"
+# 	# export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}${PKG_CONFIG_PATH:+:}${HB_RUBY_PKG_CONFIG_PATH}"
+# fi
 
 export GPG_TTY=$(tty)
