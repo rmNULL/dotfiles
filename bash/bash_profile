@@ -135,6 +135,7 @@ unset prepend_var
 export PYTHONDONTWRITEBYTECODE=1
 
 export HOMEBREW_DEVELOPER=1
+export HOMEBREW_READELF_RB=1
 # if [[ -n $OS ]] && [[ $OS = *Linux* ]]
 # then
 # 	RUBY_DIR="/home/linuxbrew/.linuxbrew/opt/ruby@2.6"

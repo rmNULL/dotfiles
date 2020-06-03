@@ -99,40 +99,52 @@ fi
 
 command -v ipython 2>/dev/null >&2 && alias py=ipython
 command -v     mpv 2>/dev/null >&2 && alias play='mpv --no-video'
-command -v    tmux 2>/dev/null >&2 && alias tt='tmux attach'
+if command -v tmux 2>/dev/null >&2
+then
+  alias tt='tmux attach'
+  tnew() {
+    tmux new -n Music ncmpcpp \; neww
+  }
+fi
 
-pt() {
-  pdftotext -layout -fixed 3 "$1" -
-}
+# pt() {
+#   pdftotext -layout -fixed 3 "$1" -
+# }
 
-baking() {
-  if [[ $# -ne 2 ]]
-  then
-    echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
-    return
-  fi
+# baking() {
+#   if [[ $# -ne 2 ]]
+#   then
+#     echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
+#     return
+#   fi
 
-  pt "$2" | ruby "$1"
-}
+#   pt "$2" | ruby "$1"
+# }
 
-uh() {
-  rdir=$(realpath "$HOME/work/fenso")
-  if [[ $(realpath $PWD) != $rdir ]]; then
-    pushd $rdir
-  fi
+# uh() {
+#   rdir=$(realpath "$HOME/work/fenso")
+#   if [[ $(realpath $PWD) != $rdir ]]; then
+#     pushd $rdir
+#   fi
 
-  # if [[ -z $VIRTUAL_ENV ]]; then
-  #   source .venv/bin/activate
-  # fi
+#   # if [[ -z $VIRTUAL_ENV ]]; then
+#   #   source .venv/bin/activate
+#   # fi
 
-#   case $1 in
-#     s)
-#       python manage.py shell
-#       ;;
-#     S)
-  #       python manage.py runserver
-  #       ;;
-#     *)
-  #       ;;
-  #   esac
-}
+# #   case $1 in
+# #     s)
+# #       python manage.py shell
+# #       ;;
+# #     S)
+#   #       python manage.py runserver
+#   #       ;;
+# #     *)
+#   #       ;;
+#   #   esac
+# }
+
+if command -v brew >/dev/null
+then
+  alias br='brew ruby'
+  alias bi='brew irb'
+fi

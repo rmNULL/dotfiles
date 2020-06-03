@@ -41,10 +41,10 @@ if command -v tmux >/dev/null
 then
   if tmux has-session >/dev/null 2>&1
   then
-    # attah only if its not attached
     [[ -z $TMUX ]] && tmux attach -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'"
   else
-    x_running && tmux new
+    ## if this list gets long better use tmuxinator
+    x_running && tnew
   fi
 fi
 
