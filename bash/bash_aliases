@@ -75,6 +75,27 @@ scap() {
 fi
 
 
+if (command -v mupdf && command -v zenity) >/dev/null 
+then
+  mupdf() {
+    elog=$(command mupdf "$@" 2>&1)
+    local mupdf_ec=$?
+
+    if [[ "$mupdf_ec" != "0" ]] && grep -i '^error: needs a password' <<<"$elog"
+    then
+      local pass=$(zenity --title="PDF Password" --password)
+      command mupdf -p "$pass" "$@"
+      mupdf_ec=$?
+    else
+      [[ $mupdf_ec = "0" ]] && echo -e "$elog" || echo -e "$elog" >&2
+    fi
+
+    ## honor MuPDF exit status
+    return $mupdf_ec
+  }
+  alias mupdf-x11=mupdf
+fi
+
 
 if (command -v poly && command -v rlwrap) >/dev/null
 then
