@@ -23,7 +23,7 @@ OS_MAC=$([[ $OS = *Darwin* ]] && echo "true" || echo "false")
 HISTCONTROL=erasedups:ignorespace
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=4096
+HISTSIZE=8192
 HISTFILESIZE=12288
 
 if [[ -f ~/.bash_aliases ]]

@@ -57,6 +57,23 @@ if command -v git >/dev/null
 then
 	alias gi='git init'
 	alias g='git'
+
+  ## auto completion for aliases
+  if [[ -n $OS ]] && [[ $OS = *Linux* ]]
+  then
+    git_completion_file="/usr/share/bash-completion/completions/git"
+  else
+    git_completion_file="/tmp/hopefully-non/existing-fil/e--and-directory/placeholder"
+  fi
+
+  if [[ -f "$git_completion_file" ]]
+  then
+    ## pollute the environment!!
+    source "$git_completion_file"
+    __git_complete g __git_main
+  fi
+
+  unset git_completion_file
 fi
 
 # tmp is where I scratch my itch
@@ -75,7 +92,7 @@ scap() {
 fi
 
 
-if (command -v mupdf && command -v zenity) >/dev/null 
+if (command -v mupdf && command -v zenity) >/dev/null
 then
   mupdf() {
     elog=$(command mupdf "$@" 2>&1)
@@ -170,3 +187,6 @@ then
   alias bi='brew irb'
   alias bu='brew up'
 fi
+
+
+
