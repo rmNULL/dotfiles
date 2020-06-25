@@ -7,6 +7,7 @@
   co = checkout
   cp = clone
   d = diff
+  dh = diff HEAD^
   ds = diff --staged
   f = fetch
   h = help
@@ -19,6 +20,7 @@
   ss = status
   st = stash
   sta = stash apply
+  stl = stash list
 [user]
   email = rmnull@users.noreply.github.com
   name = rmnull

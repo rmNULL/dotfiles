@@ -183,6 +183,7 @@ fi
 
 if command -v brew >/dev/null
 then
+  alias b="brew"
   alias br='brew ruby'
   alias bi='brew irb'
   alias bu='brew up'
