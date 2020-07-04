@@ -189,5 +189,29 @@ then
   alias bu='brew up'
 fi
 
+if command -v patchelf >/dev/null
+then
+  alias pef='patchelf'
+  alias pelf='patchelf'
 
+  alias pefi='patchelf --print-interpreter'
+  alias pelfi='patchelf --print-interpreter'
 
+  alias pefr='patchelf --force-rpath --print-rpath'
+  alias pelfr='patchelf --force-rpath --print-rpath'
+
+  alias pefsi='patchelf --set-interpreter'
+  alias pelfsi='patchelf --set-interpreter'
+
+  alias pelfsr='patchelf --force-rpath --set-rpath'
+fi
+
+if command -v patchelf.rb >/dev/null
+then
+  alias prb='patchelf.rb'
+  alias prbi='patchelf.rb --print-interpreter'
+  alias prbr='patchelf.rb --force-rpath --print-runpath'
+
+  alias prbsi='patchelf.rb --set-interpreter'
+  alias prbsr='patchelf.rb --force-rpath --set-runpath'
+fi
