@@ -1,1 +1,2 @@
-/home/rmnull/bin/raise-or-start
+#!/usr/bin/env bash
+wmctrl -xa $1 || $1
