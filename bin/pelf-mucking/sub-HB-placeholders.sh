@@ -52,9 +52,10 @@ fi
 if patchelf --force-rpath --print-rpath "$elf" >/dev/null 2>&1
 then
   esc_prefix=$(echo "$prefix" | sed -e 's/\//\\\//g')
-  rpath=$( patchelf --force-rpath --print-rpath "$elf" | sed -e "s/@@HOMEBREW_PREFIX@@/${esc_prefix}/g" )
+  orpath=$(patchelf --force-rpath --print-rpath "$elf")
+  rpath=$( echo "$orpath" | sed -e "s/@@HOMEBREW_PREFIX@@/${esc_prefix}/g" )
 
-  [[ -n "$print_before_and_after" ]] && echo " rpath: $rpath"
+  [[ -n "$print_before_and_after" ]] && echo " rpath:" $orpath
 
   if [[ -n $plain_patchelf ]]
   then patchelf="patchelf"; rp_flag="--force-rpath --set-rpath"
