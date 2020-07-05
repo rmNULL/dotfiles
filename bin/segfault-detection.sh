@@ -6,10 +6,15 @@
 # better off not used.
 #
 prg="$1"
-seg_logf="/tmp/segfault.log"
 
+if ! patchelf --print-interpreter "$prg"
+then
+  exit 0
+fi
+
+seg_logf="/tmp/segfault.log"
 logf=$(echo "$prg" | sed -e 's/\// ; /g')
-logf="/tmp/log/$logf"
+logf="/home/rmnull/dump/builds/elfs/.log/$logf"
 
 "$prg" >"${logf}.out" 2>"${logf}.err" &
 pid="$!"
@@ -21,11 +26,12 @@ if kill -0 "$pid" >/dev/null 2>/dev/null
 then
   exit 0
 else
+
   # output already logged above
-  "$prg" >/dev/null 2>/dev/null
+  "$prg" >/dev/null 2>/dev/null </dev/null
   ec="$?"
 
-  echo -e "$ec $prg" >/tmp/ec.log
+  echo -e "$ec $prg" >>/tmp/ec.log
 
   # 139 = SIGSEGV
   [[ $ec -eq 139 ]] && echo "$prg" >>"$seg_logf" || exit 0
