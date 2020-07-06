@@ -203,6 +203,7 @@ then
   alias pefsi='patchelf --set-interpreter'
   alias pelfsi='patchelf --set-interpreter'
 
+  alias pefsr='patchelf --force-rpath --set-rpath'
   alias pelfsr='patchelf --force-rpath --set-rpath'
 fi
 

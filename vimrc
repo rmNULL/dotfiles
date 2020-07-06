@@ -150,7 +150,7 @@ set encoding=utf-8
 syntax on
 set t_Co=256
 
-let s:cs_dark_time=[18,8]
+let s:cs_dark_time=[18,7]
 
 set background=dark
 if (strftime('%H') >= s:cs_dark_time[0]) || (strftime('%H') < s:cs_dark_time[1])
