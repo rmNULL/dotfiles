@@ -33,7 +33,7 @@ parser = OptionParser.new do |opts|
     OPTS[:require] = false
   end
 
-  opts.on("--patch", "") do |v|
+  opts.on("--patch") do |v|
     OPTS[:patch] = v
   end
 end
@@ -114,7 +114,7 @@ end
 def generate_name elf_path, sfx
   elf_to_patch = ""
   0.step do |i|
-    elf_to_patch = "/tmp/tt-tttt-#{i}-#{File.basename elf_path} -- #{sfx}"
+    elf_to_patch = "/tmp/tt-tttt-#{i}-#{elf_path.gsub '/', ';;'} -- #{sfx}"
     break unless File.exist? elf_to_patch
   end
   elf_to_patch
