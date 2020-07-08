@@ -39,13 +39,14 @@ def patch(elf_path)
   old_rpath = `patchelf --print-rpath --force-rpath "#{elf_path}"`.strip
   old_interpreter = `patchelf --print-interpreter "#{elf_path}"`.strip
 
-  new_rpath = replace_rpath_prefix old_rpath
-  new_interpreter = replace_interp_prefix old_interpreter
+  [old_interpreter, old_rpath]
+  #
+  # new_rpath = replace_rpath_prefix old_rpath
+  # new_interpreter = replace_interp_prefix old_interpreter
 
-  turn_off_std do
-    system "--set-interpreter", new_interpreter, "--force-rpath", "--set-rpath", new_rpath, elf_path
-  end
-  # `patchelf --set-interpreter "#{new_interpreter}" --force-rpath --set-rpath "#{new_rpath}" "#{elf_path}"`
+  # turn_off_std do
+  #   system "--set-interpreter", new_interpreter, "--force-rpath", "--set-rpath", new_rpath, elf_path
+  # end
 end
 
 def patch_rb(elf_path)
@@ -55,13 +56,18 @@ def patch_rb(elf_path)
   patchelf.use_rpath!
   # we'll just empty string here as patchelf doesn't exit with failure for empty rpath.
   old_rpath = patchelf.runpath rescue ""
+  old_interpreter = patchelf.interpreter
 
-  new_rpath = replace_rpath_prefix(old_rpath)
-  new_interpreter = replace_interp_prefix(patchelf.interpreter)
+  [old_interpreter, old_rpath]
 
-  patchelf.runpath = new_rpath
-  patchelf.interpreter = new_interpreter
-  patchelf.save
+  # patching
+  #
+  # new_rpath = replace_rpath_prefix(old_rpath)
+  # new_interpreter = replace_interp_prefix(old_interpreter)
+
+  # patchelf.runpath = new_rpath
+  # patchelf.interpreter = new_interpreter
+  # patchelf.save
 end
 
 elf_paths = ARGV.clone
