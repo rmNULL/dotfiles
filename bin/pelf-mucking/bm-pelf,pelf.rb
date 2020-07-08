@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require 'benchmark'
+require 'benchmark/ips'
 require 'fileutils'
 
 OLD_PREFIX = '@@HOMEBREW_PREFIX@@'
@@ -17,14 +17,16 @@ OPTS = {patch: false, require: true, times: 1}
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: bm-pelf.rb [options] elf [elf ...]"
 
-  opts.on('-n TIMES', '--times=TIMES', 
-          "+ve INT. Number of TIMES to benchmark",
-         Integer) do |v|
-    if v < OPTS[:times]
-      raise OptionParser::InvalidArgument, "#{v} . TIMES should be >= 1"
-    end
-    OPTS[:times] = v
-  end
+  # disable in favor of benchmark/ips
+  #
+  #   opts.on('-n TIMES', '--times=TIMES',
+  #           "+ve INT. Number of TIMES to benchmark",
+  #          Integer) do |v|
+  #     if v < OPTS[:times]
+  #       raise OptionParser::InvalidArgument, "#{v} . TIMES should be >= 1"
+  #     end
+  #     OPTS[:times] = v
+  #   end
 
   opts.on("--no-require", "don't time \"require 'patchelf.rb'\"") do |v|
     require 'patchelf'
@@ -40,7 +42,7 @@ parser.parse!
 elf_paths = ARGV.clone
 if elf_paths.empty?
   puts parser
-  exit 21 
+  exit 21
 end
 
 if elf_paths.count > 1 && OPTS[:require]
@@ -91,7 +93,7 @@ def patch(elf_path)
 end
 
 def patch_rb(elf_path)
-  require 'patchelf' if OPTS[:require] 
+  require 'patchelf' if OPTS[:require]
 
   patchelf = PatchELF::Patcher.new(elf_path, logging: false)
   patchelf.use_rpath!
@@ -109,32 +111,45 @@ def patch_rb(elf_path)
   end
 end
 
+def generate_name elf_path, sfx
+  elf_to_patch = ""
+  0.step do |i|
+    elf_to_patch = "/tmp/tt-tttt-#{i}-#{File.basename elf_path} -- #{sfx}"
+    break unless File.exist? elf_to_patch
+  end
+  elf_to_patch
+end
+
 
 elf_paths.each do |elf_path|
   # confirm file has interp and it is a valid ELF
-  turn_off_std do 
+  turn_off_std do
     system 'patchelf', '--print-interpreter', elf_path
   end
   next unless $?.success?
 
-  elf_to_patch = ""
-  0.step do |i|
-    elf_to_patch = "/tmp/tt-tttt-#{i}-#{File.basename elf_path}"
-    break unless File.exist? elf_to_patch
-  end
+  # result_log = "/tmp/pelf-bm-#{elf_path.gsub '/', '___'}"
+  # FileUtils.touch result_log
 
   puts "\n=>\e[;34m #{elf_path} \e[;0m"
 
-  Benchmark.bm 9 do |bm|
-    %i[patch patch_rb].each do |fn|
+  Benchmark.ips do |bm|
+    %i[patch_rb patch].each do |fn|
 
-      OPTS[:times].times do
+      # generating name once should be enough, the steps are not threaded as
+      # far as im aware
+      elf_to_patch = generate_name elf_path, fn.to_s
+
+      bm.report(fn.to_s) {
         # restore fresh file, to avoid cache issues
         FileUtils.copy_file elf_path, elf_to_patch
         FileUtils.chmod "u+w", elf_to_patch
-        bm.report(fn.to_s) { method(fn).call elf_to_patch }
+        method(fn).call elf_to_patch
         FileUtils.rm elf_to_patch
-      end
+      }
     end
+
+    # bm.hold! result_log
+    bm.compare!
   end
 end
