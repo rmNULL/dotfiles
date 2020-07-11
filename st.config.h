@@ -43,9 +43,18 @@ static unsigned int tripleclicktimeout = 600;
 /* alt screens */
 int allowaltscreen = 1;
 
-/* frames per second st should at maximum draw to the screen */
-static unsigned int xfps = 120;
-static unsigned int actionfps = 30;
+/* allow certain non-interactive (insecure) window operations such as:
+   setting the clipboard text */
+int allowwindowops = 0;
+
+/*
+ * draw latency range in ms - from new content/keypress/etc until drawing.
+ * within this range, st draws when content stops arriving (idle). mostly it's
+ * near minlatency, but it waits longer for slow updates to avoid partial draw.
+ * low minlatency will tear/flicker more, as it can "detect" idle too early.
+ */
+static double minlatency = 8;
+static double maxlatency = 33;
 
 /*
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
@@ -85,34 +94,31 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
-/* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
+
   /* 8 normal colors */
-  /* 8 normal colors */
-  [0] = "#2d2d2d", /* black   */
-  [1] = "#f2777a", /* red     */
-  [2] = "#99cc99", /* green   */
-  [3] = "#ffcc66", /* yellow  */
-  [4] = "#6699cc", /* blue    */
-  [5] = "#cc99cc", /* magenta */
-  [6] = "#66cccc", /* cyan    */
-  [7] = "#d3d0c8", /* white   */
+  [0] = "#0c0d0e", /* black   */
+  [1] = "#e31a1c", /* red     */
+  [2] = "#31a354", /* green   */
+  [3] = "#dca060", /* yellow  */
+  [4] = "#3182bd", /* blue    */
+  [5] = "#756bb1", /* magenta */
+  [6] = "#80b1d3", /* cyan    */
+  [7] = "#b7b8b9", /* white   */
 
   /* 8 bright colors */
-  [8]  = "#747369", /* black   */
-  [9]  = "#f2777a", /* red     */
-  [10] = "#99cc99", /* green   */
-  [11] = "#ffcc66", /* yellow  */
-  [12] = "#6699cc", /* blue    */
-  [13] = "#cc99cc", /* magenta */
-  [14] = "#66cccc", /* cyan    */
-  [15] = "#f2f0ec", /* white   */
+  [8]  = "#737475", /* black   */
+  [9]  = "#e31a1c", /* red     */
+  [10] = "#31a354", /* green   */
+  [11] = "#dca060", /* yellow  */
+  [12] = "#3182bd", /* blue    */
+  [13] = "#756bb1", /* magenta */
+  [14] = "#80b1d3", /* cyan    */
+  [15] = "#fcfdfe", /* white   */
 
   /* special colors */
-  [256] = "#2d2d2d", /* background */
-  [257] = "#d3d0c8", /* foreground */
-
-
+  [256] = "#0c0d0e", /* background */
+  [257] = "#b7b8b9", /* foreground */
 };
 
 /*
@@ -122,6 +128,7 @@ static const char *colorname[] = {
 unsigned int defaultfg = 257;
 unsigned int defaultbg = 256;
 static unsigned int defaultcs = 257;
+static unsigned int defaultrcs = 257;
 
 /*
  * Colors used, when the specific fg == defaultfg. So in reverse mode this
@@ -131,16 +138,6 @@ static unsigned int defaultcs = 257;
 static unsigned int defaultitalic = 7;
 static unsigned int defaultunderline = 7;
 
-
-
-/*
- * Default colors (colorname index)
- * foreground, background, cursor, reverse cursor
- */
-/* unsigned int defaultfg = 7; */
-/* unsigned int defaultbg = 0; */
-/* static unsigned int defaultcs = 256; */
-static unsigned int defaultrcs = 257;
 
 /*
  * Default shape of cursor
@@ -185,7 +182,9 @@ static uint forcemousemod = ShiftMask;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
 	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
+	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
+	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
 };
 
