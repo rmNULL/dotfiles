@@ -44,7 +44,7 @@ human_time_to_sec() {
 
   input_time="$1"
   parseable_time=$(echo "$1" | tr : '\n' | tac | tr '\n' :)
-  IFS=":" read s m h <<<"$parseable_time"
+  IFS=":" read -r s m h <<<"$parseable_time"
 
   [[ -z "$s" ]] && s="0"
   [[ -z "$m" ]] && m="0"
@@ -116,7 +116,7 @@ done
 [[ -z "$format" ]] && youtube-dl -F "$url"
 while [[ -z "$format" ]]
 do
-  read -p "format>> " format
+  read -rp "format>> " format
 done
 
 dl_url=$(youtube-dl -f "$format" --get-url "$url")
@@ -125,12 +125,12 @@ save_as="${save_as%%.*}-${from}-${to}.${save_as##*.}"
 
 
 ffmpeg_ss="$start_time"
-ffmpeg_t=$(( $end_time - $start_time ))
+ffmpeg_t=$(( end_time - start_time ))
 
 if [[ "$ffmpeg_t" -lt 1 ]]
 then
   echo "end time must be > start time." 2>/dev/null
-  exit 21
+  exit 22
 fi
 
 ffmpeg -ss "$ffmpeg_ss" -i "$dl_url" -t "$ffmpeg_t" -c:v copy -c:a copy "$save_as" ||  exit 2
