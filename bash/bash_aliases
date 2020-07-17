@@ -216,3 +216,9 @@ then
   alias prbsi='patchelf.rb --set-interpreter'
   alias prbsr='patchelf.rb --force-rpath --set-runpath'
 fi
+
+
+if command -v notes >/dev/null
+then
+  alias td='notes o today'
+fi
