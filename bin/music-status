@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+out=$(mpc status)
+
+status=""
+if [[ $(echo -e "$out" | wc -l) != "1" ]]
+then
+  status=$(echo -e "$out" | grep '^\[[^\]\+\]' | sed -e 's/^\[\([^\]\+\)\].*/\1/')
+  if [[ $status = "paused" ]]
+  then
+    status="⏸"
+  else
+    status="▶"
+  fi
+
+  title=$(echo -e "$out" | head -n 1)
+  echo "$status $title"
+fi
