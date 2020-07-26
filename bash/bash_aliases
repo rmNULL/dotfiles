@@ -1,9 +1,9 @@
 # enable color support of ls and other handy aliases
 if $OS_MAC
 then
-    alias ls="ls -G"
+  alias ls="ls -G"
 else
-    alias ls='ls --color'
+  alias ls='ls --color'
 fi
 
 alias ll='ls -AlF'
@@ -16,19 +16,19 @@ alias egrep='grep -E'
 
 if [[ -n $OS ]] && [[ $OS = *Linux* ]]
 then
-    alias ++='sudo xbps-install '
-    alias +u='sudo xbps-install -Su'
-    alias +-='sudo xbps-remove '
-    alias '?'='xbps-query -Rs '
-    alias '??'='xbps-query '
+  alias ++='sudo xbps-install '
+  alias +u='sudo xbps-install -Su'
+  alias +-='sudo xbps-remove '
+  alias '?'='xbps-query -Rs '
+  alias '??'='xbps-query '
 fi
 
 if $OS_MAC
 then
-    alias ++='brew install '
-    alias +u='brew upgrade '
-    alias +-='brew uninstall '
-    alias '?'='brew search '
+  alias ++='brew install '
+  alias +u='brew update '
+  alias +-='brew uninstall '
+  alias '?'='brew search '
 fi
 
 # if you need anything more than this better find an external tool(add a new line ;)
@@ -55,8 +55,8 @@ fi
 
 if command -v git >/dev/null
 then
-	alias gi='git init'
-	alias g='git'
+  alias gi='git init'
+  alias g='git'
 
   ## auto completion for aliases
   if [[ -n $OS ]] && [[ $OS = *Linux* ]]
@@ -78,17 +78,20 @@ fi
 
 # tmp is where I scratch my itch
 alias tmp="pushd ${TMPDIR:-/tmp}"
-srec() {
-  out="${1:-/tmp/srec_${RANDOM}.webm}"
-  ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
-}
+if command -v ffmpeg >/dev/null
+then
+  srec() {
+    out="${1:-/tmp/srec_${RANDOM}.webm}"
+    ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
+  }
+fi
 
 if command -v scrot >/dev/null
 then
-scap() {
-  out="${1:-scap.png}"
-  scrot -d 2 -s "${TMPDIR:-/tmp}/${out}"
-}
+  scap() {
+    out="${1:-scap.png}"
+    scrot -d 2 -s "${TMPDIR:-/tmp}/${out}"
+  }
 fi
 
 
@@ -110,7 +113,7 @@ then
     ## honor MuPDF exit status
     return $mupdf_ec
   }
-  alias mupdf-x11=mupdf
+alias mupdf-x11=mupdf
 fi
 
 
@@ -165,20 +168,20 @@ fi
 #     pushd $rdir
 #   fi
 
-#   # if [[ -z $VIRTUAL_ENV ]]; then
-#   #   source .venv/bin/activate
-#   # fi
+#   if [[ -z $VIRTUAL_ENV ]]; then
+#     source .venv/bin/activate
+#   fi
 
-# #   case $1 in
-# #     s)
-# #       python manage.py shell
-# #       ;;
-# #     S)
-#   #       python manage.py runserver
-#   #       ;;
-# #     *)
-#   #       ;;
-#   #   esac
+#   case $1 in
+#     s)
+#       python manage.py shell
+#       ;;
+#     S)
+#       python manage.py runserver
+#       ;;
+#     *)
+#       ;;
+#   esac
 # }
 
 if command -v brew >/dev/null

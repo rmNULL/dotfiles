@@ -70,7 +70,14 @@ gen_prompt() {
     user_prefix=""
   fi
 
-  ORG_PROMPT="${user_prefix}: \e[47m\e[30m${branch:+${branch}}\e[0m \e[38;5;227m\w\e[0m\n∫ "
+  hints=""
+  if [[ -n $HOMEBREW_DEVELOPER ]]
+  then
+    hints+="\e[1;33m🍺\e[;0m"
+  fi
+
+
+  ORG_PROMPT="${user_prefix}: \e[47m\e[30m${branch:+${branch}}\e[0m ${hints}\e[38;5;227m\w\e[0m\n∫ "
 
   if [[ -z $PREV_ORG_PROMPT ]]
   then
@@ -128,14 +135,11 @@ fi
 
 ## doesn't overwrite if dir already exists
 mkdir -p "${TMPDIR:-/tmp}"/pids/
-mpdstats_pid_file=""${TMPDIR:-/tmp}"/pids/beet.mpdstats"
+mpdstats_pid_file="${TMPDIR:-/tmp}/pids/beet.mpdstats"
 if [[ -f $mpdstats_pid_file ]]
 then
   pid=$(cat "$mpdstats_pid_file")
-  if ! ps aux | grep "${pid}.*beet mpdstats$" | grep -v grep >/dev/null
-  then
-    rm "$mpdstats_pid_file"
-  fi
+  kill -s 0 "$pid" 2>/dev/null || rm "$mpdstats_pid_file"
 fi
 
 if ! [[ -f "$mpdstats_pid_file" ]]
@@ -153,9 +157,7 @@ fi
 
 if [[ -f ~/.config/mpd/pid  ]]; then
   pid=$(cat ~/.config/mpd/pid)
-  if ! ps aux | grep "${pid}.*mpd$" | grep -v grep >/dev/null; then
-    mpd
-  fi
+  kill -s 0 "$pid" 2>/dev/null || mpd
 else
   mpd
 fi > /dev/null 2>/dev/null
