@@ -175,3 +175,8 @@ bind -x '"\C-l":"tput bel"'
 [[ -f "${HOME}/.local/share/tessdata_best" ]] && export TESSDATA_PREFIX="/${HOME}/.local/share/tessdata_best"
 
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
+
+if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
+then
+  ssh-add -k
+fi
