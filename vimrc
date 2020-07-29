@@ -1,5 +1,5 @@
 " .vimrc
-" date: 10-May-2020
+" date: 29-Jul-2020
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -133,6 +133,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx', 'html']}
 Plug 'psf/black'
 Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
