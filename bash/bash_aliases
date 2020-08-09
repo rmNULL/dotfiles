@@ -123,13 +123,14 @@ then
 fi
 
 
-# if [[ "nvim" = $EDITOR ]]
-# then
-#   for ed in "vi" "vim" "nvi"
-#   do
-#     alias $ed='nvim'
-#   done
-# fi
+if [[ "nvim" = $EDITOR ]]
+then
+  # for ed in "vi" "vim" "nvi"
+  # do
+  #   alias $ed='nvim'
+  # done
+  alias vim='nvim'
+fi
 
 [[ -n $EDITOR ]] && {
   for rc in "vimrc" "bashrc" "irbrc"
