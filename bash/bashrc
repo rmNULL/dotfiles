@@ -55,7 +55,7 @@ gen_prompt() {
   history -a
 
   # kludge !!, as long as it works
-  PS1=$(sed 's/^\\e\[41;37;1m [0-9]\+ \\e\[0m//' <<<"$PS1")
+  PS1=$(sed 's/^\\e\[41;37;1m [0-9][0-9]* \\e\[0m//' <<<"$PS1")
 
   if command -v git >/dev/null 2>/dev/null
   then
