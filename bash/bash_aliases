@@ -145,7 +145,12 @@ if command -v tmux 2>/dev/null >&2
 then
   alias tt='tmux attach'
   tnew() {
-    tmux new -n Music ncmpcpp \; neww
+    if [[ -e ~/af/dirty/cccv.vims ]]
+    then
+      tmux new -n Music ncmpcpp \; neww man elf \; neww vim -S ~/af/dirty/cccv.vims \; split -v \; split -h
+    else
+      tmux new -n Music ncmpcpp \; neww
+    fi
   }
 fi
 
