@@ -56,6 +56,7 @@ fi
 if command -v git >/dev/null
 then
   alias gi='git init'
+  alias gm='git checkout master'
   alias g='git'
 
   ## auto completion for aliases
@@ -147,7 +148,7 @@ then
   tnew() {
     if [[ -e ~/af/dirty/cccv.vims ]]
     then
-      tmux new -n Music ncmpcpp \; neww man elf \; neww vim -S ~/af/dirty/cccv.vims \; split -v \; split -h
+      tmux new -n Music ncmpcpp \; neww vim -S ~/af/dirty/cccv.vims \; split -v
     else
       tmux new -n Music ncmpcpp \; neww
     fi
