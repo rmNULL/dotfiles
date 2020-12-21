@@ -61,13 +61,13 @@ fi
 
 if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]
 then
-    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 fi
 
-appendpath "/opt/texlive/2019/bin/x86_64-linux"
-appendpath $HOME/.local/bin/
+[[ -d "/opt/texlive/2019/bin/x86_64-linux" ]] && appendpath "/opt/texlive/2019/bin/x86_64-linux"
+[[ -d "$HOME/.local/bin" ]] && appendpath $HOME/.local/bin/
 [[ -d $HOME/.cargo/ ]] && prependpath $HOME/.cargo/bin
-prependpath $HOME/bin/
+[[ -d "$HOME/bin" ]] && prependpath $HOME/bin/
 # set +x
 
 if command -v composer > /dev/null ; then
@@ -79,11 +79,14 @@ if command -v ruby > /dev/null ; then
   appendpath $GEMS_DIR/bin
 fi
 
-export ANDROID_HOME=$HOME/Android/Sdk
-appendpath $ANDROID_HOME/emulator
-appendpath $ANDROID_HOME/tools
-appendpath $ANDROID_HOME/tools/bin
-appendpath $ANDROID_HOME/platform-tools
+if [[ -d "$HOME/Android/Sdk" ]]
+then
+  export ANDROID_HOME=$HOME/Android/Sdk
+  appendpath $ANDROID_HOME/emulator
+  appendpath $ANDROID_HOME/tools
+  appendpath $ANDROID_HOME/tools/bin
+  appendpath $ANDROID_HOME/platform-tools
+fi
 
 
 # original source:

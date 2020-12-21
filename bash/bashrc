@@ -34,7 +34,7 @@ fi
 x_running() {
   # don't check for x in MAC
   $OS_MAC && return 0;
-  xhost >/dev/null 2>&1 ;
+  command -v xhost >/dev/null && xhost >/dev/null 2>&1 || echo "xhost is not installed, can't detect whether x is running or not." >&2;
 }
 
 if command -v tmux >/dev/null
@@ -182,3 +182,5 @@ if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
   ssh-add -k
 fi
+
+true # ignore, error no in first prompt
