@@ -127,7 +127,7 @@ fi
 
 if ! $OS_MAC
 then
-  if ! x_running
+  if ! x_running  && [[ -z "$SSH_CONNECTION" ]]
   then
     startx
   fi
@@ -154,7 +154,6 @@ then
   fi
 fi
 
-
 if [[ -f ~/.config/mpd/pid  ]]; then
   pid=$(cat ~/.config/mpd/pid)
   kill -s 0 "$pid" 2>/dev/null || mpd
@@ -180,7 +179,7 @@ bind -x '"\C-l":"tput bel"'
 
 if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
-  ssh-add -k
+  ssh-add -k ~/.ssh/sha-m64_gh
 fi
 
 true # ignore, error no in first prompt

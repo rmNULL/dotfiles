@@ -108,7 +108,7 @@ then
       command mupdf -p "$pass" "$@"
       mupdf_ec=$?
     else
-      [[ $mupdf_ec = "0" ]] && echo -e "$elog" || echo -e "$elog" >&2
+      echo -e "$elog" >&2
     fi
 
     ## honor MuPDF exit status
@@ -148,48 +148,12 @@ then
   tnew() {
     if [[ -e ~/af/dirty/cccv.vims ]]
     then
-      tmux new -n Music ncmpcpp \; neww vim -S ~/af/dirty/cccv.vims \; split -v
+      tmux new -n Music ncmpcpp \; neww vim -S ~/af/dirty/cccv.vims
     else
       tmux new -n Music ncmpcpp \; neww
     fi
   }
 fi
-
-# pt() {
-#   pdftotext -layout -fixed 3 "$1" -
-# }
-
-# baking() {
-#   if [[ $# -ne 2 ]]
-#   then
-#     echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
-#     return
-#   fi
-
-#   pt "$2" | ruby "$1"
-# }
-
-# uh() {
-#   rdir=$(realpath "$HOME/work/fenso")
-#   if [[ $(realpath $PWD) != $rdir ]]; then
-#     pushd $rdir
-#   fi
-
-#   if [[ -z $VIRTUAL_ENV ]]; then
-#     source .venv/bin/activate
-#   fi
-
-#   case $1 in
-#     s)
-#       python manage.py shell
-#       ;;
-#     S)
-#       python manage.py runserver
-#       ;;
-#     *)
-#       ;;
-#   esac
-# }
 
 if command -v brew >/dev/null
 then
@@ -226,7 +190,6 @@ then
   alias prbsi='patchelf.rb --set-interpreter'
   alias prbsr='patchelf.rb --force-rpath --set-runpath'
 fi
-
 
 if command -v notes >/dev/null
 then

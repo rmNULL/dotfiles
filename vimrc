@@ -117,6 +117,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'junegunn/vim-easy-align'
 Plug 'Chiel92/vim-autoformat'
 Plug 'SirVer/ultisnips'
+Plug 'amiralies/vim-rescript'
 Plug 'calebsmith/vim-lambdify'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -160,7 +161,7 @@ else
   " set background=dark " change to light when colorscheme changes
   let g:oceanic_next_terminal_bold = 1
   let g:oceanic_next_terminal_italic = 1
-  colorscheme OceanicNext
+  colorscheme gruvbox
 end
 
 if g:colors_name == "256_noir"
