@@ -34,7 +34,13 @@ fi
 x_running() {
   # don't check for x in MAC
   $OS_MAC && return 0;
-  command -v xhost >/dev/null && xhost >/dev/null 2>&1 || echo "xhost is not installed, can't detect whether x is running or not." >&2;
+  if command -v xhost >/dev/null
+  then
+    xhost >/dev/null 2>&1
+  else
+    echo "xhost is not installed, can't detect whether x is running or not." >&2;
+    return 0
+  fi
 }
 
 if command -v tmux >/dev/null
