@@ -1,0 +1,7 @@
+$include /etc/inputrc
+
+"\eF": shell-forward-word
+"\eB": shell-backward-word
+
+"\C-[": character-search-backward
+"\C-l": end-of-line
