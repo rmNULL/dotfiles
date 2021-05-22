@@ -6,6 +6,7 @@
 " this must be first, because it changes other options as a side effect.
 set nocompatible
 set number
+set relativenumber
 " set ruler
 set showcmd
 " highlight search
@@ -86,7 +87,10 @@ nnoremap <leader>vrc :tabnew $MYVIMRC<CR>
 nmap <leader>w :update<cr>
 nmap <leader>x :x<cr>
 nmap <leader>q :q<cr>
-" <leader>qq for q! slows down <leader>q
+"
+nmap <leader>b :b<space>
+
+" force quits, <leader>q! slows downs <leader>q
 nmap <leader>fw :w!<cr>
 nmap <leader>fq :q!<cr>
 
@@ -117,7 +121,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'junegunn/vim-easy-align'
 Plug 'Chiel92/vim-autoformat'
 Plug 'SirVer/ultisnips'
-Plug 'amiralies/vim-rescript'
+" Plug 'amiralies/vim-rescript'
 Plug 'calebsmith/vim-lambdify'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -161,7 +165,7 @@ else
   " set background=dark " change to light when colorscheme changes
   let g:oceanic_next_terminal_bold = 1
   let g:oceanic_next_terminal_italic = 1
-  colorscheme gruvbox
+  colorscheme tender
 end
 
 if g:colors_name == "256_noir"
@@ -199,7 +203,7 @@ let g:ale_lint_on_text_changed = 'never'
 " Rainbow parens for uber nesting
 augroup rainbow_parens
   autocmd!
-  autocmd! FileType clojure,sml,ruby,scheme RainbowParentheses
+  autocmd! FileType clojure,sml,ruby,scheme,prolog,javascript RainbowParentheses
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['do', 'end']]

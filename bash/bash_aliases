@@ -145,14 +145,6 @@ command -v     mpv 2>/dev/null >&2 && alias play='mpv --no-video'
 if command -v tmux 2>/dev/null >&2
 then
   alias tt='tmux attach'
-  tnew() {
-    if [[ -e ~/af/dirty/cccv.vims ]]
-    then
-      tmux new -n Music ncmpcpp \; neww vim -S ~/af/dirty/cccv.vims
-    else
-      tmux new -n Music ncmpcpp \; neww
-    fi
-  }
 fi
 
 if command -v brew >/dev/null
@@ -194,4 +186,9 @@ fi
 if command -v notes >/dev/null
 then
   alias td='notes o today'
+fi
+
+if command -v gpg2 >/dev/null
+then
+  gpg() { gpg2 "$@"; }
 fi

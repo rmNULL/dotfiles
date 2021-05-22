@@ -26,10 +26,6 @@ HISTCONTROL=erasedups:ignorespace
 HISTSIZE=8192
 HISTFILESIZE=12288
 
-if [[ -f ~/.bash_aliases ]]
-then
-  . ~/.bash_aliases
-fi
 
 x_running() {
   # don't check for x in MAC
@@ -45,6 +41,15 @@ x_running() {
 
 if command -v tmux >/dev/null
 then
+  tnew() {
+    if [[ -e ~/af/dirty/cccv.vims ]]
+    then
+      tmux new -n Music ncmpcpp \; neww vim -S ~/af/dirty/cccv.vims
+    else
+      tmux new -n Music ncmpcpp \; neww
+    fi
+  }
+
   if tmux has-session >/dev/null 2>&1
   then
     [[ -z $TMUX ]] && tmux attach -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'"
@@ -68,8 +73,7 @@ gen_prompt() {
     branch="$(git branch --show-current 2>/dev/null)"
   fi
 
-
-  if [[ $USER != "rmnull" ]]
+  if [[ "$USER" != "rmnull" ]] || [[ -n "$SSH_CONNECTION" ]]
   then
     user_prefix="\e[31;1m\u\e[0m @ \e[33;1m\h\e[0m"
   else
@@ -81,7 +85,6 @@ gen_prompt() {
   then
     hints+="\e[1;33m🍺\e[;0m"
   fi
-
 
   ORG_PROMPT="${user_prefix}: \e[47m\e[30m${branch:+${branch}}\e[0m ${hints} \e[38;5;227m\w\e[0m\n∫ "
 
@@ -167,16 +170,12 @@ else
   mpd
 fi > /dev/null 2>/dev/null
 
-
 if [[ -z "$PROMPT_COMMAND" ]]
 then
   PROMPT_COMMAND=gen_prompt
 else
   PROMPT_COMMAND="gen_prompt;${PROMPT_COMMAND}"
 fi
-
-# cure for ocd
-bind -x '"\C-l":"tput bel"'
 
 [[ -x /usr/libexec/java_home ]] && export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 [[ -f "${HOME}/.local/share/tessdata_best" ]] && export TESSDATA_PREFIX="/${HOME}/.local/share/tessdata_best"
@@ -188,4 +187,13 @@ then
   ssh-add -k ~/.ssh/sha-m64_gh
 fi
 
-true # ignore, error no in first prompt
+if [[ -e "$HOME"/.asdf ]]
+then
+  . "$HOME"/.asdf/asdf.sh
+  . "$HOME"/.asdf/completions/asdf.bash
+fi
+
+if [[ -f ~/.bash_aliases ]]
+then
+  . ~/.bash_aliases
+fi
