@@ -1,2 +1,16 @@
 #!/usr/bin/env bash
-wmctrl -xa $1 || $1
+[[ -z "$1" ]] && exit 1
+command_name="$1"
+current_desktop=$(wmctrl -d | awk '$2 == "*" { print $1 }')
+win_id=$(
+    wmctrl -xl \
+	| awk '$2 == '${current_desktop}' && tolower($3) ~ /'"${command_name}"'/ { print $1 }' \
+	| tail -n 1
+)
+
+if [[ -n "${win_id}" ]]
+then
+    wmctrl -ia "${win_id}"
+else
+    wmctrl -xa "${command_name}" || "${command_name}"
+fi
