@@ -50,7 +50,7 @@ then
     fi
   }
 
-  if tmux has-session >/dev/null 2>&1
+  if tmux has-session >/dev/null 2>&1  && [[ -z "$SSH_CONNECTION" ]]
   then
     [[ -z $TMUX ]] && tmux attach -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'"
   else
@@ -184,7 +184,7 @@ fi
 
 if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
-  ssh-add -k ~/.ssh/sha-m64_gh
+  ssh-add -k ~/.ssh/sha-m64_gh ~/.ssh/pi.key
 fi
 
 if [[ -e "$HOME"/.asdf ]]
