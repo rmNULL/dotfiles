@@ -192,3 +192,18 @@ if command -v gpg2 >/dev/null
 then
   gpg() { gpg2 "$@"; }
 fi
+
+
+if command -v emacsclient >/dev/null
+then
+  e() {
+    emacsclient -c -a "" "$@"
+  }
+
+  ec() {
+    for f in "$@"
+    do
+     e "$f"
+    done
+  }
+fi
