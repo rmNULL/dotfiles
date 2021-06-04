@@ -1,7 +1,7 @@
 [alias]
   a = add -u
   aa = add
-  b = pull
+  b = fetch
   br = branch
   c = commit
   co = checkout

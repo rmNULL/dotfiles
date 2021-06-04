@@ -104,7 +104,21 @@ fi
 # To uninstall a program, just rm -rf $HOME/local/someprogram
 #
 if [ -d $HOME/local ]; then
-  for i in $HOME/local/* $HOME/local/`uname -m`/*; do
+  pattern="$(echo -n "${HOME}/local/" | sed -e 's/\//\\\//g')[^:]*"
+
+  for i in PATH CPATH LD_RUN_PATH LD_LIBRARY_PATH PKG_CONFIG_PATH MANPATH
+  do
+    localess_v=$(echo -n "${!i}" \
+      | sed -e 's/'"^${pattern}:"'/:/' -e 's/'":${pattern}$"'/:/' -e 's/'":${pattern}"'/:/g' \
+      | sed -e 's/:::*/:/g' -e 's/^://' -e 's/:$//' \
+      | sed -e 's/'"^${pattern}$"'//g')
+
+    eval "${i}=\"${localess_v}\""
+  done
+  unset localess_v
+  unset pattern
+
+  for i in $HOME/local/* ; do
     [ -d $i/bin ] && prependpath "${i}/bin"
     [ -d $i/sbin ] && prependpath "${i}/sbin"
     [ -d $i/include ] && prepend_var "CPATH" "${i}/include"
@@ -117,13 +131,13 @@ if [ -d $HOME/local ]; then
     [ -d $i/lib/pkgconfig ] && prepend_var "PKG_CONFIG_PATH" "${i}/lib/pkgconfig"
     [ -d $i/share/man ] && prepend_var "MANPATH" "${i}/share/man"
   done
+  unset i
 
     # strip trailing colons
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH%:}
     export LD_RUN_PATH=${LD_RUN_PATH%:}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
 fi
-
 export PATH
 unset prependpath
 unset appendpath
@@ -131,12 +145,10 @@ unset append_var
 unset prepend_var
 
 
-
 export PYTHONDONTWRITEBYTECODE=1
-
 export HOMEBREW_DEVELOPER=1
-# export HOMEBREW_PATCHELF_RB=1
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
