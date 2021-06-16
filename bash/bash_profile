@@ -1,3 +1,4 @@
+# -*- sh -*-
 append_var() {
   local var=$1
   shift
@@ -133,10 +134,11 @@ if [ -d $HOME/local ]; then
   done
   unset i
 
-    # strip trailing colons
-    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH%:}
-    export LD_RUN_PATH=${LD_RUN_PATH%:}
-    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
+  export MANPATH="${MANPATH}:" # preserves default manpaths
+
+  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH%:}
+  export LD_RUN_PATH=${LD_RUN_PATH%:}
+  export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
 fi
 export PATH
 unset prependpath
