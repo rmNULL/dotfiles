@@ -66,10 +66,9 @@ then
 fi
 
 [[ -d "/opt/texlive/2019/bin/x86_64-linux" ]] && appendpath "/opt/texlive/2019/bin/x86_64-linux"
-[[ -d "$HOME/.local/bin" ]] && appendpath $HOME/.local/bin/
-[[ -d $HOME/.cargo/ ]] && prependpath $HOME/.cargo/bin
+[[ -d "$HOME"/.local/bin ]] && appendpath $HOME/.local/bin/
+[[ -d "$HOME"/.cargo/ ]] && prependpath $HOME/.cargo/bin
 [[ -d "$HOME/bin" ]] && prependpath $HOME/bin/
-# set +x
 
 if command -v composer > /dev/null ; then
   appendpath "$(composer global config bin-dir --absolute --quiet)"
@@ -146,12 +145,12 @@ unset appendpath
 unset append_var
 unset prepend_var
 
+export KUBE_MONGO_DUMP_DOCKER_CONTAINER="sw-mongo"
 
 export PYTHONDONTWRITEBYTECODE=1
 export HOMEBREW_DEVELOPER=1
 GPG_TTY=$(tty)
 export GPG_TTY
-
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
 [[ -f ~/.bashrc ]] && source ~/.bashrc
