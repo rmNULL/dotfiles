@@ -2,6 +2,7 @@ $include /etc/inputrc
 
 "\eF": shell-forward-word
 "\eB": shell-backward-word
+"\eh": backward-kill-word
 
 "\C-[": character-search-backward
 "\C-l": end-of-line
