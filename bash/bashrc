@@ -1,3 +1,4 @@
+# -*- sh -*-
 # This file is sourced by all *interactive* bash shells on startup,
 # including some apparently interactive shells such as scp and rcp
 # that can't tolerate any output.  So make sure this doesn't display
@@ -193,7 +194,24 @@ then
   . "$HOME"/.asdf/completions/asdf.bash
 fi
 
+if command -v emacs >/dev/null 2>/dev/null
+then
+
+  EMACS_DEFAULT_SERVER_NAME="eos"
+  export EMACS_DEFAULT_SERVER_NAME
+
+  {
+    for name in work media learn "${EMACS_DEFAULT_SERVER_NAME}"
+    do
+      emacs --daemon="${name}" >/dev/null 2>&1
+    done
+  } &
+  disown "$!"
+  unset log_dir
+fi
+
 if [[ -f ~/.bash_aliases ]]
 then
   . ~/.bash_aliases
 fi
+
