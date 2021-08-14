@@ -206,17 +206,3 @@ then
 fi
 
 
-if command -v emacsclient >/dev/null
-then
-  e() {
-    emacsclient -n -s "${EMACS_DEFAULT_SERVER_NAME:-eos}" -c -a "" "$@"
-  }
-
-  ec() {
-    for f in "$@"
-    do
-     e -- "$f"
-    done
-  }
-fi
-

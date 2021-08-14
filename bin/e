@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+e() {
+  emacsclient -n -s "${EMACS_DEFAULT_SERVER_NAME:-eos}" -c -a "" "$@"
+}
+
+if ! command -v emacsclient >/dev/null
+then
+   echo "e: emacsclient not installed" 2>/dev/null
+   exit 1
+fi
+
+e "$@"
