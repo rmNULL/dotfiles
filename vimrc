@@ -1,5 +1,5 @@
 " .vimrc
-" date: 29-Jul-2020
+" date: 24-Mar-2021
 " author(s): ehth77
 """"""""
 " Use Vim settings, rather than Vi settings (much better!).
@@ -163,10 +163,15 @@ if (strftime('%H') >= s:cs_dark_time[0]) || (strftime('%H') < s:cs_dark_time[1])
   colorscheme 256_noir
 else
   " set background=dark " change to light when colorscheme changes
-  let g:oceanic_next_terminal_bold = 1
-  let g:oceanic_next_terminal_italic = 1
-  colorscheme tender
+
+  " let g:oceanic_next_terminal_bold = 1
+  " let g:oceanic_next_terminal_italic = 1
+  " colorscheme OceanicNext
+
+  let ayucolor="mirage"
+  colorscheme ayu
 end
+
 
 if g:colors_name == "256_noir"
   set cursorline
@@ -176,6 +181,7 @@ if g:colors_name == "256_noir"
 else
   autocmd vimEnter,WinEnter,BufWinEnter,InsertLeave * setlocal cursorline
   autocmd WinLeave,InsertEnter * setlocal nocursorline
+  set nocursorline
 end
 
 set title " window title
@@ -203,7 +209,7 @@ let g:ale_lint_on_text_changed = 'never'
 " Rainbow parens for uber nesting
 augroup rainbow_parens
   autocmd!
-  autocmd! FileType clojure,sml,ruby,scheme,prolog,javascript RainbowParentheses
+  autocmd! FileType clojure,ruby,scheme,json,javascript,prolog RainbowParentheses
 augroup END
 
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['do', 'end']]
@@ -224,5 +230,3 @@ endfunction
 
 let g:user_emmet_install_global = 0
 autocmd FileType html,css,php EmmetInstall
-
-" autocmd BufWritePre * execute ':Autoformat'

@@ -19,4 +19,3 @@ let g:python3_host_prog = '/usr/bin/python3'
 
 "TODO: cleanup
 set tabstop=2 shiftwidth=2 expandtab
-

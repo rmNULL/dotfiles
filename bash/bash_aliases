@@ -111,9 +111,8 @@ alias tmp="pushd ${TMPDIR:-/tmp}"
 if command -v ffmpeg >/dev/null
 then
   srec() {
-    local out="${1:-/tmp/srec_${RANDOM}.webm}"
-    local display="${DISPLAY:-:0.0}"
-    ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i "${display}" "$out" -crf 0 -preset ultrafast && echo ">> $out"
+    out="${1:-/tmp/srec_${RANDOM}.webm}"
+    ffmpeg -video_size 1280x800 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
   }
 fi
 
@@ -216,6 +215,8 @@ fi
 if command -v notes >/dev/null
 then
   alias td='notes o today'
+else
+  alias td='vim ~/notes/today.md'
 fi
 
 if command -v gpg2 >/dev/null
