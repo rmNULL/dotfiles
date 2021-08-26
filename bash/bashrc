@@ -43,12 +43,9 @@ x_running() {
 if command -v tmux >/dev/null
 then
   tnew() {
-    if [[ -e ~/af/dirty/cccv.vims ]]
-    then
-      tmux new -n Music ncmpcpp \; neww vim -S ~/af/dirty/cccv.vims
-    else
-      tmux new -n Music ncmpcpp \; neww
-    fi
+    session_name=""
+    [[ -n "$1" ]] && session_name="-s$1"
+    tmux new -n Music "${session_name}" ncmpcpp \; neww
   }
 
   if tmux has-session >/dev/null 2>&1  && [[ -z "$SSH_CONNECTION" ]]
