@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eu
+
+if command -v wmctrl >/dev/null
+then
+  current_workspace="";
+  # side effect! converts multiple spaces to single space.
+  current_workspace=$(wmctrl -d | awk '$2 == "*" { for(i=10;i<=NF;++i) printf("%s ", $i); print ""; }')
+  echo "${current_workspace%% *}"
+fi

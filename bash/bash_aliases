@@ -78,17 +78,6 @@ then
   unset git_completion_file
 fi
 
-if command -v wmctrl >/dev/null
-then
-    get-current-workspace-name () {
-        local current_workspace="";
-        # side effect! converts multiple spaces to single space.
-        current_workspace=$(wmctrl -d | awk '$2 == "*" { for(i=10;i<=NF;++i) printf("%s ", $i); print ""; }')
-        echo "${current_workspace%% *}"
-    }
-fi
-
-
 # tmp is where I scratch my itch
 alias tmp="pushd ${TMPDIR:-/tmp}"
 if command -v ffmpeg >/dev/null
