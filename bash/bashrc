@@ -43,14 +43,22 @@ x_running() {
 if command -v tmux >/dev/null
 then
   tnew() {
-    session_name=""
+    local session_name=""
     [[ -n "$1" ]] && session_name="-s$1"
     tmux new -n Music "${session_name}" ncmpcpp \; neww
   }
 
   if tmux has-session >/dev/null 2>&1  && [[ -z "$SSH_CONNECTION" ]]
   then
-    [[ -z $TMUX ]] && tmux attach -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'"
+    [[ -z $TMUX ]] && {
+        ws_name=$(command -v get-current-workspace-name >/dev/null && get-current-workspace-name)
+        ws_name=$(echo "$ws_name" | tr '[:upper:]' '[:lower:]')
+        sarg=""
+        [[ -n "$ws_name" ]] && sarg="-t${ws_name}"
+        tmux attach-session "${sarg[@]}" -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'" || tmux attach
+        unset ws_name
+        unset sarg
+    }
   else
     ## if this list gets long better use tmuxinator
     x_running && tnew
