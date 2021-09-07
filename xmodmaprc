@@ -29,5 +29,9 @@ keycode 18 = parenleft 9
 keycode 19 = parenright 0
 
 ! --- make caps lock act as windows key
-clear lock
+! clear lock
 ! add Lock = Super_L
+
+! --- super L as F20 key
+! clear mod4
+! keycode 133 = F20
