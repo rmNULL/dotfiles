@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eu
+
+connect-only-if-not-connected() {
+    local device="wlp3s0"
+    local ssid="$1"
+    test -n "$ssid"
+
+    if ! nmcli dev | grep -w "$device" | grep -w connected >/dev/null 2>&1
+    then
+        nmcli connection up "${ssid}"
+    fi
+}
+
+WIFI_SSID="~pyramid"
+connect-only-if-not-connected "${WIFI_SSID}"

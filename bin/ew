@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+
+if ! command -v "get-current-workspace-name" >/dev/null
+then
+  echo "get-current-workspace-name name not defined."
+  exit 1
+fi
+
+ws_name=$(get-current-workspace-name)
+ws_name=$(echo "$ws_name" | tr '[:upper:]' '[:lower:]')
+
+case "${ws_name}" in
+  work|learn|media)
+    e -s "$ws_name"
+    ;;
+  *)
+    ;;
+esac
