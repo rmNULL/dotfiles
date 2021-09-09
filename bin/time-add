@@ -3,16 +3,17 @@ import sys
 from datetime import timedelta
 
 def parse_time(time):
-    seconds, minutes, hours, *_ = [*map(int, reversed(time.split(':'))), 0]
+    seconds, minutes, hours, *_ = [*map(int, reversed(time.strip(':').split(':'))), 0, 0]
     return {
         'hours': hours,
         'minutes': minutes,
         'seconds': seconds,
     }
 
-total_time = sum( 
-    (timedelta(**parse_time(time))
-     for time in sys.stdin.readlines()), 
+total_time = sum(
+    (timedelta(**parse_time(time.strip()))
+     for time in sys.stdin.readlines()
+     if time.strip()),
     start=timedelta(seconds=0))
 
-print(total_time)
+print('===>>', total_time)
