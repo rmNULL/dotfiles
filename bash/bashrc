@@ -190,7 +190,7 @@ fi
 
 if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
-  ssh-add -k ~/.ssh/sha-m64_gh ~/.ssh/pi.key
+  ssh-add -k ~/.ssh/sha-m64_bb ~/.ssh/pi.key
 fi
 
 if [[ -e "$HOME"/.asdf ]]
@@ -212,7 +212,6 @@ then
     done
   } &
   disown "$!"
-  unset log_dir
 fi
 
 if [[ -f ~/.bash_aliases ]]

@@ -54,6 +54,11 @@ then
   command -v bundle >/dev/null && alias bexec='bundle exec'
 fi
 
+if command -v julia >/dev/null
+then
+    alias jl="julia --depwarn=error"
+fi
+
 if command -v git >/dev/null
 then
   alias gi='git init'
@@ -83,8 +88,9 @@ alias tmp="pushd ${TMPDIR:-/tmp}"
 if command -v ffmpeg >/dev/null
 then
   srec() {
-    out="${1:-/tmp/srec_${RANDOM}.webm}"
-    ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
+    local out="${1:-/tmp/srec_${RANDOM}.webm}"
+    local display="${DISPLAY:-:0.0}"
+    ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i "${display}" "$out" -crf 0 -preset ultrafast && echo ">> $out"
   }
 fi
 
@@ -142,7 +148,7 @@ fi
 }
 
 command -v ipython 2>/dev/null >&2 && alias py=ipython
-command -v     mpv 2>/dev/null >&2 && alias play='mpv --no-video'
+command -v     mpv 2>/dev/null >&2 && alias play='mpv --volume=100 --no-video'
 if command -v tmux 2>/dev/null >&2
 then
   alias tt='tmux attach'
@@ -194,4 +200,7 @@ then
   gpg() { gpg2 "$@"; }
 fi
 
+alias d6='echo $((RANDOM % 6))'
+alias d12='echo $((RANDOM % 12))'
+alias d20='echo $((RANDOM % 20))'
 

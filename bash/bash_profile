@@ -65,7 +65,7 @@ then
   eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 fi
 
-[[ -d "/opt/texlive/2019/bin/x86_64-linux" ]] && appendpath "/opt/texlive/2019/bin/x86_64-linux"
+[[ -d "/opt/texlive/2021/bin/x86_64-linux" ]] && appendpath "/opt/texlive/2021/bin/x86_64-linux"
 [[ -d "$HOME"/.local/bin ]] && appendpath $HOME/.local/bin/
 [[ -d "$HOME"/.cargo/ ]] && prependpath $HOME/.cargo/bin
 [[ -d "$HOME/bin" ]] && prependpath $HOME/bin/
