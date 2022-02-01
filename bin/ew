@@ -12,7 +12,7 @@ ws_name=$(echo "$ws_name" | tr '[:upper:]' '[:lower:]')
 
 case "${ws_name}" in
   work|learn|media)
-    e -s "$ws_name"
+    e -s "$ws_name" "$@"
     ;;
   *)
     ;;
