@@ -136,7 +136,7 @@ Plug 'maralla/completor.vim'
 Plug 'mattn/emmet-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx', 'html']}
-Plug 'psf/black'
+" Plug 'psf/black'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
