@@ -27,6 +27,11 @@ HISTCONTROL=erasedups:ignorespace
 HISTSIZE=8192
 HISTFILESIZE=12288
 
+if ! command -v get-current-workspace-name >/dev/null
+then
+  get-current-workspace-name() { :; }
+fi
+
 
 x_running() {
   # don't check for x in MAC
@@ -45,24 +50,33 @@ then
   tnew() {
     local session_name=""
     [[ -n "$1" ]] && session_name="-s$1"
-    tmux new -n Music "${session_name}" ncmpcpp \; neww
+    shift || :
+    tmux new "$@" -n Music "${session_name}" ncmpcpp
   }
 
-  if tmux has-session >/dev/null 2>&1  && [[ -z "$SSH_CONNECTION" ]]
+  tattach() {
+    local sarg=""
+    [[ -n "$1" ]] && sarg="-t${1}"
+    tmux attach-session "${sarg[@]}" -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'" || tmux attach
+  }
+
+  ws_name=$(get-current-workspace-name | tr '[:upper:]' '[:lower:]')
+  session_name="${ws_name:=eos}"
+  if [[ -z "$SSH_CONNECTION" ]]
   then
-    [[ -z $TMUX ]] && {
-        ws_name=$(command -v get-current-workspace-name >/dev/null && get-current-workspace-name)
-        ws_name=$(echo "$ws_name" | tr '[:upper:]' '[:lower:]')
-        sarg=""
-        [[ -n "$ws_name" ]] && sarg="-t${ws_name}"
-        tmux attach-session "${sarg[@]}" -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'" || tmux attach
-        unset ws_name
-        unset sarg
-    }
-  else
-    ## if this list gets long better use tmuxinator
-    x_running && tnew
+    if tmux has-session -t "$session_name" >/dev/null 2>&1
+    then
+      [[ -z $TMUX ]] && tattach "$session_name"
+    else
+      tnew "$session_name" -d
+      x_running && {
+        tattach "$session_name"
+      }
+    fi
   fi
+
+  unset session_name
+  unset ws_name
 fi
 
 PREV_ORG_PROMPT=""
@@ -218,4 +232,3 @@ if [[ -f ~/.bash_aliases ]]
 then
   . ~/.bash_aliases
 fi
-
