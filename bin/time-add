@@ -16,4 +16,13 @@ total_time = sum(
      if time.strip()),
     start=timedelta(seconds=0))
 
-print('===>>', total_time)
+
+def main(argv):
+    display_seconds = argv[0] in ['--seconds', '-s']
+    if display_seconds:
+        print('===>>', total_time.seconds)
+    print('===>>', total_time)
+
+if __name__ == '__main__':
+    _prgm, *argv = sys.argv
+    main([*argv, 'dummy'])
