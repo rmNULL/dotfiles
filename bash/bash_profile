@@ -154,7 +154,7 @@ export GPG_TTY
 
 if [[ -r "${HOME}/.ripgreprc" ]]
 then
-    export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc "
+    export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc"
 fi
 
 # This file is sourced by bash for login shells.  The following line
