@@ -36,7 +36,16 @@ fi
 alias c.='cd ../'
 alias c..='cd ../../'
 alias c...='cd ../../../'
-
+alias c3.="cd ../../../"
+alias c4.="cd ../../../../"
+alias c5.="cd ../../../../../"
+alias c6.="cd ../../../../../../"
+alias c7.="cd ../../../../../../../"
+alias c8.="cd ../../../../../../../../"
+alias c9.="cd ../../../../../../../../../"
+# convenience
+alias c1.="c."
+alias c2.="c.."
 
 alias +r='chmod +r'
 alias +w='chmod +w'
