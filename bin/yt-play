@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+set -eu
+shopt -s extglob
+
+cmd_available() {
+    if ! command -v "$1" >/dev/null 2>&1
+    then
+        echo "$1 is not installed or not in path" >&2
+        return 1
+    fi
+}
+cmd_available youtube-dl
+cmd_available mpv
+cmd_available md5sum
+
+
+mdebug() {
+    echo "[$(date +%H:%M:%S)]:" "$@" >>/tmp/yt-play-debug.log
+}
+
+die() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/yt-play"
+mkdir -p "${CACHE_DIR}"
+
+get_cache_filename() {
+    local media_url="$1"
+    local fname
+    fname=$(echo "$media_url" | md5sum - | cut -d' ' -f1)
+
+    echo "${CACHE_DIR}/${fname}"
+}
+
+check_cache() {
+    local media_url="$1"
+    local url_file
+    url_file=$(get_cache_filename "$1")
+    if [[ -e "$url_file" ]]
+    then
+        cat "$url_file"
+    fi
+}
+
+cache() {
+    local media_url="$1"
+    local play_url="$2"
+
+    echo "$play_url" >"$(get_cache_filename "$media_url")"
+}
+
+
+get_play_url() {
+    local media_url="$1"
+    local caching="$2"
+    local play_url=""
+
+    if [[ "$caching" != "disabled" ]]
+    then
+        play_url=$(check_cache "$media_url")
+    fi
+
+    if [[ -z "$play_url" ]] || [[ "$caching" = "forced" ]]
+    then
+        play_url=$(youtube-dl --extract-audio --audio-format best --get-url "$media_url")
+    fi
+
+    if [[ "$caching" != "disabled" ]]
+    then
+        cache "$media_url" "$play_url"
+    fi
+
+    echo "$play_url"
+}
+
+PROGRAM_NAME="${0##*/}"
+show_help() {
+cat << EOF
+Usage: ${PROGRAM_NAME} [-h|-?|--help] [-c|--cache  CACHING] URL
+Play the requested url as audio using mpv.
+Uses youtube-dl to extract the media url.
+
+    -h          display this help and exit
+    -c CACHING  enable, disable or force cache of urls.
+
+    URL         media url to be played.
+EOF
+}
+
+media_url=""
+caching="enabled"
+
+while [[ "$#" -gt 0 ]]
+do
+    case $1 in
+        -h|-\?|--help)
+            show_help
+            exit
+            ;;
+        -c|--cache)
+            if [[ -n "$2" ]] && [[ "$2" = @(enable|disable|force) ]]
+            then
+                caching="${2}d"
+                shift
+            else
+                die "ERROR: '$1' expects one of enable | disable | force"
+            fi
+            ;;
+        -?*)
+            printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+            ;;
+        *)
+            break
+    esac
+
+    shift
+done
+
+if [[ "$#" -eq 0 ]]
+then
+    show_help
+    die "no media URL provided for playing"
+else
+    media_url="$1"
+fi
+
+get_play_url "$media_url" "$caching" | mpv --no-video --playlist="-"
