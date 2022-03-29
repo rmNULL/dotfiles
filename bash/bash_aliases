@@ -20,8 +20,21 @@ then
   alias ++='sudo xbps-install '
   alias +u='sudo xbps-install -Su'
   alias +-='sudo xbps-remove '
-  alias '?'='xbps-query -Rs '
-  alias '??'='xbps-query '
+  +Q () {
+      if [[ -n "$1" ]]
+      then
+          xbps-query -Rs "$1" --regex
+      fi
+  }
+
+  +q () {
+      if [[ "$#" -gt 0 ]]
+      then
+          xbps-query "$@"
+      else
+          xbps-query --help
+      fi
+  }
 fi
 
 if $OS_MAC
@@ -213,3 +226,16 @@ alias d6='echo $((RANDOM % 6))'
 alias d12='echo $((RANDOM % 12))'
 alias d20='echo $((RANDOM % 20))'
 
+pt() {
+  pdftotext -layout -fixed 3 "$1" -
+}
+
+baking() {
+  if [[ $# -ne 2 ]]
+  then
+    echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
+    return
+  fi
+
+  pt "$2" | ruby "$1"
+}
