@@ -28,5 +28,9 @@
   helper = cache
 [gpg]
   program = gpg2
+[init]
+  defaultBranch = main
+[pull]
+  ff = only
 [includeIf "gitdir:~/work/"]
   path = ~/work/.gitconfig
