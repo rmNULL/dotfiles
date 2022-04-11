@@ -8,30 +8,68 @@ keysym     Alt_L = Control_L
 add    mod1 =     Alt_L
 add control = Control_L
 
+! --- escape lock
+clear lock
+keycode 66 = Escape Escape Escape Escape
+add lock = Caps_Lock
+
+! --- taken from oremacs
+! --- (semi)colon key as mode switch
+clear mod5
+keycode  47 = Mode_switch Mode_switch Mode_switch
+add mod5 = Mode_switch Mode_switch Mode_switch
+
+
 ! interchange Left-and-right mouse clicks
-pointer = 3 2 1
+pointer = 3 2 1 4 5 6 7 8 9 10
 
-keycode 49 = asciitilde grave
-
-! swap (shift+) keys of num row, relaying on keycode is bad(portability issues)
-! generated using
-! > xmodmap -pk | tail -n +8 | head | awk ' { print "keycode", $1, "=", gensub("[()]", "", "g", $5) , gensub("[()]", "", "g", $3) }'
-
-keycode 10 = exclam 1
-keycode 11 = at 2
-keycode 12 = numbersign 3
-keycode 13 = dollar 4
-keycode 14 = percent 5
-keycode 15 = asciicircum 6
-keycode 16 = ampersand 7
-keycode 17 = asterisk 8
-keycode 18 = parenleft 9
-keycode 19 = parenright 0
-
-! --- make caps lock act as windows key
-! clear lock
-! add Lock = Super_L
-
-! --- super L as F20 key
 ! clear mod4
 ! keycode 133 = F20
+
+! relaying on keycode is bad(portability issues)
+keycode 49 = asciitilde grave
+keycode 10 = 1 exclam onesubscript
+keycode 11 = 2 at twosubscript
+keycode 12 = 3 numbersign threesubscript
+keycode 13 = 4 dollar foursubscript
+keycode 14 = 5 percent fivesubscript
+keycode 15 = 6 asciicircum sixsubscript
+keycode 16 = 7 ampersand sevensubscript
+keycode 17 = 8 asterisk eightsubscript
+keycode 18 = 9 parenleft ninesubscript
+keycode 19 = 0 parenright zerosubscript
+
+
+!! capital greek letters will be replaced in future, its kept as a placeholder for now
+!!
+keycode  24 = q Q Greek_THETA Greek_theta
+keycode  25 = w W semicolon Greek_omega
+keycode  26 = e E equal elementof
+keycode  27 = r R Greek_RHO Greek_rho
+keycode  28 = t T Greek_TAU Greek_tau
+keycode  29 = y Y Greek_PSI Greek_psi
+keycode  30 = u U Greek_UPSILON Greek_upsilon
+keycode  31 = i I parenleft Greek_iota
+keycode  32 = o O parenright Greek_omicron
+keycode  33 = p P Greek_PI Greek_pi
+!!
+keycode  38 = a A minus Greek_alpha
+keycode  39 = s S underscore integral
+keycode  40 = d D colon Greek_delta
+keycode  41 = f F Greek_PHI Greek_phi
+keycode  42 = g G greater Greek_gamma
+keycode  43 = h H Greek_ETA Greek_eta
+keycode  44 = j J KP_Enter KP_Enter
+keycode  45 = k K BackSpace BackSpace
+keycode  46 = l L less less
+keycode  48 = apostrophe quotedbl grave quotedbl
+!!
+keycode  52 = z Z Greek_ZETA Greek_zeta
+keycode  53 = x X Greek_CHI Greek_chi
+keycode  54 = c C Greek_XI Greek_xi
+keycode  55 = v V Greek_lambda Greek_lambda
+keycode  56 = b B Greek_BETA Greek_beta
+keycode  57 = n N Greek_NU Greek_nu
+keycode  58 = m M Greek_MU Greek_mu
+!!
+keycode  77 = Num_Lock Caps_Lock Num_Lock
