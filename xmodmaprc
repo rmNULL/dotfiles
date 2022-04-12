@@ -27,40 +27,41 @@ pointer = 3 2 1 4 5 6 7 8 9 10
 ! keycode 133 = F20
 
 ! relaying on keycode is bad(portability issues)
-keycode 49 = asciitilde grave
-keycode 10 = 1 exclam onesubscript
-keycode 11 = 2 at twosubscript
-keycode 12 = 3 numbersign threesubscript
-keycode 13 = 4 dollar foursubscript
-keycode 14 = 5 percent fivesubscript
-keycode 15 = 6 asciicircum sixsubscript
-keycode 16 = 7 ampersand sevensubscript
-keycode 17 = 8 asterisk eightsubscript
-keycode 18 = 9 parenleft ninesubscript
-keycode 19 = 0 parenright zerosubscript
+! U221b, U221a = ∛ √
+keycode 49 = asciitilde grave U221B U221A
+keycode 10 = 1 exclam onesuperior onesubscript
+keycode 11 = 2 at twosuperior twosubscript
+keycode 12 = 3 numbersign threesuperior threesubscript
+keycode 13 = 4 dollar foursuperior foursubscript
+keycode 14 = 5 percent fivesuperior fivesubscript
+keycode 15 = 6 asciicircum sixsuperior sixsubscript
+keycode 16 = 7 ampersand sevensuperior sevensubscript
+keycode 17 = 8 asterisk eightsuperior eightsubscript
+keycode 18 = 9 parenleft ninesuperior ninesubscript
+keycode 19 = 0 parenright zerosuperior zerosubscript
 
 
 !! capital greek letters will be replaced in future, its kept as a placeholder for now
 !!
-keycode  24 = q Q Greek_THETA Greek_theta
-keycode  25 = w W semicolon Greek_omega
+keycode  24 = q Q semicolon Greek_theta
+keycode  25 = w W Greek_OMEGA Greek_omega
 keycode  26 = e E equal elementof
 keycode  27 = r R Greek_RHO Greek_rho
 keycode  28 = t T Greek_TAU Greek_tau
 keycode  29 = y Y Greek_PSI Greek_psi
 keycode  30 = u U Greek_UPSILON Greek_upsilon
 keycode  31 = i I parenleft Greek_iota
-keycode  32 = o O parenright Greek_omicron
+keycode  32 = o O Greek_OMICRON Greek_omicron
 keycode  33 = p P Greek_PI Greek_pi
 !!
 keycode  38 = a A minus Greek_alpha
 keycode  39 = s S underscore integral
-keycode  40 = d D colon Greek_delta
+keycode  40 = d D BackSpace BackSpace
 keycode  41 = f F Greek_PHI Greek_phi
 keycode  42 = g G greater Greek_gamma
 keycode  43 = h H Greek_ETA Greek_eta
-keycode  44 = j J KP_Enter KP_Enter
-keycode  45 = k K BackSpace BackSpace
+keycode  44 = j J Return Return
+keycode  45 = k K colon Greek_kappa
 keycode  46 = l L less less
 keycode  48 = apostrophe quotedbl grave quotedbl
 !!
