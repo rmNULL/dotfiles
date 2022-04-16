@@ -68,7 +68,8 @@ keycode  43 = h H Greek_ETA Greek_eta
 keycode  44 = j J Return Return
 keycode  45 = k K colon Greek_kappa
 keycode  46 = l L less less
-keycode  48 = apostrophe quotedbl grave quotedbl
+! skip the binding, bad ergonomics considering colon as mod-switch.
+keycode  48 = apostrophe quotedbl apostrophe quotedbl
 !!
 keycode  52 = z Z Greek_ZETA Greek_zeta
 keycode  53 = x X Greek_CHI Greek_chi
