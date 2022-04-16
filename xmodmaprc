@@ -46,7 +46,6 @@ keycode 17 = 8 asterisk eightsuperior eightsubscript
 keycode 18 = 9 parenleft ninesuperior ninesubscript
 keycode 19 = 0 parenright zerosuperior zerosubscript
 
-
 !! capital greek letters will be replaced in future, its kept as a placeholder for now
 !!
 keycode  24 = q Q semicolon Greek_theta
@@ -74,7 +73,7 @@ keycode  48 = apostrophe quotedbl grave quotedbl
 keycode  52 = z Z Greek_ZETA Greek_zeta
 keycode  53 = x X Greek_CHI Greek_chi
 keycode  54 = c C Greek_XI Greek_xi
-keycode  55 = v V Greek_lambda Greek_lambda
+keycode  55 = v V Greek_LAMBDA Greek_lambda
 keycode  56 = b B Greek_BETA Greek_beta
 keycode  57 = n N Greek_NU Greek_nu
 keycode  58 = m M Greek_MU Greek_mu
