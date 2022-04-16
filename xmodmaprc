@@ -79,4 +79,5 @@ keycode  56 = b B Greek_BETA Greek_beta
 keycode  57 = n N Greek_NU Greek_nu
 keycode  58 = m M Greek_MU Greek_mu
 !!
+keycode  65 = space NoSymbol U1F496 U1F338
 keycode  77 = Num_Lock Caps_Lock Num_Lock
