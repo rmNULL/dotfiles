@@ -220,7 +220,7 @@ then
   export EMACS_DEFAULT_SERVER_NAME
 
   {
-    for name in work media learn "${EMACS_DEFAULT_SERVER_NAME}"
+    for name in  "${EMACS_DEFAULT_SERVER_NAME}" # work media learn
     do
       emacs --daemon="${name}" >/dev/null 2>&1
     done
