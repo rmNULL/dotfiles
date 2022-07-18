@@ -6,7 +6,7 @@ connect-only-if-not-connected() {
     local ssid="$1"
     test -n "$ssid"
 
-    if ! nmcli dev | grep -w "$device" | grep -w connected >/dev/null 2>&1
+    if ! nmcli dev | grep -w "$device" | grep -w connected >/dev/null 2>&1 || ! ping -w 2 8.8.8.8 >/dev/null 2>&1
     then
         nmcli connection up "${ssid}"
     fi
