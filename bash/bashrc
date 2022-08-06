@@ -197,10 +197,10 @@ else
   PROMPT_COMMAND="gen_prompt;${PROMPT_COMMAND}"
 fi
 
-[[ -x /usr/libexec/java_home ]] && export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+# [[ -x /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home -v 1.8) && export JAVA_HOME
 [[ -e "${HOME}/.local/share/tessdata_best" ]] && export TESSDATA_PREFIX="${HOME}/.local/share/tessdata_best"
 
-[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
+# [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
 
 if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
