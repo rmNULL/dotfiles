@@ -145,8 +145,8 @@ fi
 if [[ -f ~/.fzf.bash ]]
 then
   source ~/.fzf.bash
-  FZF_CTRL_T_COMMAND='fd . -0'
-  FZF_CTRL_T_OPTS='--read0'
+  export FZF_CTRL_T_COMMAND='fd . -0'
+  export FZF_CTRL_T_OPTS='--read0'
 fi
 
 if command -v zoxide >/dev/null
