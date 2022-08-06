@@ -216,16 +216,17 @@ fi
 if command -v emacs >/dev/null 2>/dev/null
 then
 
-  EMACS_DEFAULT_SERVER_NAME="eos"
-  export EMACS_DEFAULT_SERVER_NAME
+    EMACS_DEFAULT_SERVER_NAME="eos"
+    export EMACS_DEFAULT_SERVER_NAME
 
-  {
     for name in  "${EMACS_DEFAULT_SERVER_NAME}" # work media learn
     do
-      emacs --daemon="${name}" >/dev/null 2>&1
+        if ! emacsclient -u -s "$name" -e 't'
+        then
+            emacs --daemon="${name}" >/dev/null 2>&1 &
+            disown "$!"
+        fi
     done
-  } &
-  disown "$!"
 fi
 
 if [[ -f ~/.bash_aliases ]]
