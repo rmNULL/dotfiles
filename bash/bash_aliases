@@ -68,6 +68,7 @@ alias w-='chmod -w'
 alias x-='chmod -x'
 
 alias mkdir='mkdir -p'
+alias ping='ping -w 4 -c 3'
 if command -v ruby >/dev/null
 then
   alias ruby='ruby -w'
