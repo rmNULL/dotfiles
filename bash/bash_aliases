@@ -112,7 +112,7 @@ if command -v ffmpeg >/dev/null
 then
   srec() {
     out="${1:-/tmp/srec_${RANDOM}.webm}"
-    ffmpeg -video_size 1280x800 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
+    ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
   }
 fi
 
