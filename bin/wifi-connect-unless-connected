@@ -12,5 +12,5 @@ connect-only-if-not-connected() {
     fi
 }
 
-WIFI_SSID="~pyramid"
+WIFI_SSID="~sand"
 connect-only-if-not-connected "${WIFI_SSID}"
