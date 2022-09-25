@@ -17,7 +17,7 @@ alias egrep='grep -E'
 
 if [[ -n $OS ]] && [[ $OS = *Linux* ]]
 then
-  alias ++='sudo xbps-install '
+  alias ++='sudo xbps-install -y'
   alias +u='sudo xbps-install -Su'
   alias +-='sudo xbps-remove '
   +Q () {
