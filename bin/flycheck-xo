@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+##
+## temporary work around for xo
+## xo doesn't respect config settings when ran from nested dir
+##
+set -eu
+
+find_project_root() {
+    local PROJECT_ROOT
+    PROJECT_ROOT="$(realpath $1)"
+    if ! [[ -d "$PROJECT_ROOT" ]]
+    then
+        PROJECT_ROOT="$(dirname ${PROJECT_ROOT})"
+    fi
+    while [[ "${PROJECT_ROOT}" != "/" ]] && ! [[ -e "${PROJECT_ROOT}/package.json" ]]
+    do
+        PROJECT_ROOT="$(dirname ${PROJECT_ROOT})"
+    done
+    echo "$PROJECT_ROOT"
+}
+
+PROJECT_ROOT=$(find_project_root "$(pwd)")
+if [[ -d "${PROJECT_ROOT}" ]] &&  [[ "${PROJECT_ROOT}" != "/" ]]
+then
+    cd "$PROJECT_ROOT"
+    npx xo "$@"
+else
+    echo "couldn't find the project root. Reached '$PROJECT_ROOT'"
+    exit 1
+fi
