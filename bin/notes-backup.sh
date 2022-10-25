@@ -10,7 +10,8 @@ then
 fi
 notes_dir="${HOME}/notes"
 readable_date=$(date '+%d-%b-%Y')
-tarball_name="notes-${readable_date}.tar.gz"
+prefix=$(basename "${notes_dir}")
+tarball_name="${prefix}-${readable_date}.tar.gz"
 notes_tar="${backup_dir}/${tarball_name}"
 encrypted_notes_tar="${notes_tar}.gpg"
 
