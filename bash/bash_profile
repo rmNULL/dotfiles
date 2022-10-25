@@ -156,6 +156,15 @@ then
 fi
 
 export GPODDER_HOME="${HOME}/Music/Pods/gPodder"
+
+JAVA_HOME="/usr/lib/jvm/openjdk11/"
+if [[ -d "${JAVA_HOME}" ]]
+then
+    export JAVA_HOME
+else
+    unset JAVA_HOME
+fi
+
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
 [[ -f ~/.bashrc ]] && source ~/.bashrc
