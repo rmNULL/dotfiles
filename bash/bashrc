@@ -106,7 +106,7 @@ gen_prompt() {
         hints+="\e[1;33m🍺\e[;0m"
     fi
 
-    ORG_PROMPT="${user_prefix}: \e[47m\e[30m${branch:+${branch}}\e[0m ${hints} \e[38;5;227m\w\e[0m\n∫ "
+    ORG_PROMPT="${user_prefix}${user_prefix:+:}${branch:+ }\e[47m\e[30m${branch:+${branch}}\e[0m ${hints}${hints:+ }\e[38;5;227m\w\e[0m\n∫ "
 
     if [[ -z $PREV_ORG_PROMPT ]]
     then
