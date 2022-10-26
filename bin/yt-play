@@ -79,14 +79,17 @@ get_play_url() {
 PROGRAM_NAME="${0##*/}"
 show_help() {
 cat << EOF
-Usage: ${PROGRAM_NAME} [-h|-?|--help] [-c|--cache  CACHING] URL
 Play the requested url as audio using mpv.
 Uses youtube-dl to extract the media url.
 
+USAGE: ${PROGRAM_NAME} [-h|-?|--help] [-c|--cache  CACHING] [-s|--search SEARCH] URL
+
     -h          display this help and exit
     -c CACHING  enable, disable or force cache of urls.
+                CACHING must be one of 'enable | disable | force'
 
-    URL         media url to be played.
+    -s SEARCH   search for SEARCH in youtube and play the first found match
+    URL         media url to be played. This is optional when a search term is passed.
 EOF
 }
 
@@ -101,13 +104,22 @@ do
             exit
             ;;
         -c|--cache)
-            if [[ -n "$2" ]] && [[ "$2" = @(enable|disable|force) ]]
+            if [[ "$#" -lt 2 ]] || [[ "$2" != @(enable|disable|force) ]]
             then
-                caching="${2}d"
-                shift
-            else
-                die "ERROR: '$1' expects one of enable | disable | force"
+                die "ERROR: '$1' option expects one of enable | disable | force"
             fi
+
+            caching="${2}d"
+            shift
+            ;;
+        -s|--search)
+            if [[ "$#" -lt 2 ]]
+            then
+                die "ERROR: a search term should follow '$1'"
+            fi
+
+            media_url="ytsearch:$2"
+            shift
             ;;
         -?*)
             printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
@@ -119,12 +131,10 @@ do
     shift
 done
 
-if [[ "$#" -eq 0 ]]
+if [[ "$#" -eq 0 ]] && [[ -z "$media_url" ]]
 then
-    show_help
-    die "no media URL provided for playing"
-else
-    media_url="$1"
+    die "ERROR: no media URL provided for playing. pass --help to see usage instructions"
 fi
 
+media_url="${media_url:-$1}"
 get_play_url "$media_url" "$caching" | mpv --no-video --playlist="-"
