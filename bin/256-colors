@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# -*- sh -*-
+set -eu
+
+text=""
+if [[ $# -gt 0 ]]
+then
+    text="$1"
+fi
+
+[[ -z "$text" ]] && text="🐃"
+
+# foreground = 38
+# background = 48
+for j in {0..15}
+do
+    for i in {0..15}
+    do
+        color_code=$(( j * 16 + i ))
+        echo -en "\e[38;5;${color_code}m${text}\e[0m "
+    done
+    echo
+done
