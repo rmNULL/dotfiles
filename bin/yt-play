@@ -136,5 +136,18 @@ then
     die "ERROR: no media URL provided for playing. pass --help to see usage instructions"
 fi
 
+play() {
+    media_url="$1"
+    caching="$2"
+    get_play_url "$media_url" "$caching" | mpv --no-video --playlist="-"
+}
+
 media_url="${media_url:-$1}"
-get_play_url "$media_url" "$caching" | mpv --no-video --playlist="-"
+ec=0
+play "$media_url" "$caching" || ec="$?"
+if [[ "$ec" -eq 2 ]] && [[ "$caching" = "enabled" ]]
+then
+    echo "likely failed due to cache issue. Retrying.."
+    caching="forced"
+    play "$media_url" "$caching"
+fi
