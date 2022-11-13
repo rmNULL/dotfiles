@@ -1,4 +1,7 @@
 # -*- sh -*-
+HOSTNAME=$(hostname)
+HOSTNAME="${HOSTNAME:-eos}"
+export HOSTNAME
 append_var() {
   local var=$1
   shift
@@ -103,7 +106,8 @@ fi
 #    make install
 #
 # To uninstall a program, just rm -rf $HOME/local/someprogram
-#
+#============
+# TODO: get rid of this, as guix/nix based package installations are much better!
 if [ -d $HOME/local ]; then
   pattern="$(echo -n "${HOME}/local/" | sed -e 's/\//\\\//g')[^:]*"
 
@@ -140,6 +144,28 @@ if [ -d $HOME/local ]; then
   export LD_RUN_PATH=${LD_RUN_PATH%:}
   export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
 fi
+
+if [[ -e "$HOME"/.asdf ]]
+then
+    ## modifies path!
+    . "$HOME"/.asdf/asdf.sh
+    . "$HOME"/.asdf/completions/asdf.bash
+fi
+
+if [[ -f ~/.fzf.bash ]]
+then
+    ## modifies path!
+    source ~/.fzf.bash
+    export FZF_CTRL_T_COMMAND='fd . -0'
+    export FZF_CTRL_T_OPTS='--read0'
+fi
+
+## modifies path!
+GUIX_PROFILE="${HOME}/.guix-profile"
+. "$GUIX_PROFILE/etc/profile"
+. "${HOME}/.config/guix/current/etc/profile"
+unset GUIX_PROFILE
+
 export PATH
 unset prependpath
 unset appendpath
@@ -165,6 +191,7 @@ else
     unset JAVA_HOME
 fi
 
-# This file is sourced by bash for login shells.  The following line
-# runs your .bashrc and is recommended by the bash info pages.
+[[ -d "${HOME}/.local/share/tessdata_best" ]] && export TESSDATA_PREFIX="${HOME}/.local/share/tessdata_best"
+
+
 [[ -f ~/.bashrc ]] && source ~/.bashrc

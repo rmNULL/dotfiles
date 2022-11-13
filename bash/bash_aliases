@@ -12,6 +12,15 @@ alias la='ls -A'
 alias l1='ls -1'
 alias l='ls -CF'
 
+if command -v exa >/dev/null 2>/dev/null
+then
+    alias l="exa --group-directories-first"
+    alias ls="l"
+    alias ll="ls -l --no-permissions --octal-permissions"
+    alias la="ls -a"
+    alias l1="ls -1"
+fi
+
 alias grep='grep --color=auto'
 alias egrep='grep -E'
 
@@ -43,6 +52,16 @@ then
   alias +u='brew update '
   alias +-='brew uninstall '
   alias '?'='brew search '
+fi
+
+if command -v guix >/dev/null
+then
+    alias gx='guix'
+    alias gxi='guix install'
+    alias gxp='guix package'
+    alias gxq='guix search'
+    alias gxs='guix shell'
+    alias gxu='guix pull'
 fi
 
 # if you need anything more than this better find an external tool(add a new line ;)
@@ -82,6 +101,14 @@ then
     alias jl="julia --depwarn=error"
 fi
 
+if command -v npm >/dev/null
+then
+    alias Ν="npm run"
+    alias ΝΝ="npm run start"
+    alias ΝΒ="npm run build"
+    alias ΝΜ="npm run dev"
+fi
+
 if command -v git >/dev/null
 then
   alias gi='git init'
@@ -110,18 +137,33 @@ fi
 alias tmp="pushd ${TMPDIR:-/tmp}"
 if command -v ffmpeg >/dev/null
 then
-  srec() {
-    out="${1:-/tmp/srec_${RANDOM}.webm}"
-    ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0 "$out" -crf 0 -preset ultrafast && echo ">> $out"
-  }
+    srec() {
+        if [[ $# -gt 0 ]]
+        then
+            echo -e "WARN: doesn't accept any args. Ignoring all the arguments\n\n"
+        fi
+
+        local date_format=$(date --iso-8601=minutes)
+        local save_dir="${HOME}/Videos/screenrecords"
+        local out="${save_dir}/srec_${date_format}.webm"
+        local display=${DISPLAY:-0.0}
+        mkdir -p "$save_dir"
+        ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i "$display" "$out" -crf 0 -preset ultrafast && echo "saved to $out"
+    }
 fi
 
 if command -v scrot >/dev/null
 then
-  scap() {
-    out="${1:-scap.png}"
-    scrot -d 2 -s "${TMPDIR:-/tmp}/${out}"
-  }
+    scap() {
+        local save_dir="/tmp/scaps/"
+        mkdir -p "$save_dir"
+        ## one of 'window' | 'select' | 'screen'
+        local shot_mode="select" shot_mode_flag="-s"
+        local delay=0
+        local save_as="${save_dir}/#%s-${shot_mode}.png"
+
+        scrot -d "$delay" "$shot_mode_flag" "$save_as"
+    }
 fi
 
 
@@ -162,82 +204,108 @@ then
   alias vim='nvim'
 fi
 
-[[ -n $EDITOR ]] && {
-  for rc in "vimrc" "bashrc" "irbrc"
-  do
-    alias $rc="$EDITOR $HOME/.${rc}"
-  done
-}
+for rc in "vimrc" "bashrc" "irbrc"
+do
+    alias $rc='$EDITOR '"$HOME/.${rc}"
+done
 
 command -v ipython 2>/dev/null >&2 && alias py=ipython
 command -v     mpv 2>/dev/null >&2 && alias play='mpv --volume=100 --no-video'
 if command -v tmux 2>/dev/null >&2
 then
-  alias tt='tmux attach'
+    tnew() {
+        local session_name=""
+        [[ -n "$1" ]] && session_name="-s$1"
+        shift || :
+        tmux new "$@" -n Music "${session_name}" ncmpcpp \; new-window "$SHELL"
+    }
+
+    tattach() {
+        local sarg=""
+        [[ -n "$1" ]] && sarg="-t${1}"
+        tmux attach-session "${sarg[@]}" -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'" || tmux attach
+    }
+
+    tattachws() {
+        local ws_name="" session_name=""
+
+        ws_name=$(get-current-workspace-name | tr '[:upper:]' '[:lower:]')
+        session_name="${ws_name:=${HOSTNAME}}"
+        if [[ -z "$SSH_CONNECTION" ]]
+        then
+            if tmux has-session -t "$session_name" >/dev/null 2>&1
+            then
+                [[ -z $TMUX ]] && tattach "$session_name"
+            else
+                tnew "$session_name" -d
+                x_running && {
+                    tattach "$session_name"
+                }
+            fi
+        fi
+        true
+    }
 fi
 
-if command -v brew >/dev/null
-then
-  alias b="brew"
-  alias br='brew ruby'
-  alias bi='brew irb'
-  alias bu='brew up'
-fi
+# if command -v brew >/dev/null
+# then
+#   alias b="brew"
+#   alias br='brew ruby'
+#   alias bi='brew irb'
+#   alias bu='brew up'
+# fi
 
-if command -v patchelf >/dev/null
-then
-  alias pef='patchelf'
-  alias pelf='patchelf'
+# if command -v patchelf >/dev/null
+# then
+#   alias pef='patchelf'
+#   alias pelf='patchelf'
 
-  alias pefi='patchelf --print-interpreter'
-  alias pelfi='patchelf --print-interpreter'
+#   alias pefi='patchelf --print-interpreter'
+#   alias pelfi='patchelf --print-interpreter'
 
-  alias pefr='patchelf --force-rpath --print-rpath'
-  alias pelfr='patchelf --force-rpath --print-rpath'
+#   alias pefr='patchelf --force-rpath --print-rpath'
+#   alias pelfr='patchelf --force-rpath --print-rpath'
 
-  alias pefsi='patchelf --set-interpreter'
-  alias pelfsi='patchelf --set-interpreter'
+#   alias pefsi='patchelf --set-interpreter'
+#   alias pelfsi='patchelf --set-interpreter'
 
-  alias pefsr='patchelf --force-rpath --set-rpath'
-  alias pelfsr='patchelf --force-rpath --set-rpath'
-fi
+#   alias pefsr='patchelf --force-rpath --set-rpath'
+#   alias pelfsr='patchelf --force-rpath --set-rpath'
+# fi
 
-if command -v patchelf.rb >/dev/null
-then
-  alias prb='patchelf.rb'
-  alias prbi='patchelf.rb --print-interpreter'
-  alias prbr='patchelf.rb --force-rpath --print-runpath'
+# if command -v patchelf.rb >/dev/null
+# then
+#   alias prb='patchelf.rb'
+#   alias prbi='patchelf.rb --print-interpreter'
+#   alias prbr='patchelf.rb --force-rpath --print-runpath'
 
-  alias prbsi='patchelf.rb --set-interpreter'
-  alias prbsr='patchelf.rb --force-rpath --set-runpath'
-fi
-
-if command -v notes >/dev/null
-then
-  alias td='notes o today'
-else
-  alias td='vim ~/notes/today.md'
-fi
+#   alias prbsi='patchelf.rb --set-interpreter'
+#   alias prbsr='patchelf.rb --force-rpath --set-runpath'
+# fi
 
 if command -v gpg2 >/dev/null
 then
   gpg() { gpg2 "$@"; }
 fi
 
+alias d2='echo $((RANDOM % 2))'
+alias d3='echo $((RANDOM % 3))'
+alias d4='echo $((RANDOM % 4))'
+alias d5='echo $((RANDOM % 5))'
 alias d6='echo $((RANDOM % 6))'
 alias d12='echo $((RANDOM % 12))'
 alias d20='echo $((RANDOM % 20))'
 
-pt() {
-  pdftotext -layout -fixed 3 "$1" -
-}
+# pt() {
+#   pdftotext -layout -fixed 3 "$1" -
+# }
 
-baking() {
-  if [[ $# -ne 2 ]]
-  then
-    echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
-    return
-  fi
+# baking() {
+#   if [[ $# -ne 2 ]]
+#   then
+#     echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
+#     return
+#   fi
 
-  pt "$2" | ruby "$1"
-}
+#   pt "$2" | ruby "$1"
+# }
