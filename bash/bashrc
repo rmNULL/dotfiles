@@ -17,9 +17,6 @@ fi
 # Don't execute commands when match fails
 # shopt -s failglob
 
-OS=$(uname -s)
-OS_MAC=$([[ $OS = *Darwin* ]] && echo "true" || echo "false")
-
 # overwrite duplicate history
 HISTCONTROL=erasedups:ignorespace
 
@@ -31,18 +28,6 @@ if ! command -v get-current-workspace-name >/dev/null
 then
     get-current-workspace-name() { :; }
 fi
-
-x_running() {
-    # don't check for x in MAC
-    $OS_MAC && return 0;
-    if command -v xhost >/dev/null
-    then
-        xhost >/dev/null 2>&1
-    else
-        echo "xhost is not installed, can't detect whether x is running or not." >&2;
-        return 0
-    fi
-}
 
 PREV_ORG_PROMPT=""
 
@@ -143,11 +128,6 @@ else
 fi > /dev/null 2>/dev/null
 
 
-if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
-then
-    ssh-add -k ~/.ssh/pi.key
-fi
-
 ## conda init startup times are slow, and i don't use it often
 conda_shell() {
     # >>> conda initialize >>>
@@ -165,6 +145,13 @@ conda_shell() {
     unset __conda_setup
     # <<< conda initialize <<<
 }
+
+if [[ -e "${HOME}/.fzf" ]]
+then
+    source "/home/rmnull/.fzf/shell/completion.bash"
+    source "/home/rmnull/.fzf/shell/key-bindings.bash"
+fi
+
 
 # Automatically added by the Guix install script.
 if [ -n "$GUIX_ENVIRONMENT" ]; then
@@ -185,14 +172,6 @@ then
     . ~/.bash_aliases
 fi
 
-if ! $OS_MAC
-then
-    if ! x_running  && [[ -z "$SSH_CONNECTION" ]]
-    then
-        startx
-    fi
-fi
-
 if command -v emacs >/dev/null 2>/dev/null
 then
     EMACS_DEFAULT_SERVER_NAME="$HOSTNAME"
@@ -200,7 +179,7 @@ then
 
     for name in  "${EMACS_DEFAULT_SERVER_NAME}" # work media learn
     do
-        if ! emacsclient -u -s "$name" -e 't'
+        if ! emacsclient -u -s "$name" -e 't' >/dev/null 2>&1
         then
             emacs --daemon="${name}" >/dev/null 2>&1 &
             disown "$!"
@@ -216,5 +195,10 @@ do
         break
     fi
 done
+
+if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
+then
+    ssh-add -k ~/.ssh/pi.key
+fi
 
 tattachws

@@ -2,6 +2,12 @@
 HOSTNAME=$(hostname)
 HOSTNAME="${HOSTNAME:-eos}"
 export HOSTNAME
+
+OS=$(uname -s)
+OS_MAC=$([[ $OS = *Darwin* ]] && echo "true" || echo "false")
+export OS
+export OS_MAC
+
 append_var() {
   local var=$1
   shift
@@ -58,9 +64,9 @@ prependpath() {
   prepend_var "PATH" $1
 }
 
-if ! [[ -d $HOME/bin ]]
+if ! [[ -d "$HOME"/bin ]]
 then
-  mkdir $HOME/bin
+  mkdir "$HOME"/bin
 fi
 
 if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]
@@ -138,11 +144,10 @@ if [ -d $HOME/local ]; then
   done
   unset i
 
-  export MANPATH="${MANPATH}:" # preserves default manpaths
-
-  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH%:}
-  export LD_RUN_PATH=${LD_RUN_PATH%:}
-  export PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
+  MANPATH="${MANPATH}:" # : at end, preserves default manpaths
+  LD_LIBRARY_PATH=${LD_LIBRARY_PATH%:}
+  LD_RUN_PATH=${LD_RUN_PATH%:}
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH%:}
 fi
 
 if [[ -e "$HOME"/.asdf ]]
@@ -163,10 +168,13 @@ fi
 ## modifies path!
 GUIX_PROFILE="${HOME}/.guix-profile"
 . "$GUIX_PROFILE/etc/profile"
-. "${HOME}/.config/guix/current/etc/profile"
-unset GUIX_PROFILE
+# . "${HOME}/.config/guix/current/etc/profile"
 
 export PATH
+export MANPATH
+export LD_LIBRARY_PATH
+export LD_RUN_PATH
+export PKG_CONFIG_PATH
 unset prependpath
 unset appendpath
 unset append_var
@@ -183,15 +191,20 @@ fi
 
 export GPODDER_HOME="${HOME}/Music/Pods/gPodder"
 
-JAVA_HOME="/usr/lib/jvm/openjdk11/"
-if [[ -d "${JAVA_HOME}" ]]
-then
-    export JAVA_HOME
-else
-    unset JAVA_HOME
-fi
+# JAVA_HOME="/usr/lib/jvm/openjdk11/"
+# if [[ -d "${JAVA_HOME}" ]]
+# then
+#     export JAVA_HOME
+# else
+#     unset JAVA_HOME
+# fi
 
 [[ -d "${HOME}/.local/share/tessdata_best" ]] && export TESSDATA_PREFIX="${HOME}/.local/share/tessdata_best"
 
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
+
+if ! $OS_MAC && [[ -z "$DISPLAY" ]] && [[ "$XDG_VTNR" -lt 3 ]]
+then
+    exec startx
+fi

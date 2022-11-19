@@ -1,5 +1,18 @@
 # -*- sh -*-
 # enable color support of ls and other handy aliases
+
+x_running() {
+    # don't check for x in MAC
+    $OS_MAC && return 0;
+    if command -v xhost >/dev/null
+    then
+        xhost >/dev/null 2>&1
+    else
+        echo "xhost is not installed, can't detect whether x is running or not." >&2;
+        return 0
+    fi
+}
+
 if $OS_MAC
 then
   alias ls="ls -G"
@@ -51,7 +64,7 @@ then
   alias ++='brew install '
   alias +u='brew update '
   alias +-='brew uninstall '
-  alias '?'='brew search '
+  alias '+q'='brew search '
 fi
 
 if command -v guix >/dev/null
@@ -62,6 +75,7 @@ then
     alias gxq='guix search'
     alias gxs='guix shell'
     alias gxu='guix pull'
+    alias gxdl='guix download'
 fi
 
 # if you need anything more than this better find an external tool(add a new line ;)
@@ -235,7 +249,7 @@ then
         then
             if tmux has-session -t "$session_name" >/dev/null 2>&1
             then
-                [[ -z $TMUX ]] && tattach "$session_name"
+                [[ -z $TMUX ]] && x_running && tattach "$session_name"
             else
                 tnew "$session_name" -d
                 x_running && {
