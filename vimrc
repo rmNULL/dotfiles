@@ -164,12 +164,12 @@ if (strftime('%H') >= s:cs_dark_time[0]) || (strftime('%H') < s:cs_dark_time[1])
 else
   " set background=dark " change to light when colorscheme changes
 
-  " let g:oceanic_next_terminal_bold = 1
-  " let g:oceanic_next_terminal_italic = 1
-  " colorscheme OceanicNext
+  let g:oceanic_next_terminal_bold = 1
+  let g:oceanic_next_terminal_italic = 1
+  colorscheme OceanicNext
 
-  let ayucolor="mirage"
-  colorscheme ayu
+  " let ayucolor="mirage"
+  " colorscheme ayu
 end
 
 
