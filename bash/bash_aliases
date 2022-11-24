@@ -70,12 +70,14 @@ fi
 if command -v guix >/dev/null
 then
     alias gx='guix'
+    alias gxh='guix help'
     alias gxi='guix install'
     alias gxp='guix package'
     alias gxq='guix search'
     alias gxs='guix shell'
     alias gxu='guix pull'
     alias gxdl='guix download'
+    alias gxrm='guix remove'
 fi
 
 # if you need anything more than this better find an external tool(add a new line ;)
@@ -302,13 +304,18 @@ then
   gpg() { gpg2 "$@"; }
 fi
 
-alias d2='echo $((RANDOM % 2))'
-alias d3='echo $((RANDOM % 3))'
-alias d4='echo $((RANDOM % 4))'
-alias d5='echo $((RANDOM % 5))'
-alias d6='echo $((RANDOM % 6))'
-alias d12='echo $((RANDOM % 12))'
-alias d20='echo $((RANDOM % 20))'
+dice() {
+    n="$1"
+    echo "$(( RANDOM % n ))"
+}
+
+alias d2='dice 2'
+alias d3='dice 3'
+alias d4='dice 4'
+alias d5='dice 5'
+alias d6='dice 6'
+alias d12='dice 12'
+alias d20='dice 20'
 
 # pt() {
 #   pdftotext -layout -fixed 3 "$1" -
