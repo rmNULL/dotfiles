@@ -139,7 +139,7 @@ fi
 play() {
     media_url="$1"
     caching="$2"
-    get_play_url "$media_url" "$caching" | mpv --no-video --playlist="-"
+    get_play_url "$media_url" "$caching" | mpv --no-video --volume="100" --playlist="-"
 }
 
 media_url="${media_url:-$1}"

@@ -1,5 +1,5 @@
 xmodmap ~/.xmodmaprc
-volctl &
+# volctl &
 startxfce4
 # --with-ck-launch
 
