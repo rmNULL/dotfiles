@@ -19,6 +19,7 @@ remove_unecrypted_file() {
     [[ -e "$notes_tar" ]] && rm "$notes_tar"
 }
 
+
 trap remove_unecrypted_file INT ABRT QUIT
 
 (
@@ -28,3 +29,13 @@ trap remove_unecrypted_file INT ABRT QUIT
     gpg --recipient "$recipient" --output "${encrypted_notes_tar}" --encrypt "${notes_tar}"
 )
 remove_unecrypted_file
+
+remote_copy() {
+    local local_dir="$1"
+    local remote_host="$2"
+    local remote_dir;
+    remote_dir="${3:-}" ; #$(basename "$local_dir")
+
+    /bin/rsync -aP "${local_dir}" "${remote_host}":"${remote_dir}"
+}
+remote_copy "$notes_dir" "pi"
