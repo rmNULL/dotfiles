@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -ue
+
+remove_path() {
+    local path=":${PATH}:"
+    local pat="$1";
+
+    case "${path}" in
+        *:"${pat}":*)
+            pat="$pat"
+            ;;
+        *:"${pat}/":*)
+            pat="${pat}/"
+            ;;
+        *)
+            pat=""
+            ;;
+    esac
+
+    if [[ -n "$pat" ]]
+    then
+        local pre=${path%%:"$pat":*}
+        local post=${path#*:"$pat":}
+        path=${pre#:}:${post%:}
+        echo $path
+    fi
+}
+
+SCRIPT_DIR=$(realpath "$0" | xargs dirname)
+PATH_WITHOUT_LOCAL_BIN=$(remove_path $SCRIPT_DIR)
+CMD=$(PATH="$PATH_WITHOUT_LOCAL_BIN" type -P chromium)
+[[ -z "$CMD" ]] && echo "failed to find chromium" && exit 41
+
+chromium() {
+    local cmd="$CMD" ws_name="" profile="";
+
+    ws_name=$(get-current-workspace-name | tr '[:upper:]' '[:lower:]')
+    case "$ws_name" in
+        work)
+            profile="Profile 1"
+            ;;
+        media | learn)
+            profile="Default"
+            ;;
+        default)
+            ;;
+    esac
+    [[ -n "$profile" ]] && profile="--profile-directory=${profile}"
+    "$cmd" "${profile:---guest}" "$@"
+}
+
+chromium "$@"

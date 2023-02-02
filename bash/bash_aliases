@@ -317,27 +317,6 @@ alias d6='dice 6'
 alias d12='dice 12'
 alias d20='dice 20'
 
-if command -v chromium >/dev/null 2>&1
-then
-    chromium() {
-        local cmd="" ws_name="" profile="";
-        cmd=$(type -P chromium)
-        ws_name=$(get-current-workspace-name | tr '[:upper:]' '[:lower:]')
-        case "$ws_name" in
-            work)
-                profile="Profile 1"
-                ;;
-            media | learn)
-                profile="Default"
-                ;;
-            default)
-                ;;
-        esac
-        [[ -n "$profile" ]] && profile="--profile-directory=${profile}"
-        "$cmd" "${profile:---guest}" "$@"
-    }
-fi
-
 # pt() {
 #   pdftotext -layout -fixed 3 "$1" -
 # }
