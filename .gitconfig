@@ -4,33 +4,55 @@
   b = fetch
   br = branch
   c = commit
+  cm = commit -m
   co = checkout
   cp = clone
   d = diff
   dh = diff HEAD^
+  dm = diff master
   ds = diff --staged
   f = fetch
   h = help
   l = log
-  ol = log --pretty=oneline
+  l1 = log --pretty=oneline
   p = push
   rb = rebase
   rbm = rebase master
+  rs = restore
   s = status -uno
   ss = status
   st = stash
   sta = stash apply
   stl = stash list
+[init]
+  defaultBranch = main
 [user]
-  email = rmnull@users.noreply.github.com
-  name = rmnull
+;   email = rmnull@users.noreply.github.com
+;   name = rmnull
+  useConfigOnly = true
 [credential]
   helper = cache
 [gpg]
   program = gpg2
-[init]
-  defaultBranch = main
+[commit]
+  gpgsign = false
+[core]
+  excludesfile = /home/rmnull/.gitignore
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
+  light = false
+[merge]
+  conflictstyle = diff3
+[diff]
+  colorMoved = default
 [pull]
   ff = only
+
 [includeIf "gitdir:~/work/"]
   path = ~/work/.gitconfig
+
+[includeIf "gitdir:~/lab/"]
+  path = ~/lab/.gitconfig
