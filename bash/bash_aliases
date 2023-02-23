@@ -128,7 +128,6 @@ fi
 if command -v git >/dev/null
 then
   alias gi='git init'
-  alias gm='git checkout master'
   alias g='git'
 
   ## auto completion for aliases
@@ -213,10 +212,6 @@ fi
 
 if [[ "nvim" = "$EDITOR" ]]
 then
-  # for ed in "vi" "vim" "nvi"
-  # do
-  #   alias $ed='nvim'
-  # done
   alias vim='nvim'
 fi
 
@@ -263,42 +258,6 @@ then
     }
 fi
 
-# if command -v brew >/dev/null
-# then
-#   alias b="brew"
-#   alias br='brew ruby'
-#   alias bi='brew irb'
-#   alias bu='brew up'
-# fi
-
-# if command -v patchelf >/dev/null
-# then
-#   alias pef='patchelf'
-#   alias pelf='patchelf'
-
-#   alias pefi='patchelf --print-interpreter'
-#   alias pelfi='patchelf --print-interpreter'
-
-#   alias pefr='patchelf --force-rpath --print-rpath'
-#   alias pelfr='patchelf --force-rpath --print-rpath'
-
-#   alias pefsi='patchelf --set-interpreter'
-#   alias pelfsi='patchelf --set-interpreter'
-
-#   alias pefsr='patchelf --force-rpath --set-rpath'
-#   alias pelfsr='patchelf --force-rpath --set-rpath'
-# fi
-
-# if command -v patchelf.rb >/dev/null
-# then
-#   alias prb='patchelf.rb'
-#   alias prbi='patchelf.rb --print-interpreter'
-#   alias prbr='patchelf.rb --force-rpath --print-runpath'
-
-#   alias prbsi='patchelf.rb --set-interpreter'
-#   alias prbsr='patchelf.rb --force-rpath --set-runpath'
-# fi
-
 if command -v gpg2 >/dev/null
 then
   gpg() { gpg2 "$@"; }
@@ -316,17 +275,3 @@ alias d5='dice 5'
 alias d6='dice 6'
 alias d12='dice 12'
 alias d20='dice 20'
-
-# pt() {
-#   pdftotext -layout -fixed 3 "$1" -
-# }
-
-# baking() {
-#   if [[ $# -ne 2 ]]
-#   then
-#     echo "usage: baking <ripcols-template.rb> <pdf-to-parse.pdf>"
-#     return
-#   fi
-
-#   pt "$2" | ruby "$1"
-# }
