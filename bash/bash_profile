@@ -205,7 +205,7 @@ export GPODDER_HOME="${HOME}/Music/Pods/gPodder"
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
-if ! $OS_MAC && [[ -z "$DISPLAY" ]] && [[ "$XDG_VTNR" -lt 3 ]]
+if ! $OS_MAC && [[ -z "$SSH_TTY" ]] && [[ -z "$DISPLAY" ]] && [[ "$XDG_VTNR" -lt 3 ]]
 then
     exec startx
 fi

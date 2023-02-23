@@ -99,6 +99,13 @@ then
     eval "$(zoxide init bash)"
 fi
 
+if command -v beet >/dev/null 2>&1 && ! beet --version >/dev/null 2>&1
+then
+    beet() {
+        python3 -m beets "$@"
+    }
+fi
+
 EOS_PIDS_DIR="${TMPDIR:-/tmp}"/pids/
 mkdir -p "$EOS_PIDS_DIR"
 mpdstats_pid_file="${EOS_PIDS_DIR}/beet.mpdstats"
@@ -153,14 +160,6 @@ then
     source "/home/rmnull/.fzf/shell/key-bindings.bash"
 fi
 
-
-# Automatically added by the Guix install script.
-if [ -n "$GUIX_ENVIRONMENT" ]; then
-    if [[ $PS1 =~ (.*)"\\$" ]]; then
-        PS1="${BASH_REMATCH[1]} [env]\\\$ "
-    fi
-fi
-
 if [[ -z "$PROMPT_COMMAND" ]]
 then
     PROMPT_COMMAND=gen_prompt
@@ -182,7 +181,7 @@ emacs_daemon() {
 
     if [[ -z "$pid" ]]
     then
-        emacs --daemon="${name}" >/dev/null 2>&1 &
+        emacs --daemon="${name}" >"$LOG_FILE" 2>&1 &
         pid=$!
         #echo -n "$pid" >"$pid_file"
         disown $pid
