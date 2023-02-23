@@ -36,6 +36,6 @@ remote_copy() {
     local remote_dir;
     remote_dir="${3:-}" ; #$(basename "$local_dir")
 
-    /bin/rsync -aP "${local_dir}" "${remote_host}":"${remote_dir}"
+    /bin/rsync -e "ssh -F '${HOME}/.ssh/config'" -aP "${local_dir}/" "${remote_host}":"${remote_dir}"
 }
-remote_copy "$notes_dir" "pi"
+remote_copy "$notes_dir" "pi-sync"
