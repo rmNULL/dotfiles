@@ -8,4 +8,7 @@ stow:
 delete:
 	stow --target "$(HOME)" --verbose --delete  $(stow_dirs)
 
+install: stow
+
+uninstall: delete
 .PHONY: delete dry-run
