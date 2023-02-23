@@ -1,0 +1,10 @@
+#|-*- mode:lisp -*-|#
+(stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
+(set-prefix-key (kbd "F20"))
+(define-key *top-map* (kbd "s-p") "exec")
+
+(defmacro iduh-define-keys (keymap &rest bindings)
+  `(progn
+     ,@(loop for (key cmd) on bindings by #'cddr
+            collect `(define-key ,keymap (kbd ,key) ,cmd))))
+
