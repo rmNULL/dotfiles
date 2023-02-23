@@ -9,7 +9,13 @@ cmd_available() {
         return 1
     fi
 }
-cmd_available youtube-dl
+YT_DL_CMD=""
+if cmd_available yt-dlp
+then
+    YT_DL_CMD="yt-dlp"
+else cmd_available youtube-dl
+    YT_DL_CMD="youtube-dl"
+fi
 cmd_available mpv
 cmd_available md5sum
 
@@ -65,7 +71,7 @@ get_play_url() {
 
     if [[ -z "$play_url" ]] || [[ "$caching" = "forced" ]]
     then
-        play_url=$(youtube-dl --extract-audio --audio-format best --get-url "$media_url")
+        play_url=$($YT_DL_CMD --extract-audio --audio-format best --get-url "$media_url")
     fi
 
     if [[ "$caching" != "disabled" ]]
@@ -80,7 +86,7 @@ PROGRAM_NAME="${0##*/}"
 show_help() {
 cat << EOF
 Play the requested url as audio using mpv.
-Uses youtube-dl to extract the media url.
+Uses youtube-dl/yt-dlp to extract the media url.
 
 USAGE: ${PROGRAM_NAME} [-h|-?|--help] [-c|--cache  CACHING] [-s|--search SEARCH] URL
 
