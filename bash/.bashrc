@@ -211,7 +211,14 @@ done
 
 if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
-    ssh-add -k ~/.ssh/pi.key
+    SSH_KEYS_DIR="${HOME}/.ssh"
+    for key in pi.key
+    do
+        SSH_KEY="${SSH_KEYS_DIR}/${key}"
+        [[ -e "${SSH_KEY}" ]] && ssh-add -k "$SSH_KEY"
+    done
+    unset SSH_KEY
+    unset SSH_KEYS_DIR
 fi
 
 tattachws
