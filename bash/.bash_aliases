@@ -320,3 +320,8 @@ alias d5='dice 5'
 alias d6='dice 6'
 alias d12='dice 12'
 alias d20='dice 20'
+
+if command -v bat >/dev/null 2>&1
+then
+    alias cat=bat
+fi
