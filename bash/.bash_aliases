@@ -39,26 +39,68 @@ alias egrep='grep -E'
 
 if [[ -n $OS ]] && [[ $OS = *Linux* ]]
 then
-  alias ++='sudo xbps-install -y'
-  alias +u='sudo xbps-install -Su'
-  alias +-='sudo xbps-remove '
-  +Q () {
-      if [[ -n "$1" ]]
-      then
-          xbps-query -Rs "$1" --regex
-      fi
-  }
+    ## package manager interface
+    ## `++`  install a remote package
+    ## `+-`  remove a remote package
+    ## `+q`  search for remote package
+    ## `+Q`  search for a local installed package
+    ## `+u`  perform packages update, this may or not remove existing packages to satisfy dependency
+    if command -v xbps-install >/dev/null 2>&1
+    then
+        alias ++='sudo xbps-install -y'
+        alias +u='sudo xbps-install -Su'
+        alias +-='sudo xbps-remove '
+        +q () {
+            if [[ -n "$1" ]]
+            then
+                xbps-query -Rs "$1" --regex
+            fi
+        }
+        +Q () {
+            if [[ "$#" -gt 0 ]]
+            then
+                xbps-query "$@"
+            else
+                xbps-query --help
+            fi
+        }
+    fi
 
-  +q () {
-      if [[ "$#" -gt 0 ]]
-      then
-          xbps-query "$@"
-      else
-          xbps-query --help
-      fi
-  }
+    if command -v dnf >/dev/null 2>&1
+    then
+        alias ++='sudo dnf install -y'
+        alias +u='sudo dnf update'
+        alias +-='sudo dnf remove -y'
+        +q () {
+            dnf search "$@"
+        }
+        +Q () {
+            if [[ "$#" -gt 0 ]]
+            then
+                dnf list installed | grep "$1"
+            fi
+        }
+    fi
+
+    if command -v apt >/dev/null 2>&1
+    then
+        alias ++='sudo apt update && sudo apt install -y'
+        alias +u='sudo apt update && sudo apt upgrade'
+        alias +-='sudo apt remove'
+        +q () {
+            if [[ -n "$1" ]]
+            then
+                apt-cache search "$1"
+            fi
+        }
+        +Q () {
+            if [[ "$#" -gt 0 ]]
+            then
+                dpkg -l | grep "$1"
+            fi
+        }
+    fi
 fi
-
 if $OS_MAC
 then
   alias ++='brew install '
@@ -66,6 +108,9 @@ then
   alias +-='brew uninstall '
   alias '+q'='brew search '
 fi
+## don't bother leaving behind shift
+alias +_='+-'
+
 
 if command -v guix >/dev/null
 then
@@ -210,7 +255,7 @@ then
 fi
 
 
-if [[ "nvim" = "$EDITOR" ]]
+if (command -v nvim && ! command -v vim) >/dev/null 2>&1
 then
   alias vim='nvim'
 fi
