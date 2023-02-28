@@ -325,3 +325,38 @@ if command -v bat >/dev/null 2>&1
 then
     alias cat=bat
 fi
+
+rand_sym() {
+    if [[ -z "$1" ]]
+    then
+        return;
+    fi
+    local symbols=$1;
+    ## restrict to 7 bytes(2 ^ 56), as bash overflows at 2 ^ 63
+    local randint=$(od --output-duplicates --address-radix=n --read-bytes=7 -t u8 </dev/urandom);
+    local symbol_idx=$(( randint % ${#symbols} ))
+
+    echo "${symbols:$symbol_idx:1}"
+}
+
+genpwd() {
+    local dict_file="${HOME}/af/words-nouns.txt"
+    [[ -e "$dict_file" ]] || return;
+    local n_words=6;
+    local min_word_len=3;
+    local max_word_len=10;
+    local separator=$(rand_sym '+-*/=_,.~><;:| ');
+    local padding_symbol=$(rand_sym '~!@#$%^&*([{+=/|');
+    local padding_start_symbol=$padding_symbol;
+    local padding_end_symbol=$padding_symbol;
+    [[ $padding_symbol = "(" ]] && padding_end_symbol=")";
+    [[ $padding_symbol = "[" ]] && padding_end_symbol="]";
+    [[ $padding_symbol = "{" ]] && padding_end_symbol="}";
+
+    awk '/^[a-zA-Z0-9]+$/ && length($0) >= '"$min_word_len"' && length($0) <= '"$max_word_len" "$dict_file" \
+        | shuf --repeat --random-source=/dev/urandom -n $n_words \
+        | tr '\n' "$separator" \
+        | tr '[:upper:]' '[:lower:]' \
+        | sed -e 's/^\(.*\).$/\1/' \
+        | xargs -I _ echo "$padding_start_symbol"_"$padding_end_symbol"
+}
