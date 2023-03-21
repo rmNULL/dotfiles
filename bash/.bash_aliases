@@ -205,10 +205,13 @@ then
 
         local date_format=$(date --iso-8601=minutes)
         local save_dir="${HOME}/Videos/screenrecords"
-        local out="${save_dir}/srec_${date_format}.webm"
+        local out="${save_dir}/srec_${date_format}"
+        local out_ll="${out}.mkv"
+        local out_lo="${out}.webm"
         local display=${DISPLAY:-0.0}
         mkdir -p "$save_dir"
-        ffmpeg -video_size 1920x1080 -framerate 25 -f x11grab -i "$display" "$out" -crf 0 -preset ultrafast && echo "saved to $out"
+        ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i "$display" -c:v libx264rgb -crf 0 -preset ultrafast "${out_ll}" \
+            && ffmpeg -i "$out_ll" "$out_lo" && echo "saved to $out_lo"
     }
 fi
 
