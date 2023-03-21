@@ -104,6 +104,19 @@ then
     beet() {
         python3 -m beets "$@"
     }
+
+    madd() {
+        local mdir;
+        mdir=$(beet config | awk -F: '/music_directory:/ { print $2 }' | sed -e 's/^\s*\(.*\)\s*$/\1/g');
+        [[ -z "$mdir" ]] && return;
+        [[ "${mdir: -1}" != "/" ]] && mdir="${mdir}/";
+        local start_idx=$(( ${#mdir} ));
+        local mfile;
+        while read -r mfile
+        do
+            [[ "${mfile:0:${start_idx}}" = "$mdir" ]] && mpc add "${mfile:${start_idx}}"
+        done
+    }
 fi
 
 EOS_PIDS_DIR="${TMPDIR:-/tmp}"/pids/
@@ -221,4 +234,4 @@ then
     unset SSH_KEYS_DIR
 fi
 
-tattachws
+[[ -z "$TMUX" ]] && tattachws || :
