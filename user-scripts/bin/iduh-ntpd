@@ -1,0 +1,16 @@
+#!/usr/bin/sh
+set -eu
+## 
+## local-ntpd must be set to return the date of the machine 
+## at this point it just feels easier to embed the private key hereself
+## instead of expecting the user to generate it and place it on the local-ntpd.
+##
+
+local_date_year=$(date +%Y)
+# ideally we shouldn't have to do this check but as this program is invoked every minute as part of cron job
+# and cron @reboot was not working for some reason. i have decided to go with hacky tricks like this and avoid ssh calls
+if [ "$local_date_year" -lt "2023" ]
+then
+  date=$(ssh -f local-ntpd date)
+  date --set="$date" 2>&1
+fi
