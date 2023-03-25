@@ -50,6 +50,10 @@
   colorMoved = default
 [pull]
   ff = only
+[rebase]
+  autoStash = true
+[merge]
+  autoStash = true
 
 [includeIf "gitdir:~/work/"]
   path = ~/work/.gitconfig
