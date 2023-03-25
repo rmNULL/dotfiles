@@ -20,7 +20,7 @@ else
   alias ls='ls --color'
 fi
 
-alias ll='ls -AlF'
+alias ll='ls -hAlF'
 alias la='ls -A'
 alias l1='ls -1'
 alias l='ls -CF'
@@ -29,7 +29,7 @@ if command -v exa >/dev/null 2>/dev/null
 then
     alias l="exa --group-directories-first"
     alias ls="l"
-    alias ll="ls -l --no-permissions --octal-permissions"
+    alias ll="ls -lh --no-permissions --octal-permissions"
     alias la="ls -a"
     alias l1="ls -1"
 fi
