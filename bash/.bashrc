@@ -213,7 +213,7 @@ then
 fi
 unset emacs_daemon
 
-for editor in "e" "ew" "nvim" "emacs" "vim" "vi"
+for editor in "nvim" "vim" "vi" "emacs" "e" "ew"
 do
     if command -v "$editor" >/dev/null 2>&1
     then
@@ -222,7 +222,7 @@ do
     fi
 done
 
-if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
+if false && command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
     SSH_KEYS_DIR="${HOME}/.ssh"
     for key in pi.key
