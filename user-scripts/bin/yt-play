@@ -42,12 +42,17 @@ get_cache_filename() {
 }
 
 check_cache() {
-    local media_url="$1"
-    local url_file
+    local media_url="$1";
+    local resolved_url="";
+    local url_file;
     url_file=$(get_cache_filename "$1")
     if [[ -e "$url_file" ]]
     then
-        cat "$url_file"
+        resolved_url=$(cat "$url_file")
+    fi
+    if [[ -n "$resolved_url" ]] && curl --fail --head -X GET --silent -L --output /dev/null "$resolved_url"
+    then
+        echo -n "$resolved_url"
     fi
 }
 
@@ -57,7 +62,6 @@ cache() {
 
     echo "$play_url" >"$(get_cache_filename "$media_url")"
 }
-
 
 get_play_url() {
     local media_url="$1"
@@ -99,8 +103,19 @@ USAGE: ${PROGRAM_NAME} [-h|-?|--help] [-c|--cache  CACHING] [-s|--search SEARCH]
 EOF
 }
 
-media_url=""
+media_urls=()
+media_urls_idx=0
 caching="enabled"
+
+add_to_media_urls() {
+    local url="$1";
+    local url_prefix=""
+
+    [[ "x${url:0:8}" != "xhttps://" ]] && url_prefix="ytsearch:"
+    media_url="${url_prefix}${url}"
+    media_urls[media_urls_idx]="$media_url"
+    media_urls_idx=$(( ${media_urls_idx} + 1 ))
+}
 
 while [[ "$#" -gt 0 ]]
 do
@@ -124,36 +139,33 @@ do
                 die "ERROR: a search term should follow '$1'"
             fi
 
-            media_url="ytsearch:$2"
+            add_to_media_urls "$2";
             shift
             ;;
         -?*)
             printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
             ;;
         *)
-            break
+            add_to_media_urls "$1"
+            ;;
     esac
 
     shift
 done
 
-if [[ "$#" -eq 0 ]] && [[ -z "$media_url" ]]
+if [[ ${media_urls_idx} -eq 0 ]]
 then
     die "ERROR: no media URL provided for playing. pass --help to see usage instructions"
 fi
 
 play() {
-    media_url="$1"
-    caching="$2"
-    get_play_url "$media_url" "$caching" | mpv --no-video --volume="100" --playlist="-"
+    caching="$1"
+    shift
+    media_urls=("$@")
+    for media_url in "${media_urls[@]}"
+    do
+        get_play_url "$media_url" "$caching"
+    done | mpv --no-video --volume="100" --playlist="-"
 }
 
-media_url="${media_url:-$1}"
-ec=0
-play "$media_url" "$caching" || ec="$?"
-if [[ "$ec" -eq 2 ]] && [[ "$caching" = "enabled" ]]
-then
-    echo "likely failed due to cache issue. Retrying.."
-    caching="forced"
-    play "$media_url" "$caching"
-fi
+play "$caching" "${media_urls[@]}"
