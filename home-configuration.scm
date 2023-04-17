@@ -9,14 +9,94 @@
  (gnu packages)
  (guix gexp)
  (gnu services)
- (gnu home services shells))
+ (gnu home services)
+ (gnu home services shells)
+ (ice-9 match))
 
-(home-environment
- ;; Below is the list of packages that will show up in your
- ;; Home profile, under ~/.guix-home/profile.
- (packages
-  (specifications->packages
-   (list
+
+;;; stolen from
+;;; https://git.sr.ht/~whereiseveryone/confetti/tree/5f9d8b2e26918bb9e9cc9178435fc908cbf1af63/item/common.scm#L18
+
+(define %conf-dir
+  (dirname (current-filename)))
+
+(define (path-join . args)
+  (string-join args "/"))
+
+(define (normalize-config-file-name output-name)
+  (if (string= "." output-name 0 1 0 1)
+      (string-drop output-name 1)
+      output-name))
+
+(define (config-file file)
+  (local-file (path-join %conf-dir file)
+              (normalize-config-file-name file)))
+
+(define normalize-config
+  (match-lambda
+    ((input . output)
+     (list output
+           (if (string? input)
+               (config-file input)
+               input)))
+    (output (list output
+                  (config-file (basename output))))))
+
+(define %env-vars
+  '(("EDITOR" . "nvim")
+    ("FZF_CTRL_T_COMMAND" . "fd . -0")
+    ("FZF_CTRL_T_OPTS" . "--read0")
+    ("GPG_TTY" . "$(tty)")
+    ;; overwrite duplicate history, don't add commands starting with space to history
+    ("HISTCONTROL" . "erasedups:ignorespace")
+    ;; The maximum number of lines contained in the history file, refer bash(1)
+    ("HISTFILESIZE" . "12288")
+    ;; The number of commands to remember in the command history, refer bash(1)
+    ("HISTSIZE" . "11264")
+    ("PATH" . "${HOME}/bin:${HOME}/.local/bin:${PATH}")
+    ("PYTHONDONTWRITEBYTECODE" . "1")))
+
+(define %bash-aliases
+  '(("l" . "exa --group-directories-first")
+    ("ls" . "l")
+    ("ll" . "ls -l --no-permissions --octal-permissions")
+    ("la" . "ls -a")
+    ("l1" . "ls -1")
+    ("cat" . "bat")
+    ("g" . "git")
+    ("gx" . "guix")
+    ("gxh" . "guix help")
+    ("gxi" . "guix install")
+    ("gxp" . "guix package")
+    ("gxq" . "guix search")
+    ("gxs" . "guix shell")
+    ("gxu" . "guix pull")
+    ("gxdl" . "guix download")
+    ("gxrm" . "guix remove")
+    ("mkdir" . "mkdir -p")
+    ("c." . "cd ../")
+    ("c.." . "cd ../../")
+    ("c..." . "cd ../../../")
+    ("c1." . "c.")
+    ("c2." . "c..")
+    ("c3." . "c...")
+    ("c4." . "cd ../../../../")
+    ("c5." . "cd ../../../../../")
+    ("c6." . "cd ../../../../../../")
+    ("c7." . "cd ../../../../../../../")
+    ("c8." . "cd ../../../../../../../../")
+    ("c9." . "cd ../../../../../../../../../")
+    ("+r" . "chmod +r")
+    ("+w" . "chmod +w")
+    ("+x" . "chmod +x")
+    ("r-" . "chmod -r")
+    ("w-" . "chmod -w")
+    ("x-" . "chmod -x")
+    ("tmp" . "pushd /tmp")
+    ("ping" . "ping -w 4 -c 3")))
+
+(define %packages
+  (list
     "alacritty"
     "bat"
     "beets"
@@ -26,6 +106,7 @@
     "docker-compose"
     "exa"
     "fd"
+    "file"
     "fzf"
     "git"
     "glibc-locales"
@@ -34,85 +115,71 @@
     "gnupg"
     "guix"
     "iputils"
+    "man-pages"
+    "man-pages-posix"
     "mpv"
     "neovim"
     "nss-certs"
     "openssh"
-    "openssh"
+    "pinentry-tty"
     "pulseaudio"
+    "python"
     "ripgrep"
     "rsync"
-    "zoxide"
-    )))
+    "rust"
+    "rust-cargo"
+    "zoxide"))
+
+;;; TODO: add .vim files inside nvim directory
+;;; figure out how to copy recursively
+(define %home-files
+  `(("bash/.inputrc" . ".inputrc")
+;;; ugh need to move away from X
+    ("X/.xinitrc" . ".xinitrc")
+    ("X/.xmodmaprc" . ".xmodmaprc")
+    ("dig/.digrc" . ".digrc")
+    ("fd/.fdignore" . ".fdignore")
+    ("git/.gitconfig" . ".gitconfig")
+    ("git/.gitignore" . ".gitignore")
+    ("rg/.ripgreprc" . ".ripgreprc")
+    ("sqlite/.sqliterc" . ".sqliterc")
+    ("stumpwm/.stumpwmrc" . ".stumpwmrc")
+    ("tmux/.tmux.conf" . ".tmux.conf")))
+
+(define %config-files
+  `(("mpd/.config/beets/" . "beets")
+    ("mpd/.config/mpd/" . "mpd")
+    ("ncmpcpp/.config/ncmpcpp/" . "ncmpcpp")
+    ("python/.config/flake8" . "flake8")))
+
+(home-environment
+ ;; Below is the list of packages that will show up in your
+ ;; Home profile, under ~/.guix-home/profile.
+ (packages
+  (specifications->packages %packages))
  ;; Below is the list of Home services.  To search for available
  ;; services, run 'guix home search KEYWORD' in a terminal.
  (services
   (list
    (service home-bash-service-type
             (home-bash-configuration
-             (environment-variables
-              '(("EDITOR" . "nvim")
-                ("FZF_CTRL_T_COMMAND" . "fd . -0")
-                ("FZF_CTRL_T_OPTS" . "--read0")
-                ("GPG_TTY" . "$(tty)")
-                ;; overwrite duplicate history, don't add commands starting with space to history
-                ("HISTCONTROL" . "erasedups:ignorespace")
-                ;; The maximum number of lines contained in the history file, refer bash(1)
-                ("HISTFILESIZE" . "12288")
-                ;; The number of commands to remember in the command history, refer bash(1)
-                ("HISTSIZE" . "11264")
-                ("PATH" . "${HOME}/bin:${HOME}/.local/bin:${PATH}")
-                ("PYTHONDONTWRITEBYTECODE" . "1")
-                ))
-             (aliases
-              '(("l" . "exa --group-directories-first")
-                ("ls" . "l")
-                ("ll" . "ls -l --no-permissions --octal-permissions")
-                ("la" . "ls -a")
-                ("l1" . "ls -1")
-                ("cat" . "bat")
-                ("g" . "git")
-                ("gx" . "guix")
-                ("gxh" . "guix help")
-                ("gxi" . "guix install")
-                ("gxp" . "guix package")
-                ("gxq" . "guix search")
-                ("gxs" . "guix shell")
-                ("gxu" . "guix pull")
-                ("gxdl" . "guix download")
-                ("gxrm" . "guix remove")
-                ("mkdir" . "mkdir -p")
-                ("c." . "cd ../")
-                ("c.." . "cd ../../")
-                ("c..." . "cd ../../../")
-                ("c1." . "c.")
-                ("c2." . "c..")
-                ("c3." . "c...")
-                ("c4." . "cd ../../../../")
-                ("c5." . "cd ../../../../../")
-                ("c6." . "cd ../../../../../../")
-                ("c7." . "cd ../../../../../../../")
-                ("c8." . "cd ../../../../../../../../")
-                ("c9." . "cd ../../../../../../../../../")
-                ("+r" . "chmod +r")
-                ("+w" . "chmod +w")
-                ("+x" . "chmod +x")
-                ("r-" . "chmod -r")
-                ("w-" . "chmod -w")
-                ("x-" . "chmod -x")
-                ("tmp" . "pushd /tmp")
-                ("ping" . "ping -w 4 -c 3")))
+             (environment-variables %env-vars)
+             (aliases %bash-aliases)
              (bashrc
               (list
-               (local-file "./.bashrc"
+               (local-file "./bash/.bashrc"
                            "bashrc")))
              (bash-profile
               (list
                (local-file
-                "./.bash_profile"
+                "./bash/.bash_profile"
                 "bash_profile")))
              (bash-logout
               (list
                (local-file
-                "./.bash_logout"
-                "bash_logout"))))))))
+                "./bash/.bash_logout"
+                "bash_logout"))) ))
+   (service home-files-service-type
+            (map normalize-config %home-files))
+   (service home-xdg-configuration-files-service-type
+            (map normalize-config %config-files)))))

@@ -6,3 +6,6 @@ $include /etc/inputrc
 
 "\C-[": character-search-backward
 "\C-l": end-of-line
+
+set colored-completion-prefix on
+# set colored-stats on

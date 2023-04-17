@@ -192,7 +192,7 @@ then
 fi
 unset emacs_daemon
 
-if command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
+if false && command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
     SSH_KEYS_DIR="${HOME}/.ssh"
     for key in pi.key

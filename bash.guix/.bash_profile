@@ -69,25 +69,15 @@ then
   mkdir "$HOME"/bin
 fi
 
-if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]
-then
-  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-  export HOMEBREW_DEVELOPER=1
-fi
-
 [[ -d "/opt/texlive/2021/bin/x86_64-linux" ]] && appendpath "/opt/texlive/2021/bin/x86_64-linux"
 [[ -d "$HOME"/.local/bin ]] && appendpath $HOME/.local/bin/
 [[ -d "$HOME"/.cargo/ ]] && prependpath $HOME/.cargo/bin
 [[ -d "$HOME/bin" ]] && prependpath $HOME/bin/
 
-if command -v composer > /dev/null ; then
-  appendpath "$(composer global config bin-dir --absolute --quiet)"
-fi
-
-if command -v ruby > /dev/null ; then
-  GEMS_DIR="$(ruby -e 'puts Gem.user_dir')"
-  appendpath $GEMS_DIR/bin
-fi
+# if command -v ruby > /dev/null ; then
+#   GEMS_DIR="$(ruby -e 'puts Gem.user_dir')"
+#   appendpath $GEMS_DIR/bin
+# fi
 
 if [[ -d "$HOME/Android/Sdk" ]]
 then
@@ -104,11 +94,11 @@ then
     . "$HOME"/.asdf/asdf.sh
     . "$HOME"/.asdf/completions/asdf.bash
 else
-	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.2
-	~/.asdf/bin/asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-	~/.asdf/bin/asdf install nodejs lts-gallium
-	~/.asdf/bin/asdf install nodejs lts-hydrodgen
-	~/.asdf/bin/asdf install nodejs latest
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.2
+    ~/.asdf/bin/asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+    ~/.asdf/bin/asdf install nodejs lts-gallium
+    ~/.asdf/bin/asdf install nodejs lts-hydrogen
+    ~/.asdf/bin/asdf install nodejs latest
 fi
 
 if [[ -f ~/.fzf.bash ]]
