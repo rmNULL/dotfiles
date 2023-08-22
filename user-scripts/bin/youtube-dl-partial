@@ -113,14 +113,14 @@ do
   shift
 done
 
-[[ -z "$format" ]] && youtube-dl -F "$url"
+[[ -z "$format" ]] && yt-dlp -F "$url"
 while [[ -z "$format" ]]
 do
   read -rp "format>> " format
 done
 
-dl_url=$(youtube-dl -f "$format" --get-url "$url")
-save_as=$(youtube-dl -f "$format" --get-filename "$url")
+dl_url=$(yt-dlp -f "$format" --get-url "$url")
+save_as=$(yt-dlp -f "$format" --get-filename "$url")
 save_as="${save_as%%.*}-${from}-${to}.${save_as##*.}"
 
 

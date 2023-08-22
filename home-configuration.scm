@@ -11,7 +11,8 @@
  (gnu services)
  (gnu home services)
  (gnu home services shells)
- (ice-9 match))
+ (ice-9 match)
+ (ice-9 format))
 
 
 ;;; stolen from
@@ -30,7 +31,7 @@
 
 (define (config-file file)
   (local-file (path-join %conf-dir file)
-              (normalize-config-file-name file)))
+              (normalize-config-file-name (basename file))))
 
 (define normalize-config
   (match-lambda
@@ -133,7 +134,7 @@
 ;;; TODO: add .vim files inside nvim directory
 ;;; figure out how to copy recursively
 (define %home-files
-  `(("bash/.inputrc" . ".inputrc")
+  `(("bash.guix/.inputrc" . ".inputrc")
 ;;; ugh need to move away from X
     ("X/.xinitrc" . ".xinitrc")
     ("X/.xmodmaprc" . ".xmodmaprc")
@@ -147,10 +148,11 @@
     ("tmux/.tmux.conf" . ".tmux.conf")))
 
 (define %config-files
-  `(("mpd/.config/beets/" . "beets")
-    ("mpd/.config/mpd/" . "mpd")
-    ("ncmpcpp/.config/ncmpcpp/" . "ncmpcpp")
+  `(;; ("mpd/.config/beets/" . "beets")
+    ;; ("mpd/.config/mpd/" . "mpd")
+    ;; ("ncmpcpp/.config/ncmpcpp/" . "ncmpcpp")
     ("python/.config/flake8" . "flake8")))
+
 
 (home-environment
  ;; Below is the list of packages that will show up in your
@@ -177,7 +179,7 @@
              (bash-logout
               (list
                (local-file
-                "./bash/.bash_logout"
+                "./bash.guix/.bash_logout"
                 "bash_logout"))) ))
    (service home-files-service-type
             (map normalize-config %home-files))
