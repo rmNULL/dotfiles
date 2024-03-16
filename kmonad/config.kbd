@@ -1,0 +1,64 @@
+(defcfg
+  input (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  ;;
+  output (uinput-sink "kmonad kbd" "/usr/bin/sleep 1")
+  fallthrough true
+  allow-cmd true)
+
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home end  ins  del
+  grv  1    2    3    4    5    6    7    8    9    0    -     =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
+  caps  a    s    d    f    g    h    j    k    l    ;    '          ret
+  lsft z    x    c    v    b    n    m    ,    .    /               rsft
+  wkup lctl lmet lalt           spc           ralt sys  rctl  pgup up   pgdn
+  left down rght
+  )
+
+(defalias defl (layer-toggle default-layer))
+(defalias pdefl (layer-switch default-layer))
+
+(defalias clnl (layer-toggle colon-layer))
+(defalias cpy C-c)
+(defalias pclnl (layer-switch colon-layer))
+
+(defalias cut C-x)
+(defalias pst C-v)
+(defalias undo C-z)
+(defalias cs C-s)
+(defalias cRgt (around lctl Right))
+(defalias cLft (around lctl Left))
+
+(defalias navl (tap-next-release esc (layer-toggle navigation-layer)))
+(defalias pnavl (layer-switch navigation-layer))
+
+(deflayer default-layer
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home end  ins  del
+  grv  1    2    3    4    5    6    7    8    9    0    -     =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
+  @navl a    s    d    f    g    h    j    k    l @clnl   '          ret
+  _    z    x    c    v    b    n    m    ,    .    /               rsft
+  wkup lmet lalt lctl           spc            ralt sys  cmp  pgup up   pgdn
+  left down rght
+  )
+
+
+
+(deflayer colon-layer
+  _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    @cut @cpy @pst    _    _    _  _   _   _    _    _    _
+  _    ;    _    =    _    _    _    @undo    \(   {    [    _    _     _
+  _  -   \_ bspc    _    >    _    ret    :    <  @clnl  _          _
+  _    _    _    _    _    _    _    _    _    _    _               _
+  _    _    _    _              _              _    _    _     _    _    _
+  _    _    _)
+
+(deflayer navigation-layer
+  @pdefl    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _     _
+  _    _    _    _    _    _    _    pgup  home    end       _    _    @pdefl     _
+  esc    _    _  pgdn    rsft _       left  down   up rght   @clnl    _          _
+  _    _    _    _    _           @cLft @cRgt   _   _    _     _    _
+  _   _    _    _              @pnavl              _    _    _     _    _    _
+  _    _    _)
