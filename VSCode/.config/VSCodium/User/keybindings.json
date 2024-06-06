@@ -1,0 +1,14 @@
+[
+	{ 
+		"key": "ctrl+c z v",
+		"command": "workbench.action.files.save"
+	},
+	{
+		"key": "ctrl+c z b",
+		"command": "workbench.action.quickOpen"
+	},
+	{
+		"key": "ctrl+c z o",
+		"command": "workbench.action.nextEditor"
+	}    
+]

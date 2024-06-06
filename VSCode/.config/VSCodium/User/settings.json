@@ -1,0 +1,24 @@
+{
+    "workbench.colorTheme": "Gruvbox Material Light",
+    "editor.minimap.enabled": false,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "redhat.telemetry.enabled": false,
+    "editor.defaultFormatter": "biomejs.biome",
+    "[php]": {
+        "editor.defaultFormatter": "DEVSENSE.phptools-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "continue.enableTabAutocomplete": true,
+    "workbench.activityBar.location": "top",
+    "window.customTitleBarVisibility": "auto",
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "workbench.startupEditor": "none",
+    "workbench.editor.showTabs": "none",
+    "window.menuBarVisibility": "toggle"
+}
