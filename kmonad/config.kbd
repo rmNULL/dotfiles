@@ -1,9 +1,10 @@
 (defcfg
-  input (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  ;; input (device-file "/dev/input/by-id/usb-SINO_WEALTH_RK_Bluetooth_Keyboar-event-kbd")
   ;;
+  input (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
   output (uinput-sink "kmonad kbd" "/usr/bin/sleep 1")
   fallthrough true
-  allow-cmd true)
+  allow-cmd false)
 
 
 (defsrc
@@ -16,19 +17,98 @@
   left down rght
   )
 
+
 (defalias defl (layer-toggle default-layer))
 (defalias pdefl (layer-switch default-layer))
 
 (defalias clnl (layer-toggle colon-layer))
-(defalias cpy C-c)
+(defalias quotl (tap-hold-next-release
+                 160
+                 '
+                 (layer-toggle quote-layer)))
 (defalias pclnl (layer-switch colon-layer))
-
-(defalias cut C-x)
-(defalias pst C-v)
 (defalias undo C-z)
-(defalias cs C-s)
-(defalias cRgt (around lctl Right))
-(defalias cLft (around lctl Left))
+
+(defalias
+  ;; designed for emacs ;)
+  e_a #(C-c z a)
+  e_b #(C-c z b)
+  e_c #(C-c z c)
+  e_d #(C-c z d)
+  e_e #(C-c z e)
+  e_f #(C-c z f)
+  e_g #(C-c z g)
+  e_h #(C-c z h)
+  e_i #(C-c z i)
+  e_j #(C-c z j)
+  e_k #(C-c z k)
+  e_l #(C-c z l)
+  e_m #(C-c z m)
+  e_n #(C-c z n)
+  e_o #(C-c z o)
+  e_p #(C-c z p)
+  e_q #(C-c z q)
+  e_r #(C-c z r)
+  e_s #(C-c z s)
+  e_t #(C-c z t)
+  e_u #(C-c z u)
+  e_v #(C-c z v)
+  e_w #(C-c z w)
+  e_x #(C-c z x)
+  e_y #(C-c z y)
+  e_z #(C-c z z)
+  ;; making an exception of function key for this one
+  e_1 #(C-c z 1)
+
+  ;; jump shortcuts
+  ej_a #(C-c j a)
+  ej_b #(C-c j b)
+  ej_c #(C-c j c)
+  ej_d #(C-c j d)
+  ej_e #(C-c j e)
+  ej_f #(C-c j f)
+  ej_g #(C-c j g)
+  ej_h #(C-c j h)
+  ej_i #(C-c j i)
+  ej_j #(C-c j j)
+  ej_k #(C-c j k)
+  ej_l #(C-c j l)
+  ej_m #(C-c j m)
+  ej_n #(C-c j n)
+  ej_o #(C-c j o)
+  ej_p #(C-c j p)
+  ej_q #(C-c j q)
+  ej_r #(C-c j r)
+  ej_s #(C-c j s)
+  ej_t #(C-c j t)
+  ej_u #(C-c j u)
+  ej_v #(C-c j v)
+  ej_w #(C-c j w)
+  ej_x #(C-c j x)
+  ej_y #(C-c j y)
+  ej_z #(C-c j z)
+  ;;;
+  ej_0 F20
+  ej_1 F11
+  ej_2 F12
+  ej_3 F13
+  ej_4 F14
+  ej_5 F15
+  ej_6 F16
+  ej_7 F17
+  ej_8 F18
+  ej_9 F19)
+
+;; (defalias cRgt (around lctl Right))
+;; (defalias cLft (around lctl Left))
+
+;; (defalias
+;;   rxdlay (around (cmd-button "setxkbmap us")
+;;                  (layer-switch default-layer)))
+;; (defalias
+;;   glay (around (cmd-button "setxkbmap gr")
+;;                  (layer-switch default-layer)))
+
 
 (defalias navl (tap-next-release esc (layer-toggle navigation-layer)))
 (defalias pnavl (layer-switch navigation-layer))
@@ -37,21 +117,29 @@
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home end  ins  del
   grv  1    2    3    4    5    6    7    8    9    0    -     =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
-  @navl a    s    d    f    g    h    j    k    l @clnl   '          ret
+  @navl a    s    d    f    g    h    j    k    l @clnl  @quotl     ret
   _    z    x    c    v    b    n    m    ,    .    /               rsft
   wkup lmet lalt lctl           spc            ralt sys  cmp  pgup up   pgdn
   left down rght
   )
 
 
-
 (deflayer colon-layer
   _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    @cut @cpy @pst    _    _    _  _   _   _    _    _    _
-  _    ;    _    =    _    _    _    @undo    \(   {    [    _    _     _
-  _  -   \_ bspc    _    >    _    ret    :    <  @clnl  _          _
-  _    _    _    _    _    _    _    _    _    _    _               _
-  _    _    _    _              _              _    _    _     _    _    _
+  _   @e_1  C-x   C-c C-v  F5   F6   F7   F8   F9  F10    _    _    _
+  _    ;   @e_w   = @e_r  @e_t  @e_y   @undo    \(   @e_o  @e_p   _    _     _
+  _    -   \_ bspc  @e_f   >    @e_h    ret    :    <  @clnl  _          _
+  _    @e_z  @e_x   @e_c  @e_v  @e_b   @e_n  @e_m    _    _    _               _
+  _    _    _       _            _              _    _    _     _    _    _
+  _    _    _)
+
+(deflayer quote-layer
+  _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _   @ej_1 @ej_2 @ej_3 @ej_4 @ej_5 @ej_6 @ej_7 @ej_8 @ej_9  @ej_0  _    _    _
+  _   @ej_q @ej_w @ej_e @ej_r  @ej_t  @ej_y @ej_u @ej_i  @ej_o  @ej_p   _    _     _
+  _   @ej_a @ej_s @ej_d  @ej_f  @ej_g @ej_h @ej_j  @ej_k  @ej_l  _  @quotl   _
+  _   @ej_z  @ej_x  @ej_c  @ej_v  @ej_b   @ej_n  @ej_m    _    _    _
+  _    _    _       _            _              _    _    _     _    _    _ _
   _    _    _)
 
 (deflayer navigation-layer
@@ -59,6 +147,15 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _     _
   _    _    _    _    _    _    _    pgup  home    end       _    _    @pdefl     _
   esc    _    _  pgdn    rsft _       left  down   up rght   @clnl    _          _
-  _    _    _    _    _           @cLft @cRgt   _   _    _     _    _
+  _    _    _    _    _           _ _   _   _    _     _    _
   _   _    _    _              @pnavl              _    _    _     _    _    _
   _    _    _)
+
+(deflayer empty-layer
+  @pdefl  _   _   _   _   _   _   _   _   _   _  _  _  _ _  _  _
+  _  _    _    _    _    _    _    _    _    _    _    _     _    _
+  _  _    _    _    _    _    _    _    _    _    _    _     _    _
+  _ _    _    _    _    _    _    _    _    _ _   '          _
+  _    _    _    _    _    _    _    _    _    _    _               _
+  _ _ _ _           _            _ _  _  _ _   _
+  _ _ _)
