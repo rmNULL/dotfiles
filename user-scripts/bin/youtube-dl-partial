@@ -80,7 +80,7 @@ human_time_to_sec() {
 }
 
 command -v ffmpeg >/dev/null 2>/dev/null
-command -v youtube-dl >/dev/null 2>/dev/null
+command -v yt-dlp >/dev/null 2>/dev/null
 
 format=""
 url=""
