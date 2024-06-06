@@ -1,6 +1,6 @@
 #|-*- mode:lisp -*-|#
 (stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
-(set-prefix-key (kbd "F20"))
+(set-prefix-key (kbd "s-SPC"))
 (define-key *top-map* (kbd "s-p") "exec")
 
 (defmacro iduh-define-keys (keymap &rest bindings)
