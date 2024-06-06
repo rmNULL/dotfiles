@@ -338,7 +338,6 @@ rand_sym() {
     ## restrict to 7 bytes(2 ^ 56), as bash overflows at 2 ^ 63
     local randint=$(od --output-duplicates --address-radix=n --read-bytes=7 -t u8 </dev/urandom);
     local symbol_idx=$(( randint % ${#symbols} ))
-
     echo "${symbols:$symbol_idx:1}"
 }
 

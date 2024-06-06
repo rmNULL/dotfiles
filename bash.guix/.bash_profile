@@ -146,10 +146,10 @@ export GPODDER_HOME="${HOME}/Music/Pods/gPodder"
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
-if ! $OS_MAC && [[ -z "$SSH_TTY" ]] && [[ -z "$DISPLAY" ]] && [[ "$XDG_VTNR" -lt 3 ]]
-then
-    exec startx
-fi
+#if ! $OS_MAC && [[ -z "$SSH_TTY" ]] && [[ -z "$DISPLAY" ]] && [[ "$XDG_VTNR" -lt 3 ]]
+#then
+#    exec startx
+#fi
 
 
 # if [[ -z $DISPLAY && $(tty) == /dev/tty1 && $XDG_SESSION_TYPE == tty ]]; then
