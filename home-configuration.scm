@@ -9,6 +9,7 @@
  (gnu packages)
  (guix gexp)
  (gnu services)
+ (gnu services base)
  (gnu home services)
  (gnu home services shells)
  (ice-9 match)
@@ -58,11 +59,11 @@
     ("PYTHONDONTWRITEBYTECODE" . "1")))
 
 (define %bash-aliases
-  '(("l" . "exa --group-directories-first")
-    ("ls" . "l")
-    ("ll" . "ls -l --no-permissions --octal-permissions")
-    ("la" . "ls -a")
-    ("l1" . "ls -1")
+  '(("l" . "eza --group-directories-first")
+    ("ls" . "eza --group-directories-first")
+    ("ll" . "eza --group-directories-first -l --no-permissions --octal-permissions")
+    ("la" . "eza --group-directories-first -a")
+    ("l1" . "eza --group-directories-first -1")
     ("cat" . "bat")
     ("g" . "git")
     ("gx" . "guix")
@@ -94,27 +95,34 @@
     ("w-" . "chmod -w")
     ("x-" . "chmod -x")
     ("tmp" . "pushd /tmp")
-    ("ping" . "ping -w 4 -c 3")))
+    ("ping" . "ping -w 4 -c 3")
+    ("vim" . "nvim")))
 
 (define %packages
   (list
     "alacritty"
     "bat"
     "beets"
+    "bind"
     "curl"
     "docker"
     "docker-cli"
     "docker-compose"
-    "exa"
+    "eza"
+    ;"emacs"
+    ;"emacs-geiser"
+    ;"emacs-geiser-guile"
     "fd"
     "file"
     "fzf"
     "git"
     "glibc-locales"
-    "gnome"
-    "gnome-desktop"
+    ;"gnome"
+    ;"gnome-desktop"
+    "git-delta"
     "gnupg"
     "guix"
+    "guile"
     "iputils"
     "man-pages"
     "man-pages-posix"
@@ -127,8 +135,14 @@
     "python"
     "ripgrep"
     "rsync"
-    "rust"
-    "rust-cargo"
+    ;"rust"
+    ;"rust-cargo"
+    "sed"
+    "strace"
+    "stumpwm"
+    "sqlite@3.45.1"
+    "tmux"
+    "xfce"
     "zoxide"))
 
 ;;; TODO: add .vim files inside nvim directory
@@ -136,8 +150,8 @@
 (define %home-files
   `(("bash.guix/.inputrc" . ".inputrc")
 ;;; ugh need to move away from X
-    ("X/.xinitrc" . ".xinitrc")
-    ("X/.xmodmaprc" . ".xmodmaprc")
+    ;; ("X/.xinitrc" . ".xinitrc")
+    ;; ("X/.xmodmaprc" . ".xmodmaprc")
     ("dig/.digrc" . ".digrc")
     ("fd/.fdignore" . ".fdignore")
     ("git/.gitconfig" . ".gitconfig")
@@ -158,7 +172,9 @@
  ;; Below is the list of packages that will show up in your
  ;; Home profile, under ~/.guix-home/profile.
  (packages
-  (specifications->packages %packages))
+  (append
+    (specifications->packages %packages)))
+
  ;; Below is the list of Home services.  To search for available
  ;; services, run 'guix home search KEYWORD' in a terminal.
  (services
@@ -169,12 +185,12 @@
              (aliases %bash-aliases)
              (bashrc
               (list
-               (local-file "./bash/.bashrc"
+               (local-file "./bash.guix/.bashrc"
                            "bashrc")))
              (bash-profile
               (list
                (local-file
-                "./bash/.bash_profile"
+                "./bash.guix/.bash_profile"
                 "bash_profile")))
              (bash-logout
               (list

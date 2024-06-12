@@ -14,7 +14,7 @@ then
     code="(iduh/lookup-password :host \"$host\")"
     quoted_pass=$(emacsclient -s "$emacs_server_name" -e "$code")
 else
-    echo "$host is not supported for password lookup"
+    echo "$host is not supported for password lookup" >&2
     exit 2
 fi
 
@@ -22,5 +22,6 @@ if [[ "$quoted_pass" != "nil" ]]
 then
     echo "$quoted_pass" | sed -e 's/"//g'
 else
+    echo "Failed to find password for the given host" >&2
     exit 1
 fi
