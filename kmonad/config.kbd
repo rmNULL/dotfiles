@@ -57,6 +57,7 @@
   e_x #(C-c z x)
   e_y #(C-c z y)
   e_z #(C-c z z)
+  e_spc #(C-c z spc)
   ;; making an exception of function key for this one
   e_1 #(C-c z 1)
 
@@ -130,7 +131,7 @@
   _    ;   @e_w   = @e_r  @e_t  @e_y   @undo    \(   @e_o  @e_p   _    _     _
   _    -   \_ bspc  @e_f   >    @e_h    ret    :    <  @clnl  _          _
   _    @e_z  @e_x   @e_c  @e_v  @e_b   @e_n  @e_m    _    _    _               _
-  _    _    _       _            _              _    _    _     _    _    _
+  _    _    _       _         @e_spc                 _    _    _     _    _    _
   _    _    _)
 
 (deflayer quote-layer
