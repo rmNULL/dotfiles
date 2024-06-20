@@ -108,9 +108,9 @@ then
 fi
 
 ## modifies path!
-GUIX_PROFILE="${HOME}/.guix-profile"
-. "$GUIX_PROFILE/etc/profile"
-export GUIX_LOCPATH="$HOME"/.guix-profile/lib/locale
+#GUIX_PROFILE="${HOME}/.guix-profile"
+#. "$GUIX_PROFILE/etc/profile"
+#export GUIX_LOCPATH="$HOME"/.guix-profile/lib/locale
 # . "${HOME}/.config/guix/current/etc/profile"
 
 export PATH
