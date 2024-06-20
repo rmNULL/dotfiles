@@ -45,7 +45,8 @@
                   (config-file (basename output))))))
 
 (define %env-vars
-  '(("EDITOR" . "nvim")
+  '(("GUIX_LOCPATH" . "${HOME}/.guix-home/profile/lib/locale")
+    ("EDITOR" . "nvim")
     ("FZF_CTRL_T_COMMAND" . "fd . -0")
     ("FZF_CTRL_T_OPTS" . "--read0")
     ("GPG_TTY" . "$(tty)")
@@ -121,17 +122,22 @@
     ;"gnome-desktop"
     "git-delta"
     "gnupg"
-    "guix"
+    ;"guix"
     "guile"
     "iputils"
+    "jq"
+    "kmonad"
+    "libnotify"
+    ;"maven"
     "man-pages"
     "man-pages-posix"
     "mpv"
+    "mupdf"
     "neovim"
     "nss-certs"
     "openssh"
     "pinentry-tty"
-    "pulseaudio"
+    ;"pulseaudio"
     "python"
     "ripgrep"
     "rsync"
@@ -139,10 +145,15 @@
     ;"rust-cargo"
     "sed"
     "strace"
-    "stumpwm"
+    ;"syncthing"
+    ;"stumpwm"
+    ;"sbcl-stumpwm-battery-portable"
+    ;"sbcl-stumpwm-cpu"
+    ;"sbcl-stumpwm-net"
+    ;"sbcl-stumpwm-wifi"
     "sqlite@3.45.1"
     "tmux"
-    "xfce"
+    ;;"xfce"
     "zoxide"))
 
 ;;; TODO: add .vim files inside nvim directory
