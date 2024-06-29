@@ -98,7 +98,9 @@
   ej_6 F16
   ej_7 F17
   ej_8 F18
-  ej_9 F19)
+  ej_9 F19
+  ;;;
+  ej_spc M-spc)
 
 ;; (defalias cRgt (around lctl Right))
 ;; (defalias cLft (around lctl Left))
@@ -140,7 +142,7 @@
   _   @ej_q @ej_w @ej_e @ej_r  @ej_t  @ej_y @ej_u @ej_i  @ej_o  @ej_p   _    _     _
   _   @ej_a @ej_s @ej_d  @ej_f  @ej_g @ej_h @ej_j  @ej_k  @ej_l  _  @quotl   _
   _   @ej_z  @ej_x  @ej_c  @ej_v  @ej_b   @ej_n  @ej_m    _    _    _
-  _    _    _       _            _              _    _    _     _    _    _ _
+  _    _    _       _  _        @ej_spc               _    _     _    _    _ _
   _    _    _)
 
 (deflayer navigation-layer
