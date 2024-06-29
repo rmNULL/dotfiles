@@ -61,22 +61,10 @@
 
 (define %bash-aliases
   '(("l" . "eza --group-directories-first")
-    ("ls" . "eza --group-directories-first")
-    ("ll" . "eza --group-directories-first -l --no-permissions --octal-permissions")
-    ("la" . "eza --group-directories-first -a")
-    ("l1" . "eza --group-directories-first -1")
-    ("cat" . "bat")
-    ("g" . "git")
-    ("gx" . "guix")
-    ("gxh" . "guix help")
-    ("gxi" . "guix install")
-    ("gxp" . "guix package")
-    ("gxq" . "guix search")
-    ("gxs" . "guix shell")
-    ("gxu" . "guix pull")
-    ("gxdl" . "guix download")
-    ("gxrm" . "guix remove")
-    ("mkdir" . "mkdir -p")
+    ("+r" . "chmod +r")
+    ("+w" . "chmod +w")
+    ("+x" . "chmod +x")
+    ("bexec" . "bundle exec")
     ("c." . "cd ../")
     ("c.." . "cd ../../")
     ("c..." . "cd ../../../")
@@ -89,15 +77,48 @@
     ("c7." . "cd ../../../../../../../")
     ("c8." . "cd ../../../../../../../../")
     ("c9." . "cd ../../../../../../../../../")
-    ("+r" . "chmod +r")
-    ("+w" . "chmod +w")
-    ("+x" . "chmod +x")
-    ("r-" . "chmod -r")
-    ("w-" . "chmod -w")
-    ("x-" . "chmod -x")
-    ("tmp" . "pushd /tmp")
+    ("cat" . "bat")
+    ("d100" . "dice 100")
+    ("d12" . "dice 12")
+    ("d16" . "dice 16")
+    ("d2" . "dice 2")
+    ("d20" . "dice 20")
+    ("d3" . "dice 3")
+    ("d4" . "dice 4")
+    ("d5" . "dice 5")
+    ("d6" . "dice 6")
+    ("d8" . "dice 8")
+    ("g" . "git")
+    ("gi" . "git init")
+    ("gx" . "guix")
+    ("gxdl" . "guix download")
+    ("gxh" . "guix help")
+    ("gxi" . "guix install")
+    ("gxp" . "guix package")
+    ("gxq" . "guix search")
+    ("gxrm" . "guix remove")
+    ("gxs" . "guix shell")
+    ("gxu" . "guix pull")
+    ("grep" . "grep --color=auto")
+    ("egrep" . "grep -E")
+    ("jl" . "julia --depwarn=error")
+    ("l1" . "eza --group-directories-first -1")
+    ("la" . "eza --group-directories-first -a")
+    ("ll" . "eza --group-directories-first -l --no-permissions --octal-permissions")
+    ("ls" . "eza --group-directories-first")
+    ("mkdir" . "mkdir -p")
+    ("mupdf-x11" . "mupdf")
     ("ping" . "ping -w 4 -c 3")
-    ("vim" . "nvim")))
+    ("play" . "mpv --volume=100 --no-video")
+    ;; ("poly" . "rlwrap -pYellow poly")
+    ("py" . "ipython")
+    ("r-" . "chmod -r")
+    ("rb" . "ruby")
+    ("ruby" . "ruby -w")
+    ("tmp" . "pushd /tmp")
+    ("vim" . "nvim")
+    ("w-" . "chmod -w")
+    ("x-" . "chmod -x")))
 
 (define %packages
   (list
@@ -112,53 +133,72 @@
     "docker-compose"
     "eza"
     "emacs"
-    "emacs-geiser"
-    "gnome"
-    "gnome-desktop"
+    "evolution"
+    ;"gnome"
+    ;"gnome-desktop"
+    "fd"
+    "feh"
+    "ffmpeg"
+    "fzf"
     "git-delta"
     "gnupg"
     "guix"
+    "glibc-locales"
     "guile"
     "iputils"
     "jq"
     "kmonad"
     "libnotify"
-    "maven"
+    ;; "maven"
     "man-pages"
     "man-pages-posix"
     "mpv"
     "mupdf"
-    "moka-icon-theme"
+    ;;"moka-icon-theme"
     "neovim"
     "nss-certs"
     "openssh"
     "papirus-icon-theme"
     "pinentry-tty"
     "pulseaudio"
+    "pamixer"
+    "pavucontrol"
     "python"
+    "python-ipython"
     "ripgrep"
     "rsync"
     ;"rust"
     ;"rust-cargo"
+    "scrot"
     "sed"
     "strace"
     "syncthing"
-    ;"stumpwm"
-    ;"sbcl-stumpwm-battery-portable"
-    ;"sbcl-stumpwm-cpu"
-    ;"sbcl-stumpwm-net"
-    ;"sbcl-stumpwm-wifi"
+    "stumpwm"
+    "sbcl@2.4.0"
     "sqlite@3.39.3"
+    "tree-sitter"
+    "tree-sitter-typescript"
     "tmux"
     ;;"xfce"
-    "zoxide"))
+    "zenity"
+    "zoxide"
+
+    ;;;; meant for stumpwm not really generic packages
+    "playerctl"
+    "sbcl-stumpwm-battery-portable"
+    "sbcl-stumpwm-cpu"
+    "sbcl-stumpwm-net"
+    "sbcl-stumpwm-notify"
+    "sbcl-stumpwm-pamixer"
+    "sbcl-stumpwm-wifi"
+    "sbcl-stumpwm-winner-mode"))
 
 ;;; TODO: add .vim files inside nvim directory
 ;;; figure out how to copy recursively
 (define %home-files
   `(("bash.guix/.inputrc" . ".inputrc")
 ;;; ugh need to move away from X
-    ;; ("X/.xinitrc" . ".xinitrc")
+    ("X/.xinitrc" . ".xinitrc")
     ;; ("X/.xmodmaprc" . ".xmodmaprc")
     ("dig/.digrc" . ".digrc")
     ("fd/.fdignore" . ".fdignore")
