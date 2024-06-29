@@ -180,16 +180,13 @@ emacs_daemon() {
     fi
 }
 
-if command -v emacs >/dev/null 2>/dev/null
-then
-    EMACS_DEFAULT_SERVER_NAME="$HOSTNAME"
-    export EMACS_DEFAULT_SERVER_NAME
+EMACS_DEFAULT_SERVER_NAME="$HOSTNAME"
+export EMACS_DEFAULT_SERVER_NAME
 
-    for name in  "${EMACS_DEFAULT_SERVER_NAME}" # work media learn
-    do
-        emacs_daemon "$name"
-    done
-fi
+for name in  "${EMACS_DEFAULT_SERVER_NAME}" # work media learn
+do
+    emacs_daemon "$name"
+done
 unset emacs_daemon
 
 if false && command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
@@ -204,4 +201,111 @@ then
     unset SSH_KEYS_DIR
 fi
 
+
+srec() {
+    if [[ $# -gt 0 ]]
+    then
+        echo -e "WARN: doesn't accept any args. Ignoring all the arguments\n\n"
+    fi
+
+    local date_format=$(date --iso-8601=minutes)
+    local save_dir="${HOME}/Videos/screenrecords"
+    local out="${save_dir}/srec_${date_format}"
+    local out_ll="${out}.mkv"
+    local out_lo="${out}.webm"
+    local display=${DISPLAY:-0.0}
+    mkdir -p "$save_dir"
+    ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i "$display" -c:v libx264rgb -crf 0 -preset ultrafast "${out_ll}" \
+        && ffmpeg -i "$out_ll" "$out_lo" && echo "saved to $out_lo"
+}
+rand_sym() {
+    if [[ -z "$1" ]]
+    then
+        return;
+    fi
+    local symbols=$1;
+    ## restrict to 7 bytes(2 ^ 56), as bash overflows at 2 ^ 63
+    local randint=$(od --output-duplicates --address-radix=n --read-bytes=7 -t u8 </dev/urandom);
+    local symbol_idx=$(( randint % ${#symbols} ))
+    echo "${symbols:$symbol_idx:1}"
+}
+
+genpwd() {
+    local dict_file="${HOME}/af/words-nouns.txt"
+    [[ -e "$dict_file" ]] || return;
+    local n_words=6;
+    local min_word_len=3;
+    local max_word_len=10;
+    local separator=$(rand_sym '+-*/=_,.~><;:| ');
+    local padding_symbol=$(rand_sym '~!@#$%^&*([{+=/|');
+    local padding_start_symbol=$padding_symbol;
+    local padding_end_symbol=$padding_symbol;
+    [[ $padding_symbol = "(" ]] && padding_end_symbol=")";
+    [[ $padding_symbol = "[" ]] && padding_end_symbol="]";
+    [[ $padding_symbol = "{" ]] && padding_end_symbol="}";
+
+    awk '/^[a-zA-Z0-9]+$/ && length($0) >= '"$min_word_len"' && length($0) <= '"$max_word_len" "$dict_file" \
+        | shuf --repeat --random-source=/dev/urandom -n $n_words \
+        | tr '\n' "$separator" \
+        | tr '[:upper:]' '[:lower:]' \
+        | sed -e 's/^\(.*\).$/\1/' \
+        | xargs -I _ echo "$padding_start_symbol"_"$padding_end_symbol"
+}
+
+mupdf() {
+    elog=$(command mupdf "$@" 2>&1)
+    local mupdf_ec=$?
+
+    if [[ "$mupdf_ec" != "0" ]] && grep -i '^error: needs a password' <<<"$elog"
+    then
+        local pass=$(zenity --title="PDF Password" --password)
+        command mupdf -p "$pass" "$@"
+        mupdf_ec=$?
+    else
+        echo -e "$elog" >&2
+    fi
+
+    ## honor MuPDF exit status
+    return $mupdf_ec
+}
+
+scap() {
+    local save_dir="${HOME}/Pictures/scaps/"
+    mkdir -p "$save_dir"
+    ## one of 'window' | 'select' | 'screen'
+    local shot_mode="select" shot_mode_flag="-s"
+    local delay=0
+    local save_as="${save_dir}/#%s-${shot_mode}.png"
+
+    scrot -d "$delay" "$shot_mode_flag" "$save_as"
+}
+
+## some systems have gpg2 command instead of gpg, ideally i'll need to move gpg to guix itself
+if command -v gpg2 >/dev/null
+then
+  gpg() { gpg2 "$@"; }
+fi
+
+if command -v git >/dev/null
+then
+  alias gi='git init'
+  alias g='git'
+
+  ## auto completion for aliases
+  if [[ -n $OS ]] && [[ $OS = *Linux* ]]
+  then
+    git_completion_file="/usr/share/bash-completion/completions/git"
+  else
+    git_completion_file="/tmp/hopefully-non/existing-fil/e--and-directory/placeholder"
+  fi
+
+  if [[ -f "$git_completion_file" ]]
+  then
+    ## pollute the environment!!
+    source "$git_completion_file"
+    __git_complete g __git_main
+  fi
+
+  unset git_completion_file
+fi
 #tattachws
