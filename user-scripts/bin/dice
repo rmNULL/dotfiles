@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ -z "$1" ]]
+then
+    echo please pass in a number to roll dice.
+    echo usage: dice 64 # generate a roll of dice between 1-64
+fi
+n="$1"
+echo "$(( 1 + (RANDOM % n) ))"

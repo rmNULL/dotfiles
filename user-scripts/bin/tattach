@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+tattach() {
+    local sarg=""
+    [[ -n "$1" ]] && sarg="-t${1}"
+    tmux attach-session "${sarg[@]}" -d \; new-window "bash -c 'cd \"$PWD\"; ${SHELL:=bash}'" || tmux attach
+}
+
+tattach "$@"

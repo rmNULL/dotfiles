@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v tmux
+then
+    echo "tmux not found" >&2
+    exit 1
+fi
+
+tnew() {
+    local session_name=""
+    [[ -n "$1" ]] && session_name="-s$1"
+    shift || :
+    tmux new "$@"
+}
+
+tnew "$@"

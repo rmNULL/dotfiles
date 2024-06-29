@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+tattachws() {
+    local ws_name="" session_name=""
+
+    ws_name=$(get-current-workspace-name | tr '[:upper:]' '[:lower:]')
+    session_name="${ws_name:=${HOSTNAME}}"
+    if [[ -z "$SSH_CONNECTION" ]]
+    then
+        if tmux has-session -t "$session_name" >/dev/null 2>&1
+        then
+            [[ -z $TMUX ]] && tattach "$session_name"
+        else
+            tnew "$session_name" -d
+            tattach "$session_name"
+        fi
+    fi
+    true
+}
+
+tattachws "$@"
