@@ -11,7 +11,7 @@ tnew() {
     local session_name=""
     [[ -n "$1" ]] && session_name="-s$1"
     shift || :
-    tmux new "$@"
+    tmux new "$session_name" "$@"
 }
 
 tnew "$@"
