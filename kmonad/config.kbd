@@ -58,8 +58,6 @@
   e_y #(C-c z y)
   e_z #(C-c z z)
   e_spc #(C-c z spc)
-  ;; making an exception of function key for this one
-  e_1 #(C-c z 1)
 
   ;; jump shortcuts
   ej_a #(C-c j a)
@@ -102,16 +100,6 @@
   ;;;
   ej_spc M-spc)
 
-;; (defalias cRgt (around lctl Right))
-;; (defalias cLft (around lctl Left))
-
-;; (defalias
-;;   rxdlay (around (cmd-button "setxkbmap us")
-;;                  (layer-switch default-layer)))
-;; (defalias
-;;   glay (around (cmd-button "setxkbmap gr")
-;;                  (layer-switch default-layer)))
-
 
 (defalias navl (tap-next-release esc (layer-toggle navigation-layer)))
 (defalias pnavl (layer-switch navigation-layer))
@@ -129,7 +117,7 @@
 
 (deflayer colon-layer
   _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _   @e_1  C-x   C-c C-v  F5   F6   F7   F8   F9  F10    _    _    _
+  _   F1  C-x   C-c C-v  F5   F6   F7   F8   F9  F10    _    _    _
   _    ;   @e_w   = @e_r  @e_t  @e_y   @undo    \(   @e_o  @e_p   _    _     _
   _    -   \_ bspc  @e_f   >    @e_h    ret    :    <  @clnl  _          _
   _    @e_z  @e_x   @e_c  @e_v  @e_b   @e_n  @e_m    _    _    _               _
@@ -149,7 +137,7 @@
   @pdefl    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _     _
   _    _    _    _    _    _    _    pgup  home    end       _    _    @pdefl     _
-  esc    _    _  pgdn    rsft _       left  down   up rght   @clnl    _          _
+  esc    _    _  pgdn    rsft _       left  down   up rght   @clnl    @quotl          _
   _    _    _    _    _           _ _   _   _    _     _    _
   _   _    _    _              @pnavl              _    _    _     _    _    _
   _    _    _)
