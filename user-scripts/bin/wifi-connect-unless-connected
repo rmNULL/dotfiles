@@ -12,6 +12,5 @@ connect-only-if-not-connected() {
     fi
 }
 
-#WIFI_SSID="~sand"
-WIFI_SSID="Venkat Padma Pg 1floor A"
+WIFI_SSID="~sand"
 connect-only-if-not-connected "${WIFI_SSID}"
