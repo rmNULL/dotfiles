@@ -8,7 +8,8 @@ if ! [[ -d "$backup_dir" ]]
 then
     \mkdir -p "$backup_dir"
 fi
-notes_dir="${HOME}/notes"
+notes_dir_1="${HOME}/notes"
+notes_dir=$(realpath "$notes_dir_1")
 readable_date=$(date '+%d-%b-%Y')
 prefix=$(basename "${notes_dir}")
 tarball_name="${prefix}-${readable_date}.tar.gz"
@@ -25,6 +26,7 @@ trap remove_unecrypted_file INT ABRT QUIT
 (
     cd "$(dirname "${notes_dir}")"
     tar -zcf "${notes_tar}" "$(basename "${notes_dir}")"
+    sha256sum "${notes_tar}" >"${notes_tar}.sha256sum"
     [[ -e "$encrypted_notes_tar" ]] && rm "${encrypted_notes_tar}"
     gpg --recipient "$recipient" --output "${encrypted_notes_tar}" --encrypt "${notes_tar}"
 )
@@ -35,9 +37,9 @@ remote_copy() {
     local remote_host="$2"
     local remote_dir;
     remote_dir="${3:-}" ; #$(basename "$local_dir")
-
     /usr/bin/env rsync -e "ssh -F '${HOME}/.ssh/config'" -aP "${local_dir}/" "${remote_host}":"${remote_dir}"
 }
+
 if ! remote_copy "$notes_dir" "pi-sync"
 then
 	echo "remote_copy failed" >&2
