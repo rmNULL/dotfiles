@@ -1,4 +1,244 @@
 #|-*- mode:lisp -*-|#
+;;; turn on debugging first!!
 
-;;; temporary test environment
-(load "/home/sham/af/dirty/.stumpwmrc")
+;;number has no special meaning,
+;; the stumpwm logging util logs using various number so all the logs
+;; that are lesser than the given debug-level will be included.
+(setf *debug-level* 8)
+(stumpwm:redirect-all-output (data-dir-file "debug-output" "txt"))
+
+(require :battery-portable)
+(require :cpu)
+(require :net)
+(require :wifi)
+(require :notify)
+(require :pamixer)
+(require :winner-mode)
+
+;;; notification service
+;;(notify:notify-server-toggle)
+
+;;; backup incase cursor doesn't show up
+(stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
+(stumpwm:run-shell-command "xset r rate 140 80")
+;; (stumpwm:run-shell-command "xrandr --output eDP-1 --output HDMI-2 --mode 1920x1080 --rate 60  --right-of eDP-1")
+(stumpwm:run-shell-command "feh --bg-scale ~/Pictures/walls/current &")
+(set-prefix-key (kbd "s-SPC"))
+
+(defmacro iduh-define-keys (keymap &rest bindings)
+  `(progn
+     ,@(loop for (key cmd) on bindings by #'cddr
+             collect `(define-key ,keymap (kbd ,key) ,cmd))))
+
+;;; rat behaviors
+(setq *mouse-focus-policy* :ignore)
+
+;;; font
+;; ;; generate this font text using xfontsel
+;; (set-font "-xos4-terminus-medium-r-normal-*-20-*-*-*-*-*-*-*")
+
+;;; mode-line
+
+(setf *mode-line-background-color* "#222222";
+      *mode-line-foreground-color* "#bbbbbb"
+      *mode-line-border-color* "#222222"
+      *mode-line-border-width* 0)
+(setf *mode-line-timeout* 2)
+(setf *group-format* "%t")
+(setf *time-modeline-string* "%b/%d %H:%M")
+(setf *window-format* "%n: %30t")
+(setf wifi:*wifi-modeline-fmt* "%5e (%p)")
+(setf pamixer:*modeline-fmt* "🔉 %v")
+(setf *screen-mode-line-format* (list "[^B%n^b] %W^> ... %I | %B | %P %d"))
+
+(enable-mode-line (current-screen) (current-head) t)
+
+(setf *input-window-gravity*     :top
+      *message-window-padding*   10
+      *message-window-y-padding* 10
+      *message-window-gravity*   :top)
+
+
+
+(defvar *iduh/winner-mode-save-hook-commands*
+  '(stumpwm:only
+    ;; stumpwm:pull-from-windowlist
+    ;; stumpwm:pull-hidden-next
+    ;; stumpwm:pull-hidden-other
+    ;; stumpwm:pull-hidden-previous
+    ;; stumpwm:pull-marked
+    ;; stumpwm:pull-window-by-number
+    ;; stumpwm:next
+    ;; stumpwm:next-in-frame
+    stumpwm:next-urgent
+    ;; stumpwm:prev
+    ;; stumpwm:prev-in-frame
+    ;; stumpwm:select-window
+    ;; stumpwm:select-from-menu
+    ;; stumpwm:select-window-by-name
+    ;; stumpwm:select-window-by-number
+    ;; stumpwm::pull
+    stumpwm::remove
+    ;; stumpwm:iresize
+    stumpwm:vsplit
+    stumpwm:hsplit
+    stumpwm:move-window
+    stumpwm:move-windows-to-group
+    stumpwm:move-window-to-group
+    stumpwm:balance-frames
+    stumpwm::delete
+    stumpwm::kill
+    stumpwm:fullscreen))
+(defun iduh/winner-mode-save-hook (command)
+  (when (member command *iduh/winner-mode-save-hook-commands*)
+    (winner-mode:dump-group-to-file)))
+
+(remove-hook *post-command-hook* 'iduh/winner-mode-save-hook)
+(add-hook *post-command-hook* 'iduh/winner-mode-save-hook)
+
+(defun iduh/on-wmanage-enter ()
+  (banish))
+
+(define-interactive-keymap iduh/wmanage (:on-enter #'iduh/on-wmanage-enter
+                                         :exit-on  ((kbd "RET") (kbd "ESC")
+                                                                (kbd "C-g") (kbd "q")))
+  ((kbd "H")  "resize-direction left")
+  ((kbd "h")  "move-focus left")
+  ((kbd "J")  "resize-direction down")
+  ((kbd "j")  "move-focus down")
+  ((kbd "K")  "resize-direction up")
+  ((kbd "k")  "move-focus up")
+  ((kbd "L")  "resize-direction right")
+  ((kbd "l")  "move-focus right")
+  ((kbd "=")  "balance-frames")
+  ((kbd "f")  "windowlist")
+  ((kbd "w")  "windowlist")
+  ((kbd "\\") "hsplit")
+  ((kbd "-")  "vsplit")
+  ((kbd "1")  "only")
+  ((kbd "z")  "only")
+  ((kbd "u") "winner-undo")
+  ((kbd "r") "winner-redo")
+  ((kbd "x")  "remove-split")
+  ((kbd "s-h") "move-window left")
+  ((kbd "s-j") "move-window down")
+  ((kbd "s-k") "move-window up")
+  ((kbd "s-l") "move-window right"))
+
+(setf *run-or-raise-all-groups* t
+      *run-or-raise-all-screens* t)
+(defcommand iduh/pgm/term () ()
+  ""
+  (run-or-raise "alacritty --title term -e tattachws " '(:class "term")))
+
+(defcommand iduh/pgm/browser () ()
+  ""
+  (run-or-raise "firefox" '(:class "firefox")))
+
+(defcommand iduh/chrome () ()
+            ""
+            (run-or-raise "chromium" '(:class "chromium")))
+
+(defcommand iduh/pgm/files () ()
+            ""
+            (run-or-raise "e" '(:class "emacs")))
+
+(defun tile-group-frame-head (group head)
+  (elt (tile-group-frame-tree group) (position head (group-heads group))))
+
+(defcommand iduh/only-in-left () ()
+  (banish)
+  (let ((tree (tile-group-frame-head (current-group) (current-head))))
+    (when (frame-p tree)
+      (hsplit)))
+  (move-window :LEFT))
+
+(defcommand iduh/only-in-right () ()
+  (banish)
+  (let ((tree (tile-group-frame-head (current-group) (current-head))))
+    (when (frame-p tree)
+      (hsplit)))
+  (move-window :RIGHT))
+
+(defcommand iduh/vsplit-focus () ()
+  (vsplit)
+  (move-focus :DOWN))
+
+(defcommand iduh/hsplit-focus () ()
+  (hsplit)
+  (move-focus :RIGHT))
+
+(defvar *iduh/groups-map* (make-sparse-keymap))
+(iduh-define-keys *iduh/groups-map*
+                  "g" "grouplist"
+                  "s-g" "grouplist"
+                  "m" "gmove"
+                  "s-m" "gmove")
+
+
+
+(defcommand iduh/sleep () ()
+            (run-shell-command "systemctl suspend")
+            (run-shell-command "slock"))
+
+(iduh-define-keys *top-map*
+                  "s-o" "prev-in-frame"
+                  "s-O" "next-in-frame"
+                  "s-e" "exchange-direction"
+                  "s-f" "iduh/wmanage"
+                  "s-i" "prev"
+                  "s-k" "next"
+                  "s-h" "move-window left"
+                  "s-l" "move-window right"
+                  "s-p" "exec"
+                  "s-x" "remove-split"
+                  "s-1" "only"
+                  "s-8" "iduh/pgm/term"
+                  "s-9" "iduh/pgm/browser"
+                  "s-0" "iduh/pgm/files"
+                  "s--" "iduh/vsplit-focus"
+                  "s-\\" "iduh/hsplit-focus"
+                  "s-Up" "move-focus up"
+                  "s-Down" "move-focus down"
+                  "s-Left" "move-focus left"
+                  "s-Right" "move-focus right"
+                  "s-=" "colon"
+                  "s-:" "eval"
+                  "s-," "gprev"
+                  "s-." "gnext"
+                  "s-[" "gprev-with-window"
+                  "s-]" "gnext-with-window"
+                  "s-DEL" "iduh/sleep"
+                  "s-g" '*iduh/groups-map*
+                  "XF86AudioRaiseVolume" "pamixer-volume-up"
+                  "XF86AudioLowerVolume" "pamixer-volume-down"
+                  "XF86AudioMute" "pamixer-toggle-mute"
+                  "XF86AudioMicMute" "pamixer-source-toggle-mute")
+
+(define-interactive-keymap iduh/volume-manage (:on-enter #'iduh/on-wmanage-enter
+                                                         :exit-on  ((kbd "RET") (kbd "ESC")
+                                                                    (kbd "C-g") (kbd "q")))
+  ((kbd "H")  "resize-direction left")
+  ((kbd "u") "pamixer-volume-up")
+  ((kbd  "+") "pamixer-volume-up")
+  ((kbd "=") "pamixer-volume-up")
+  ((kbd  "d") "pamixer-volume-down")
+  ((kbd "-") "pamixer-volume-down")
+  ((kbd "m") "pamixer-toggle-mute"))
+
+(iduh-define-keys *root-map*
+                  "c" "iduh/pgm/term"
+                  "f" "iduh/wmanage"
+                  "h" "help"
+                  "r" "loadrc"
+                  "v" "iduh/volume-manage")
+
+;;; groups/workspace
+
+(setq iduh/hostname (uiop:getenv "HOSTNAME"))
+(grename iduh/hostname)
+(loop for space in '("work" "learn" "media")
+      do (stumpwm:gnewbg space)
+         (clear-window-placement-rules))
+
+
