@@ -1,7 +1,7 @@
 (defcfg
-  ;; input (device-file "/dev/input/by-id/usb-SINO_WEALTH_RK_Bluetooth_Keyboar-event-kbd")
+  input (device-file "/dev/input/by-id/usb-SINO_WEALTH_RK_Bluetooth_Keyboar-event-kbd")
   ;;
-  input (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  ;; input (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
   output (uinput-sink "kmonad kbd" "/usr/bin/sleep 1")
   fallthrough true
   allow-cmd false)
