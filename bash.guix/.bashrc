@@ -309,3 +309,5 @@ then
   unset git_completion_file
 fi
 #tattachws
+
+unset GDK_PIXBUF_MODULE_FILE
