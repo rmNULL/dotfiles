@@ -146,12 +146,6 @@ conda_shell() {
     # <<< conda initialize <<<
 }
 
-if [[ -e "${HOME}/.fzf" ]]
-then
-    source "/home/rmnull/.fzf/shell/completion.bash"
-    source "/home/rmnull/.fzf/shell/key-bindings.bash"
-fi
-
 if [[ -z "$PROMPT_COMMAND" ]]
 then
     PROMPT_COMMAND=gen_prompt
@@ -308,6 +302,6 @@ then
 
   unset git_completion_file
 fi
-#tattachws
+tattachws 2>/dev/null
 
 unset GDK_PIXBUF_MODULE_FILE

@@ -19,5 +19,6 @@ config_file="home-configuration.scm"
 dry-run:
 	$(GUIX) home container $(config_file)
 
+re: reconfigure
 reconfigure:
-	$(GUIX) home reconfigure $(config_file)
+	$(GUIX) home reconfigure --no-grafts $(config_file)
