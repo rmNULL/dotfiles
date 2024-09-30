@@ -11,6 +11,7 @@
  (gnu services)
  (gnu services base)
  (gnu home services)
+ (gnu home services desktop)
  (gnu home services shells)
  (ice-9 match)
  (ice-9 format))
@@ -123,7 +124,7 @@
 (define %packages
   (list
     "alacritty"
-    "adwaita-icon-theme" ;; required for some gnome tools to work as expected :(
+    ;;"adwaita-icon-theme" ;; required for some gnome tools to work as expected :(
     "bat"
     "beets"
     "bind"
@@ -142,65 +143,53 @@
     "font-google-noto"
     "font-google-noto-sans-cjk"
     "font-google-material-design-icons"
-                                        ;"gnome"
-                                        ;"gnome-desktop"
     "fd"
-    "feh"
+    ;;"feh"
     "ffmpeg"
+    "file"
+    ;;;; "fuse" ;; file system in user-mount
     "fzf"
+    ;;"gdk-pixbuf"
     "git-delta"
     "gnupg"
-    "guix"
+    ;;"guix"
     "glibc-locales"
-    "guile"
+    ;;"guile"
     "iputils"
     "jq"
     "kmonad"
-    "libnotify"
-    ;; "maven"
+    ;;"libnotify"
+    ;;;; "maven"
     "man-pages"
     "man-pages-posix"
     "mpv"
     "mupdf"
-    ;;"moka-icon-theme"
+    ;;;;"moka-icon-theme"
     "neovim"
-    "nss-certs"
+    ;;"nss-certs"
     "openssh"
     "papirus-icon-theme"
     "pinentry-tty"
-    "pulseaudio"
-    "pamixer"
-    "pavucontrol"
-    "playerctl"
+    ;;"pulseaudio"
+    ;;"pamixer"
+    ;;"pavucontrol"
+    ;;"playerctl"
     "python"
     "python-ipython"
     "ripgrep"
     "rsync"
-    ;"rust"
-    ;"rust-cargo"
-    "scrot"
+    "rust"
+    ;; "rust-cargo@0.78.1"
+    ;;"scrot"
     "sed"
     "strace"
     "syncthing"
-    "stumpwm"
-    "sbcl@2.4.0"
-    "sqlite@3.39.3"
+    "sqlite"
     "tree-sitter"
     "tree-sitter-typescript"
     "tmux"
-    ;;"xfce"
-    "zenity"
     "zoxide"
-
-    ;;;; meant for stumpwm not really generic packages
-    "sbcl-stumpwm-battery-portable"
-    "sbcl-stumpwm-cpu"
-    "sbcl-stumpwm-net"
-    "sbcl-stumpwm-notify"
-    "sbcl-stumpwm-pamixer"
-    "sbcl-stumpwm-swm-gaps"
-    "sbcl-stumpwm-wifi"
-    "sbcl-stumpwm-winner-mode"))
+    ))
 
 ;;; TODO: add .vim files inside nvim directory
 ;;; figure out how to copy recursively
