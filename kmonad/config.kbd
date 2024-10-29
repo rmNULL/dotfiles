@@ -111,7 +111,7 @@
   tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
   @navl a    s    d    f    g    h    j    k    l @clnl  @quotl     ret
   _    z    x    c    v    b    n    m    ,    .    /               rsft
-  wkup lmet lalt lctl           spc            ralt sys  cmp  pgup up   pgdn
+  wkup lmet lalt lctl           spc            ralt sys  cmp  pgup del   pgdn
   left down rght
   )
 
