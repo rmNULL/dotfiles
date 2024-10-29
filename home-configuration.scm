@@ -128,6 +128,7 @@
     "bat"
     "beets"
     "bind"
+    "cmake"
     "curl"
     "docker"
     "docker-cli"
@@ -150,6 +151,7 @@
     ;;;; "fuse" ;; file system in user-mount
     "fzf"
     ;;"gdk-pixbuf"
+    "git-lfs"
     "git-delta"
     "gnupg"
     ;;"guix"
