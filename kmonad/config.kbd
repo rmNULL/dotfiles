@@ -9,7 +9,7 @@
 
 
 (defsrc
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home end  ins  del
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  sys pause  del
   grv  1    2    3    4    5    6    7    8    9    0    -     =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
   caps  a    s    d    f    g    h    j    k    l    ;    '          ret
@@ -106,7 +106,7 @@
 (defalias pnavl (layer-switch navigation-layer))
 
 (deflayer default-layer
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home end  ins  del
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home ssrq  del
   grv  1    2    3    4    5    6    7    8    9    0    -     =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
   @navl a    s    d    f    g    h    j    k    l @clnl  @quotl     ret
@@ -115,9 +115,8 @@
   left down rght
   )
 
-
 (deflayer colon-layer
-  _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _   F1  C-x   C-c C-v  F5   F6   F7   F8   F9  F10    _    _    _
   _    ;   @e_w   = @e_r  @e_t  @e_y   @undo    \(   @e_o  @e_p   _    _     _
   _    -   \_ bspc  @e_f   >    @e_h    ret    :    <  @clnl  _          _
@@ -126,7 +125,7 @@
   _    _    _)
 
 (deflayer quote-layer
-  _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _     _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _   @ej_1 @ej_2 @ej_3 @ej_4 @ej_5 @ej_6 @ej_7 @ej_8 @ej_9  @ej_0  _    _    _
   _   @ej_q @ej_w @ej_e @ej_r  @ej_t  @ej_y @ej_u @ej_i  @ej_o  @ej_p   _    _     _
   _   @ej_a @ej_s @ej_d  @ej_f  @ej_g @ej_h @ej_j  @ej_k  @ej_l  _  @quotl   _
@@ -135,7 +134,7 @@
   _    _    _)
 
 (deflayer navigation-layer
-  @pdefl    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @pdefl    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _     _
   _    _    _    _    _    _    _    pgup  home    end       _    _    @pdefl     _
   esc    _    _  pgdn    rsft _       left  down   up rght   @clnl    @quotl          _
@@ -144,7 +143,7 @@
   _    _    _)
 
 (deflayer empty-layer
-  @pdefl  _   _   _   _   _   _   _   _   _   _  _  _  _ _  _  _
+  @pdefl  _   _   _   _   _   _   _   _   _   _  _  _  _ _  _
   _  _    _    _    _    _    _    _    _    _    _    _     _    _
   _  _    _    _    _    _    _    _    _    _    _    _     _    _
   _ _    _    _    _    _    _    _    _    _ _   '          _
