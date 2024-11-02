@@ -14,7 +14,7 @@
   tab  q    w    e    r    t    y    u    i    o    p    [     ]    \
   caps  a    s    d    f    g    h    j    k    l    ;    '          ret
   lsft z    x    c    v    b    n    m    ,    .    /               rsft
-  wkup lctl lmet lalt           spc           ralt sys  rctl  pgup up   pgdn
+  wkup lctl lmet lalt           spc           ralt fn  rctl  pgup up   pgdn
   left down rght
   )
 
