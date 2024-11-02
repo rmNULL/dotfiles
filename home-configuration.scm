@@ -146,7 +146,7 @@
     "font-google-material-design-icons"
     "fd"
     ;;"feh"
-    "ffmpeg"
+    "ffmpeg@6.1.1" ;; installing the latest ffmpeg breaks mpv, since mpv depends on this version of ffmpeg, ugh!
     "file"
     ;;;; "fuse" ;; file system in user-mount
     "fzf"
