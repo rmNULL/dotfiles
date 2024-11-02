@@ -17,10 +17,9 @@ fi
 # Don't execute commands when match fails
 shopt -s failglob
 
-# overwrite duplicate history
-
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+## inject to shell
+eval "$(zoxide init bash)"
+eval "$(fzf --bash)"
 
 if ! command -v get-current-workspace-name >/dev/null
 then
@@ -92,7 +91,6 @@ gen_prompt() {
     fi
 }
 
-eval "$(zoxide init bash)"
 
 beet() {
     python3 -m beets "$@"
@@ -304,4 +302,5 @@ then
 fi
 tattachws 2>/dev/null
 
+## this var is the reason behind gnome icons missing 
 unset GDK_PIXBUF_MODULE_FILE
