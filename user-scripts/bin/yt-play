@@ -19,7 +19,6 @@ fi
 cmd_available mpv
 cmd_available md5sum
 
-
 mdebug() {
     echo "[$(date +%H:%M:%S)]:" "$@" >>/tmp/yt-play-debug.log
 }
@@ -63,28 +62,33 @@ cache() {
     echo "$play_url" >"$(get_cache_filename "$media_url")"
 }
 
-get_play_url() {
+get_track_info() {
     local media_url="$1"
     local caching="$2"
-    local play_url=""
+    local title_and_url=""
 
     if [[ "$caching" != "disabled" ]]
     then
-        play_url=$(check_cache "$media_url")
+        title_and_url=$(check_cache "$media_url")
     fi
 
-    if [[ -z "$play_url" ]] || [[ "$caching" = "forced" ]]
+    if [[ -z "$title_and_url" ]] || [[ "$caching" = "forced" ]]
     then
-        play_url=$($YT_DL_CMD --extract-audio --audio-format best --get-url "$media_url")
+        #title_and_url=$("$YT_DL_CMD" --extract-audio --audio-format best --print '%(title)s___YT_PLAY___%(webpage_url)s' "$media_url")
+        ## ugh this is bad but the print format doesn't seem to work directly, keeping this workaround for now
+        title=$("$YT_DL_CMD" --extract-audio --audio-format best --get-title "$media_url")
+        url=$("$YT_DL_CMD" --extract-audio --audio-format best --get-url "$media_url")
+        title_and_url="${title}___YT_PLAY___${url}"
     fi
 
     if [[ "$caching" != "disabled" ]]
     then
-        cache "$media_url" "$play_url"
+        cache "$media_url" "$title_and_url"
     fi
 
-    echo "$play_url"
+    echo "$title_and_url"
 }
+
 
 PROGRAM_NAME="${0##*/}"
 show_help() {
@@ -159,13 +163,22 @@ then
 fi
 
 play() {
-    caching="$1"
+    local title_and_url
+    local caching="$1"
+    local playlist_file
+    playlist_file=$(mktemp --suffix='___YT_PLAY___.XXXX')
     shift
+    echo "#EXTM3U" > "$playlist_file"
     media_urls=("$@")
     for media_url in "${media_urls[@]}"
     do
-        get_play_url "$media_url" "$caching"
-    done | mpv --no-video --volume="100" --playlist="-"
+        title_and_url=$(get_track_info "$media_url" "$caching")
+        play_title=${title_and_url%___YT_PLAY___*}
+        play_url=${title_and_url#*___YT_PLAY___}
+        echo "#EXTINF:-1,${play_title}" >> "$playlist_file"
+        echo "$play_url" >>"$playlist_file"
+    done
+    mpv --no-video --volume="100" --playlist="$playlist_file"
 }
 
 play "$caching" "${media_urls[@]}"
