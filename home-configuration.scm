@@ -47,6 +47,9 @@
 
 (define %env-vars
   '(("GUIX_LOCPATH" . "${HOME}/.guix-home/profile/lib/locale")
+    ("SSL_CERT_DIR" . "$HOME/.guix-profile/etc/ssl/certs" )
+    ("SSL_CERT_FILE" . "$HOME/.guix-profile/etc/ssl/certs/ca-certificates.crt" )
+    ("GIT_SSL_CAINFO" . "$SSL_CERT_FILE" )
     ("EDITOR" . "nvim")
     ("FZF_CTRL_T_COMMAND" . "fd . -0")
     ("FZF_CTRL_T_OPTS" . "--read0")
@@ -113,6 +116,7 @@
     ("play" . "mpv --volume=100 --no-video")
     ;; ("poly" . "rlwrap -pYellow poly")
     ("py" . "ipython")
+    ("python" . "python3")
     ("r-" . "chmod -r")
     ("rb" . "ruby")
     ("ruby" . "ruby -w")
@@ -135,6 +139,7 @@
     "docker-compose"
     "eza"
     "emacs"
+    "entr"
     "evolution"
     "font-fira-code"
     "font-fira-go"
@@ -168,7 +173,7 @@
     "mupdf"
     ;;;;"moka-icon-theme"
     "neovim"
-    ;;"nss-certs"
+    "nss-certs"
     "openssh"
     "papirus-icon-theme"
     "pinentry-tty"
