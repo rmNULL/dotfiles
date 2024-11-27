@@ -110,6 +110,7 @@
     ("la" . "eza --group-directories-first -a")
     ("ll" . "eza --group-directories-first -l --no-permissions --octal-permissions")
     ("ls" . "eza --group-directories-first")
+    ("mlv" . "source ~/af/dirty/ml_vision/bin/activate")
     ("mkdir" . "mkdir -p")
     ("mupdf-x11" . "mupdf")
     ("ping" . "ping -w 4 -c 3")
@@ -144,11 +145,14 @@
     "font-fira-code"
     "font-fira-go"
     "font-dejavu"
-    "font-iosevka-aile"
+    "font-iosevka-comfy"
+    "font-iosevka-term"
     "font-sarasa-gothic"
     "font-google-noto"
     "font-google-noto-sans-cjk"
     "font-google-material-design-icons"
+    "font-mononoki"
+    "font-jetbrains-mono"
     "fd"
     ;;"feh"
     "ffmpeg@6.1.1" ;; installing the latest ffmpeg breaks mpv, since mpv depends on this version of ffmpeg, ugh!
@@ -163,6 +167,7 @@
     "glibc-locales"
     ;;"guile"
     "iputils"
+    "julia"
     "jq"
     "kmonad"
     ;;"libnotify"
@@ -174,6 +179,7 @@
     ;;;;"moka-icon-theme"
     "neovim"
     "nss-certs"
+    "opencv"
     "openssh"
     "papirus-icon-theme"
     "pinentry-tty"
@@ -183,6 +189,7 @@
     ;;"playerctl"
     "python"
     "python-ipython"
+    "python-pyqt@6.6.1"
     "ripgrep"
     "rsync"
     "rust"
@@ -203,7 +210,7 @@
 (define %home-files
   `(("bash.guix/.inputrc" . ".inputrc")
 ;;; ugh need to move away from X
-    ("X/.xinitrc" . ".xinitrc")
+    ;; ("X/.xinitrc" . ".xinitrc")
     ;; ("X/.xmodmaprc" . ".xmodmaprc")
     ("dig/.digrc" . ".digrc")
     ("fd/.fdignore" . ".fdignore")
@@ -211,7 +218,7 @@
     ("git/.gitignore" . ".gitignore")
     ("rg/.ripgreprc" . ".ripgreprc")
     ("sqlite/.sqliterc" . ".sqliterc")
-    ("stumpwm/.stumpwmrc" . ".stumpwmrc")
+    ;; ("stumpwm/.stumpwmrc" . ".stumpwmrc")
     ("tmux/.tmux.conf" . ".tmux.conf")))
 
 (define %config-files
