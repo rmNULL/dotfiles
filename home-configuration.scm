@@ -239,6 +239,7 @@
  ;; services, run 'guix home search KEYWORD' in a terminal.
  (services
   (list
+    (service home-dbus-service-type)
    (service home-bash-service-type
             (home-bash-configuration
              (environment-variables %env-vars)
