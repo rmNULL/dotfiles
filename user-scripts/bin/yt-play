@@ -44,14 +44,17 @@ check_cache() {
     local media_url="$1";
     local resolved_url="";
     local url_file;
+    local title_and_url="";
     url_file=$(get_cache_filename "$1")
     if [[ -e "$url_file" ]]
     then
-        resolved_url=$(cat "$url_file")
+	title_and_url=$(cat "$url_file")
+        resolved_url=${title_and_url#*___YT_PLAY___}
     fi
+
     if [[ -n "$resolved_url" ]] && curl --fail --head -X GET --silent -L --output /dev/null "$resolved_url"
     then
-        echo -n "$resolved_url"
+        echo -n "$title_and_url"
     fi
 }
 
@@ -178,6 +181,7 @@ play() {
         echo "#EXTINF:-1,${play_title}" >> "$playlist_file"
         echo "$play_url" >>"$playlist_file"
     done
+    echo "Playing from $playlist_file"
     mpv --no-video --volume="100" --playlist="$playlist_file"
 }
 
