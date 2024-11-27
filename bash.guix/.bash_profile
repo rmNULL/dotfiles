@@ -101,12 +101,6 @@ else
     ~/.asdf/bin/asdf install nodejs latest
 fi
 
-if [[ -f ~/.fzf.bash ]]
-then
-    ## modifies path!
-    source ~/.fzf.bash
-fi
-
 ## modifies path!
 #GUIX_PROFILE="${HOME}/.guix-profile"
 #. "$GUIX_PROFILE/etc/profile"
