@@ -8,7 +8,7 @@
   co = checkout
   cp = clone
   d = diff
-  dh = diff HEAD^
+  dh = diff HEAD^..HEAD
   dm = diff master
   ds = diff --staged
   f = fetch
