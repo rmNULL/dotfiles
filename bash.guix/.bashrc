@@ -92,40 +92,6 @@ gen_prompt() {
 }
 
 
-beet() {
-    python3 -m beets "$@"
-}
-
-EOS_PIDS_DIR="${TMPDIR:-/tmp}"/pids/
-mkdir -p "$EOS_PIDS_DIR"
-mpdstats_pid_file="${EOS_PIDS_DIR}/beet.mpdstats"
-if [[ -f $mpdstats_pid_file ]]
-then
-    pid=$(cat "$mpdstats_pid_file")
-    kill -s 0 "$pid" 2>/dev/null || rm "$mpdstats_pid_file"
-fi
-
-if ! [[ -f "$mpdstats_pid_file" ]]
-then
-    if beet mpdstats 2>/dev/null >&2 &
-    then
-        pid="$!"
-        echo -n "$pid" >"$mpdstats_pid_file"
-        disown $pid
-    else
-        echo "failed to start beet mpdstats" >&2
-    fi
-fi
-unset mpdstats_pid_file
-
-if [[ -f ~/.config/mpd/pid  ]]; then
-    pid=$(cat ~/.config/mpd/pid)
-    kill -s 0 "$pid" 2>/dev/null || mpd
-else
-    mpd
-fi > /dev/null 2>/dev/null
-
-
 ## conda init startup times are slow, and i don't use it often
 conda_shell() {
     # >>> conda initialize >>>
