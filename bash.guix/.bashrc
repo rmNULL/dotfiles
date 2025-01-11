@@ -91,25 +91,6 @@ gen_prompt() {
     fi
 }
 
-
-## conda init startup times are slow, and i don't use it often
-conda_shell() {
-    # >>> conda initialize >>>
-    # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('/home/rmnull/af/conda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "/home/rmnull/af/conda3/etc/profile.d/conda.sh" ]; then
-            . "/home/rmnull/af/conda3/etc/profile.d/conda.sh"
-        else
-            export PATH="/home/rmnull/af/conda3/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-    # <<< conda initialize <<<
-}
-
 if [[ -z "$PROMPT_COMMAND" ]]
 then
     PROMPT_COMMAND=gen_prompt
