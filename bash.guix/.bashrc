@@ -103,31 +103,6 @@ then
     . ~/.bash_aliases
 fi
 
-emacs_daemon() {
-    local pid;
-    local server_name="$1";
-    local LOG_FILE="/tmp/emacs_daemon_start.log"
-    [[ -z "$server_name" ]] && return;
-    pid=$(ps aux | grep -F "emacs --daemon=${name}" | grep -v grep | head -n 1)
-
-    if [[ -z "$pid" ]]
-    then
-        emacs --daemon="${name}" >"$LOG_FILE" 2>&1 &
-        pid=$!
-        #echo -n "$pid" >"$pid_file"
-        disown $pid
-    fi
-}
-
-EMACS_DEFAULT_SERVER_NAME="$HOSTNAME"
-export EMACS_DEFAULT_SERVER_NAME
-
-for name in  "${EMACS_DEFAULT_SERVER_NAME}" # work media learn
-do
-    emacs_daemon "$name"
-done
-unset emacs_daemon
-
 if false && command -v ssh-add >/dev/null && ! ssh-add -l >/dev/null 2>&1
 then
     SSH_KEYS_DIR="${HOME}/.ssh"
