@@ -181,12 +181,6 @@ scap() {
     scrot -d "$delay" "$shot_mode_flag" "$save_as"
 }
 
-## some systems have gpg2 command instead of gpg, ideally i'll need to move gpg to guix itself
-if command -v gpg2 >/dev/null
-then
-  gpg() { gpg2 "$@"; }
-fi
-
 if command -v git >/dev/null
 then
   alias gi='git init'
