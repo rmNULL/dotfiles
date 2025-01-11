@@ -133,13 +133,14 @@
     "bat"
     "beets"
     "bind"
+    "clang"
     "cmake"
     "curl"
     "docker"
     "docker-cli"
     "docker-compose"
     "eza"
-    "emacs"
+    "emacs-pgtk"
     "entr"
     "evolution"
     "font-fira-code"
@@ -162,6 +163,7 @@
     ;;"gdk-pixbuf"
     "git-lfs"
     "git-delta"
+    "ghc"
     "gnupg"
     ;;"guix"
     "glibc-locales"
@@ -175,11 +177,12 @@
     "man-pages"
     "man-pages-posix"
     "mpv"
-    "mupdf"
+    ;; "mupdf"
     ;;;;"moka-icon-theme"
     "neovim"
     "nss-certs"
     "opencv"
+    "openjdk@21.0.2"
     "openssh"
     "papirus-icon-theme"
     "pinentry-tty"
@@ -199,9 +202,11 @@
     "strace"
     "syncthing"
     "sqlite"
+    "sqlitebrowser"
     "tree-sitter"
     "tree-sitter-typescript"
     "tmux"
+    "valgrind"
     "zoxide"
     ))
 
@@ -240,25 +245,25 @@
  (services
   (list
     (service home-dbus-service-type)
-   (service home-bash-service-type
-            (home-bash-configuration
-             (environment-variables %env-vars)
-             (aliases %bash-aliases)
-             (bashrc
-              (list
-               (local-file "./bash.guix/.bashrc"
-                           "bashrc")))
-             (bash-profile
-              (list
-               (local-file
-                "./bash.guix/.bash_profile"
-                "bash_profile")))
-             (bash-logout
-              (list
-               (local-file
-                "./bash.guix/.bash_logout"
-                "bash_logout"))) ))
-   (service home-files-service-type
-            (map normalize-config %home-files))
-   (service home-xdg-configuration-files-service-type
-            (map normalize-config %config-files)))))
+    (service home-bash-service-type
+	     (home-bash-configuration
+	       (environment-variables %env-vars)
+	       (aliases %bash-aliases)
+	       (bashrc
+		 (list
+		   (local-file "./bash.guix/.bashrc"
+			       "bashrc")))
+	       (bash-profile
+		 (list
+		   (local-file
+		     "./bash.guix/.bash_profile"
+		     "bash_profile")))
+	       (bash-logout
+		 (list
+		   (local-file
+		     "./bash.guix/.bash_logout"
+		     "bash_logout"))) ))
+    (service home-files-service-type
+	     (map normalize-config %home-files))
+    (service home-xdg-configuration-files-service-type
+	     (map normalize-config %config-files)))))
