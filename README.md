@@ -1,14 +1,12 @@
 # dotfiles
-Personal configuration files.
-Living in this "stateless" state of imperfection.
+Personal configuration files managed by [Guix](https://guix.gnu.org/).
+Living in this "stateless" state of imperfection.  
 
-These configs have been cobbled together from various sources.
-Wherever possible, I’ve tried to credit the sources. If I’ve missed anything, it’s unintentional, feel free to point it out.
-
-[Guix](https://guix.gnu.org/) manages my home for me, and it’s all declared in this one sweet file.  
+It’s all declared in this [one sweet file](https://github.com/rmNULL/dotfiles/blob/main/home-configuration.scm).  
 If you’re unfamiliar with Guix, do yourself a favor and [check it out](https://guix.gnu.org/).
 
-Oh, and [my Emacs setup](https://github.com/rmnull/emacs.d/) lives just in the neighborhood. Since you’re here, go give it a visit.
+Oh, and [my Emacs setup](https://github.com/rmnull/emacs.d/) lives just in the neighborhood. Since you’re here, go [give it a visit](https://github.com/rmnull/emacs.d/).
+
 
 ## Try it out
 ```sh
@@ -21,6 +19,7 @@ make re
 ```
 This will initialize the guix home place the configs in your home directory.
 There are few odd things that are yet to be done.
+
 
 ## Oddities
 ### Kmonad
@@ -47,5 +46,10 @@ cause we don't give a dern.
     Fork it.  
     Yodel it.  
     That's all we wanted to do.
+
+
+# Acknowledgements
+These configs have been cobbled together from various sources.
+Wherever possible, I’ve tried to credit the sources. If I’ve missed anything, it’s unintentional, feel free to point it out.
 
 [^1]: Not meant to be taken literally.
