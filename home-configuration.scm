@@ -82,6 +82,10 @@
     ("c8." . "cd ../../../../../../../../")
     ("c9." . "cd ../../../../../../../../../")
     ("cat" . "bat")
+    ;; the weird sequeunce come from kmonad spitting out these
+    ("cznczm" . "npm run dev")
+    ("cznczb" . "npm run build")
+    ("cznczn" . "npm run start")
     ("d100" . "dice 100")
     ("d12" . "dice 12")
     ("d16" . "dice 16")
