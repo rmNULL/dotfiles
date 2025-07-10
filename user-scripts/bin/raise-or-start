@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 [[ -z "$1" ]] && exit 1
 command_name="$1"
+command_kw="$(basename $command_name)"
 current_desktop=$(wmctrl -d | awk '$2 == "*" { print $1 }')
 win_id=$(
     wmctrl -xl \
-	| awk '$2 == '${current_desktop}' && tolower($3) ~ /'"${command_name}"'/ { print $1 }' \
+	| awk '$2 == '"${current_desktop}"' && tolower($3) ~ /'"${command_kw}"'/ { print $1 }' \
 	| tail -n 1
-)
+      )
+
+if [[ -z "$win_id" ]]
+then
+    win_id=$(wmctrl -xl \
+	| awk 'tolower($3) ~ /'"${command_kw}"'/ { print $1 }' \
+	| tail -n 1
+      )
+fi
 
 if [[ -n "${win_id}" ]]
 then
