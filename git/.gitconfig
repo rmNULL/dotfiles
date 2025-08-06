@@ -9,7 +9,8 @@
   cp = clone
   d = diff
   dh = diff HEAD^..HEAD
-  dm = diff master
+  dm = diff main
+  do = diff HEAD..origin/dev
   ds = diff --staged
   f = fetch
   h = help
@@ -39,11 +40,11 @@
 [core]
   excludesfile = /home/rmnull/.gitignore
   #pager = delta
-[interactive]
-  diffFilter = delta --color-only
-[delta]
-  navigate = true
-  light = false
+# [interactive]
+#   diffFilter = delta --color-only
+# [delta]
+#   navigate = true
+#   light = false
 [merge]
   conflictstyle = diff3
 [diff]
