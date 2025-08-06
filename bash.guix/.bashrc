@@ -91,11 +91,29 @@ gen_prompt() {
     fi
 }
 
+
+__eos_venv_activate() {
+    local venv_dir=".venv"
+    local desired_venv
+    local current_venv
+
+    [[ -d $venv_dir ]] || return
+
+    desired_venv=$(realpath "$venv_dir") || return
+    current_venv=$(realpath "${VIRTUAL_ENV:-}" 2>/dev/null || true)
+
+    if [[ "$current_venv" != "$desired_venv" ]]; then
+        type deactivate &>/dev/null && deactivate
+        source "$desired_venv/bin/activate"
+    fi
+}
+
+
 if [[ -z "$PROMPT_COMMAND" ]]
 then
-    PROMPT_COMMAND=gen_prompt
+    PROMPT_COMMAND="gen_prompt;__eos_venv_activate"
 else
-    PROMPT_COMMAND="gen_prompt;${PROMPT_COMMAND}"
+    PROMPT_COMMAND="gen_prompt;${PROMPT_COMMAND};__eos_venv_activate;"
 fi
 
 if [[ -f ~/.bash_aliases ]]
@@ -207,3 +225,13 @@ tattachws 2>/dev/null
 
 ## this var is the reason behind gnome icons missing 
 unset GDK_PIXBUF_MODULE_FILE
+source /home/sham/Downloads/alacritty/extra/completions/alacritty.bash
+.vv() {
+  source "$PWD/.venv/bin/activate"
+}
+
+if [[ "$TERM" = "alacritty" ]]
+then
+    tattachws 2>/dev/null
+fi
+
