@@ -14,6 +14,13 @@ then
     return
 fi
 
+### HISTSIZE: quoting the source, since i keep forgetting what this means
+###  > The  number  of  commands  to remember in the command history.
+###  > If the value is 0, commands are not saved in the history list.
+###  > Numeric values less than zero result in every command being saved on the history list (there is no limit)
+###  > The shell sets the default value to 500 after reading any startup files.
+export HISTSIZE=-1
+export HISTFILESIZE=1000000
 # Don't execute commands when match fails
 shopt -s failglob
 
@@ -32,6 +39,7 @@ gen_prompt() {
     local ec="$?"
     local branch="" user_prefix="" hints="" ORG_PROMPT=""
     history -a
+    history -n
 
     # kludge !!, as long as it works
     PS1=$(echo -n "$PS1" | sed 's/^\\e\[41;37;1m [0-9][0-9]* \\e\[0m\s*//')
@@ -225,7 +233,6 @@ tattachws 2>/dev/null
 
 ## this var is the reason behind gnome icons missing 
 unset GDK_PIXBUF_MODULE_FILE
-source /home/sham/Downloads/alacritty/extra/completions/alacritty.bash
 .vv() {
   source "$PWD/.venv/bin/activate"
 }
