@@ -1,0 +1,12 @@
+server-backup/
+te1.lock
+user-scripts/bin/codium
+user-scripts/bin/compass
+user-scripts/bin/cursor
+user-scripts/bin/flatc
+user-scripts/bin/git-quick-stats
+user-scripts/bin/gnome-session
+user-scripts/bin/idea
+user-scripts/bin/iev.sh
+user-scripts/bin/lein
+user-scripts/bin/openafis-cli
