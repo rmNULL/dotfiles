@@ -4,6 +4,7 @@
   b = fetch
   br = branch
   c = commit
+  cc = commit -m '.'
   cm = commit -m
   co = checkout
   cp = clone
