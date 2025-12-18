@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+__f() {
+    local name="$1"
+    if [ -z "$name" ]; then
+        echo "Usage: gws <name>" >&2
+        return 1
+    fi
+    if [[ "$name" == *"/"* ]]; then
+        echo "Error: Name cannot contain '/'." >&2
+        return 1
+    fi
+
+    # Ensure we are inside a git repository
+    git rev-parse --git-common-dir >/dev/null 2>&1 || { echo "Error: Not a git repository." >&2; return 1; }
+
+    # Get the main worktree path. --git-common-dir points to <main_worktree>/.git
+    local main_path=$(realpath "$(git rev-parse --git-common-dir)/../")
+    local new_path="${main_path}_wts/$name"
+
+    # If worktree doesn't exist, create it and the branch
+    if [ ! -d "$new_path" ]; then
+        mkdir -p "$(dirname "$new_path")"
+        git worktree add -b "$name" "$new_path"
+    fi
+
+    # Change to the worktree directory
+    cd "$new_path"
+}
+
+__f "$@"
