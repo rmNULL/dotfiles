@@ -24,7 +24,8 @@ __f() {
     fi
 
     # Change to the worktree directory
-    cd "$new_path"
+    zoxide add "$new_path"
+    cd "$new_path" && exec bash 
 }
 
 __f "$@"
