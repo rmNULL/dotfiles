@@ -40,12 +40,12 @@
   gpgsign = false
 [core]
   excludesfile = /home/rmnull/.gitignore
-  #pager = delta
-# [interactive]
-#   diffFilter = delta --color-only
-# [delta]
-#   navigate = true
-#   light = false
+  pager = delta
+ [interactive]
+   diffFilter = delta --color-only
+ [delta]
+   navigate = true
+   light = false
 [merge]
   conflictstyle = diff3
 [diff]
@@ -63,3 +63,8 @@
 
 [includeIf "gitdir:~/lab/"]
   path = ~/lab/.gitconfig
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
