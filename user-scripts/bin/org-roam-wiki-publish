@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+EMACS_BIN="${EMACS:-emacs}"
+HEADLESS_CONFIG="$HOME/.emacs.d/headless_init.el"
+PROJECT_NAME="public-wiki"
+OUTPUT_DIR="$HOME/af/dirty/serve/org-wiki-output/"
+DESTINATION="turbomac:/var/www/blog.liglambda.com/wiki"
+
+timestamp() {
+  date +"%Y-%m-%dT%H:%M:%S%z"
+}
+
+log() {
+  printf "[%s] %s\n" "$(timestamp)" "$*"
+}
+
+if ! command -v "${EMACS_BIN}" >/dev/null 2>&1; then
+  log "emacs binary not found: ${EMACS_BIN}"
+  exit 1
+fi
+
+if [[ ! -f "${HEADLESS_CONFIG}" ]]; then
+  log "headless config not found: ${HEADLESS_CONFIG}"
+  exit 1
+fi
+
+log "publishing org project: ${PROJECT_NAME}"
+"${EMACS_BIN}" --batch \
+  --load "${HEADLESS_CONFIG}" \
+  --eval "(set-language-environment \"UTF-8\")" \
+  --eval "(set-default-coding-systems 'utf-8)" \
+  --eval "(prefer-coding-system 'utf-8)" \
+  --eval "(require 'org)" \
+  --eval "(org-publish-project \"${PROJECT_NAME}\")"
+
+log "syncing output to remote: ${DESTINATION}"
+rsync -aP "${OUTPUT_DIR}" "${DESTINATION}"
+
+log "publish and sync complete"
