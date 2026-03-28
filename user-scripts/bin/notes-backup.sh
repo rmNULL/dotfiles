@@ -37,7 +37,7 @@ remote_copy() {
     local remote_host="$2"
     local remote_dir;
     remote_dir="${3:-}" ; #$(basename "$local_dir")
-    timeout 30 /usr/bin/env rsync -e "ssh -F '${HOME}/.ssh/config'" -aP "${local_dir}/" "${remote_host}":"${remote_dir}"
+    timeout 10 /usr/bin/env rsync -e "ssh -F '${HOME}/.ssh/config'" -aP "${local_dir}/" "${remote_host}":"${remote_dir}"
 }
 
 if ! remote_copy "$notes_dir" "pi" "notes/"
